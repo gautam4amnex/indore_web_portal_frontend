@@ -1,0 +1,152 @@
+/* Import colors from the color variable css */
+ @import './color-variable.css';  
+ 
+ /* info Boxes css start*/
+.info-box {
+    display: block;
+    min-height: 130px;
+    background: #fff;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.info-box-icon {
+    display: inline-block;
+    vertical-align: middle;
+ height: 110px;
+    width: 60px;
+    line-height: 94px;
+}
+
+.info-box-icon .info-chart {
+    width: 100%;
+    height: 100%;
+	text-align: center;
+}
+
+.info-chart img {
+    width: 35px;
+    text-align: center;
+}
+
+.info-box-content {
+    display: inline-block;
+    vertical-align: middle;
+    width: calc(100% - 80px);
+    padding: 5px 10px;
+}
+
+.info-box-content .info-box-name {
+    color: var(--main-theme-color);
+    font-size: 35px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    position: relative;
+    overflow: hidden;
+    width: 125px;
+    text-overflow: ellipsis;
+}
+
+.info-box-content .info-box-name.with-divider:after {
+    content: '';
+    display: block;
+    position: absolute;
+    border-bottom: 3px solid #cececb;
+    width: 45px;
+    bottom: -1px;
+    border-radius: 22%;
+}
+
+.info-box-content .info-box-text {
+    color: #a29d9d;
+    position: relative;
+    display: inline-block;
+    padding-left: 15px;
+}
+
+.info-box-content .info-box-text:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 5px;
+    background: #000;
+    left: 0;
+    top: 8px;
+}
+
+.info-box-content .info-box-number {
+    color: #33404e;
+}
+
+
+.info-box.box-color1 {
+    background:#f7efe4;
+}
+
+.info-box.box-color2 {
+    background: #fff5d1;
+}
+.info-box.box-color3 {
+    background: #fbead8;
+}
+.info-box.box-color4 {
+    background: #faeed4;
+}
+
+.info-box h5{    color: #865439;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: :none;
+    border-bottom: 1px solid #732f312e;
+    padding: 10px;
+    margin: 0;}
+/***CSS Harsh***/
+.card-main-rmc {
+    height: 190px !important;
+}
+.card-main-rmc a{text-decoration: none !important;}
+.admin-main {
+    width: 100%;
+    height: calc(100% - 70px);
+    overflow: auto;
+/*     margin: 50px 0 0 0 !important; */
+    position: relative;
+}
+.info-box{padding: 5px;}
+/***CSS End Harsh***/
+span.dept-name {
+    color: #732f31;
+    font-size: 16px;
+    font-weight: 500;
+}
+.info-box:hover {
+    box-shadow: 10px 10px 10px -10px #d8c6c6;
+}
+
+.help-icon{font-size: 25px !important;color: var(--main-theme-color);}
+
+/***  fIREFOX Scrollbar***/
+.scrollar {
+    scrollbar-color: #865439 aliceblue;
+    scrollbar-width: thin;
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+	 
+	
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-width : 320px) and (max-width : 620px) {
+	.admin-main {
+		margin: 20px 0 0 0 !important;
+		height: calc(100% - 130px);
+	}
+}
+

@@ -1,0 +1,2239 @@
+/* Import colors from the color variable css */
+@import '../css/color-variable.css';
+
+/*Side Menu start*/
+
+a.side-menu-click {
+    position: absolute;
+    top: 7px;
+    PADDING: 5px;
+    left: 240px;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+
+a.side-menu-click i {
+    color: #865439;
+    font-size: 25px;
+	-webkit-transition: all .5s ease-in-out;
+	-moz-transition: all .5s ease-in-out;
+	-o-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+}
+
+.nav-main {
+    width: 230px;
+    height: 100vh;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+
+/*After closeNav*/
+.nav-main.closeNav {
+    margin-left: -230px;
+}
+
+.closeNav a.side-menu-click {
+    left: 8px;
+    top: 15px;
+}
+
+.page-content-wrapper.closeNav {
+    width: 100%;
+}
+
+.city-logo {
+    width: 100%;
+    height: 70px;
+    box-shadow: 0 0 10px -10px;
+    text-align: center;
+}
+.city-logo img {
+    width: 100px;
+    height: 100%;
+    padding: 5px;
+}
+
+.nav-ul-citi {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: calc(100% - 71px);
+    overflow: auto;
+	-webkit-transition: all .5s ease-in-out;
+	-moz-transition: all .5s ease-in-out;
+	-o-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+}
+
+.nav-ul-citi li {
+    width: 100%;
+    text-align: left;
+    padding: 5px;
+}
+
+.nav-ul-citi li a {
+    height: 100%;
+    width: 100%;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 10px;
+    padding: 3px;
+    position: relative;
+    font-size: 14px;
+    color: var(--main-theme-color);
+    font-weight: 500;
+}
+
+
+.nav-ul-citi li a svg {
+    width: 35px;
+    height: 35px;
+    display: inline-block;
+	
+}
+
+.nav-ul-citi li a span {
+    width: 100%;
+    display: inline-block;
+}
+
+.nav-ul-citi li a .menu-name {
+    display: none;
+	
+}
+
+.nav-ul-citi li a:hover .menu-name {
+    display: block;
+	color:#fff;
+	font-size:12px;
+	font-weight:500;
+	-webkit-transition: all .5s ease-in-out;
+	-moz-transition: all .5s ease-in-out;
+	-o-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+}
+
+.nav-ul-citi li a:hover {
+    background-color: var(--main-theme-color);
+	border-radius:10px;
+	color:#fff;
+	-webkit-transition: all .5s ease-in-out;
+	-moz-transition: all .5s ease-in-out;
+	-o-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+	word-break: break-word;
+}
+
+.nav-ul-citi li a.active {
+    background-color: var(--main-theme-color);
+    border-radius: 10px;
+    color: #fff;
+}
+
+.nav-ul-citi li a.active .menu-name{ 
+	display:block;
+	color:#fff;
+	font-size: 12px;
+    font-weight: 500;
+	word-break: break-word;
+}	
+
+.nav-ul-citi li a.active svg g g polyline{
+	 stroke: #fff;
+}
+
+.nav-ul-citi li a.active svg g g polygon{
+	 stroke: #fff;
+}
+
+.nav-ul-citi li a.active svg g g path{
+	 stroke: #fff;
+}
+
+.nav-ul-citi li a.active svg g path{
+	 stroke: #fff;
+}
+
+.nav-ul-citi li a:hover svg g g polyline{
+    stroke: #fff;
+	-webkit-transition: all .1s ease-in-out;
+	-moz-transition: all .1s ease-in-out;
+	-o-transition: all .1s ease-in-out;
+	transition: all .1s ease-in-out;
+}
+.nav-ul-citi li a:hover svg g g polygon{
+    stroke: #fff;
+	-webkit-transition: all .1s ease-in-out;
+	-moz-transition: all .1s ease-in-out;
+	-o-transition: all .1s ease-in-out;
+	transition: all .1s ease-in-out;
+}
+.nav-ul-citi li a:hover svg g g path{
+	stroke: #fff;
+	-webkit-transition: all .1s ease-in-out;
+	-moz-transition: all .1s ease-in-out;
+	-o-transition: all .1s ease-in-out;
+	transition: all .1s ease-in-out;
+}
+.nav-ul-citi li a:hover svg g path{
+	stroke: #fff;
+	-webkit-transition: all .8s ease-in-out;
+	-moz-transition: all .8s ease-in-out;
+	-o-transition: all .8s ease-in-out;
+	transition: all .8s ease-in-out;
+}
+
+/*Side Menu end*/
+
+/*Header start*/
+.header-main {
+  overflow: hidden;
+  padding: 3px 10px;
+}
+
+.header-main a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px; 
+  line-height: 25px;
+  border-radius: 4px;
+}
+a.logo-text {
+    padding: 0;
+	margin: 8px 0 0 40px;
+}
+a.logo-text img {
+    width: 80px;
+}
+a.logo-text h4{
+/* 	float: left; */
+    color: var(--main-theme-color);
+    font-size: 25px;
+    font-family: serif;
+    font-weight: 700;
+    padding: 5px 0 0 00px;
+}
+.header_title{width: 650px;}
+.header-main a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.header-right {
+    float: right;
+    width: 390px;
+    display: block;
+}
+
+.language-ul{
+	float: left;
+}
+
+.language-ul li {
+    border-collapse: collapse;
+    border: 1px solid;
+    padding: 0;
+    margin: 7px 0 0 0;
+}
+
+.language-ul li a {
+    color: var(--main-theme-color);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 12px;
+    border-radius: unset !important;
+}
+
+.language-ul li a.active {
+    background-color: var(--main-langback) !important;
+    color: var(--main-theme-color) !important;
+    font-weight: 700;
+}
+
+.logout-link{
+	float: left !important;
+    width: 30px;
+    height: 30px;
+    margin: 5px 5px 5px 10px;
+    padding:0 !important;
+    display: none;
+}
+
+.logout-btn {
+    width: 30px;
+    height: 30px;
+}
+.user-info {
+    padding: 4px;
+    width: 158px;
+    float: left;
+    line-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--main-theme-color);
+    font-weight: 500;
+    font-size: 18px;
+}
+.help-icon{font-size: 25px;color: var(--main-theme-color);}
+/* Added */
+.drop-down-main{
+	cursor: pointer;
+	display: none;
+}
+.drop-container{
+	display: none;
+    position: absolute;
+    right: 85px;
+    top: 60px;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid var(--main-theme-color);
+    z-index: 999;
+}
+.drop-container p{
+	margin: 0;
+	cursor: pointer;
+}
+.drop-down-reset{
+	width: 16px;
+}
+.reset-header{
+    background-color: var(--main-theme-color);
+    margin: 10px;
+    padding: 10px 15px;
+    color: #fff;
+}
+.reset-header .close{
+	color: #fff;
+	opacity: 1;
+	margin: 0;
+	padding: 0;
+}
+.input-container{
+    padding: 0 15px;
+}
+.input-container p{
+	color: var(--main-theme-color);
+    font-size: 14px;
+    font-weight: 600;
+	margin: 5px 0;
+}
+.input-container .in-txt-pass{
+	border-radius: 25px;
+    border: none;
+    background: #f4f4f4;
+    padding: 6px 16px;
+    margin-bottom: 9px;
+    outline: none;
+}
+.reset-footer{
+	justify-content: center;
+    padding-top: 0;
+    border: none;
+}
+.primary-save{
+	background: var(--main-theme-color);
+    color: #fff;
+    border: none;
+    padding: 4px 20px;
+    border-radius: 20px;
+}
+.primary-cancel{
+	background: #f4f4f4;
+	border: 1px solid var(--main-theme-color);
+    color: var(--main-theme-color);
+    border: none;
+    padding: 4px 20px;
+    border-radius: 20px;
+}
+
+/*Header end*/
+
+/*Page Content inner css start*/
+.page-content-wrapper {
+    width: calc(100% - 230px);
+    height: 100vh;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+
+
+
+.header-main {
+	width: 100%;
+    height: 54px;
+}
+
+.map-main {
+	width: 100%;
+    height: calc(100% - 65px);
+    border-top: 10px solid #eacbba;
+    border-right: 5px solid #eacbba;
+    border-left: 5px solid #eacbba;
+}
+/*Page Content inner css end*/
+
+/*Sider popup start*/
+
+.layer-popup{
+	margin: 0 0 0 -300px;
+    width: 300px;
+    position: absolute;
+    height: 70vh;
+    bottom: 30px;
+    right: -300px;
+    z-index: 999;
+    background: #fff;
+	-webkit-transition: all .8s ease-in-out;
+	-moz-transition: all .8s ease-in-out;
+	-o-transition: all .8s ease-in-out;
+	transition: all .8s ease-in-out;
+}
+
+.layers {
+    width: 300px;
+    height: 100%;
+	display: block;
+}
+
+.layer-content {
+    width: 100%;
+    height: calc(100% - 45px);
+    overflow-y: auto;
+    padding: 5px;
+	position: relative;
+}
+
+.layer-content .tab-pane {
+padding: 0;
+}
+
+.layer-title-main {
+    width: 100%;
+    height: 45px;
+    background-color: var(--main-theme-color);
+    display: flex;
+    color: #fff;
+}
+
+.layer-title-main h3 {
+    font-size: 18px;
+    margin: 0;
+    padding: 12px 9px;
+    font-weight: 300;
+    text-transform: capitalize;
+}
+
+a.layer-close img {
+    width: 15px;
+    padding: 15px 0px;
+    margin: 0 10px 0 0;
+}
+
+
+.layer-content label {
+    color: var(--main-theme-color);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.card-body label {
+    display: inline-block;
+    width: 165px;
+    padding: 0 0 0 20px;
+    color: var(--main-theme-color);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/*Sider popup end*/
+
+/*sidebar inner Popup tool css start*/
+.layer-content .form-group {
+    position: relative;
+	margin-bottom: 5px;
+}
+.late-fromto img {
+    width: 20px;
+    margin: 0 0 0 2px;
+}
+.late-fromto {
+    position: absolute;
+    top: 28px;
+    right: 10px;
+}
+.layer-content p{
+	font-size:14px;
+}
+.aut-content{
+    border-bottom: 1px solid var(--main-theme-color);
+    margin: 0 0 10px 0;
+}
+.aut-content:last-child{
+	border-bottom: unset;
+}
+.aut-content h6 {
+    color: var(--main-theme-color);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.full-background-tab li a {
+    /* overflow: hidden;
+    text-overflow: ellipsis; */
+    white-space: nowrap;
+}
+
+.full-background-tab li {
+    width: 50%;
+    padding: 0;
+}
+.full-background-tab li a {
+    /* overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; */
+    /* padding: 5px; */
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--main-tabback);
+    margin: 0 0 10px 3px;
+    text-align: center;
+    border-radius: 5px !important;
+    color: var(--main-theme-color);
+}
+.full-background-tab li a.active {
+    border-color: var(--main-theme-color) var(--main-theme-color) var(--main-theme-color) !important;
+    color: #fff !important;
+    background-color: var(--main-theme-color) !important;
+}
+
+.full-linetab li {
+    width: 50%;
+    padding: 0;
+}
+
+.full-linetab li a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 10px 3px;
+    text-align: center;
+    border-radius: 5px !important;
+    color: var(--main-theme-color);
+    letter-spacing: 0.5px;
+}
+
+.full-linetab li a.active {
+    border: unset !important;
+    color: var(--main-theme-color) !important;
+    background-color: #fff !important;
+    border-bottom: 2px solid !important;
+    border-radius: unset !important;
+}
+
+
+.full-accordion .card-header {
+    padding: 0;
+}
+.full-accordion .accordion-btn {
+    background: #fff;
+    width: 100%;
+    text-align: left;
+    color: var(--main-theme-color);
+    margin: 0 0 0px 0;
+    text-decoration: unset;
+    display: flex;
+    padding: 5px 20px;
+}
+
+.pollution-detail-info p {
+    color: var(--main-theme-color);
+    font-size: 14px;
+    font-weight: 600;
+}
+.pollution-detail-info span {
+    font-size: 24px;
+}
+
+.query-result {
+    margin: 10px 0 0 0;
+}
+.query-result h3 {
+    font-size: 15px;
+    color: var(--main-theme-color);
+    margin: 10px 0 5px 0;
+    border-bottom: 1px solid var(--main-theme-color);
+    padding: 0 0 5px 0;
+}
+
+.result-task {
+    display: inline-block;
+    width: 100%;
+}
+
+/* .result-task label {
+    display: inline-block;
+    margin: 0 10px 6px 0;
+    width: 60px;
+} */
+
+
+.result-task label {
+    float: left;
+    width: 52% !important;
+    font-size: 12px;
+    overflow: hidden;
+    word-break: break-all;
+    display: inline-block;
+    margin: 0 10px 3px 0;
+}
+
+.result-task {
+    display: flex;
+    width: 100%;
+}
+
+/* .result-task p {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--main-theme-color);
+    width: 180px;
+} */
+
+
+.result-task p {
+    float: right;
+    width: 46%;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--main-theme-color);
+    margin: 0 0 3px 0;
+    word-break: break-word;
+}
+
+
+.query-result-main {
+    padding: 8px;
+   
+    /* cursor: pointer; */
+    
+}
+
+.single-record{
+	 display : block !important;
+}
+.query-result-main:hover {
+    background: #f5f4f4;
+}
+
+.query-list {
+    width: 100%;
+}
+.query-list a {
+    width: 100%;
+    display: inline-block;
+    margin: 5px 0;
+    border-bottom: 1px solid var(--main-theme-color);
+    color: var(--main-theme-color);
+    font-size: 16px;
+    padding: 2px 0 2px 0;
+}
+
+.query-list a:hover {
+    text-decoration: unset;
+}
+.query-back-list-click img {
+    width: 20px;
+    height: 20px;
+    margin: 0 20px 0 0;
+}
+.query-task-search {
+    margin: 10px 0 0 0;
+}
+.back-with-title h6 {
+	color: var(--main-theme-color);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.draw-tools-select {
+    width: 100%;
+    display: inline-block;
+    list-style-type: none;
+    padding: 0;
+}
+.draw-tools-select li {
+    width: 50px;
+    display: inline-block;
+    margin: 5px;
+}
+.draw-tools-select li a:hover svg g rect{
+    fill: var(--main-theme-color);
+}
+.draw-tools-select li a:hover svg g path{
+	stroke:#fff;
+}
+.draw-tools-select li a:hover svg g circle{
+	stroke:#fff;
+}
+.draw-tools-select li a:hover svg g polyline{
+	stroke:#fff;
+}
+.draw-tools-select li a:hover svg g rect{
+	stroke:#fff;
+}
+.draw-tools-select li a:hover svg g line{
+	stroke:#fff;
+}
+.draw-tools-select li a:hover svg g polygon{
+	stroke:#fff;
+}
+
+.draw-tools-select li a.active svg g rect{
+    fill: var(--main-theme-color);
+}
+.draw-tools-select li a.active svg g path{
+	stroke:#fff;
+}
+.draw-tools-select li a.active svg g circle{
+	stroke:#fff;
+}
+.draw-tools-select li a.active svg g polyline{
+	stroke:#fff;
+}
+.draw-tools-select li a.active svg g rect{
+	stroke:#fff;
+}
+.draw-tools-select li a.active svg g line{
+	stroke:#fff;
+}
+.draw-tools-select li a.active svg g polygon{
+	stroke:#fff;
+
+}
+
+.title-tools-sub label {
+    padding: 0 30px 0 0;
+}
+.title-tools-sub .text-preview {
+    font-size: 18px;
+}
+
+.layer-content input[type="color"] {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ced4da;
+    width: 50px;
+    height: 30px;
+    border-radius: 0;
+}
+
+.title-tools-sub svg {
+    margin: 0 0 0 0px;
+    position: relative;
+    top: -10px;
+}
+
+/*sidebar inner Popup tool css end*/
+
+/*action footer start*/
+.action-start {
+    position: absolute;
+    bottom: 20px ;
+    display: inline-block;
+    width: 60%;
+	margin: 0 0 0 10px;
+}
+.action-start .action-ul {
+    display: flex;
+    padding: 0;
+    list-style-type: none;
+        width: 300px;
+    background: rgb(134 84 57 / 0.4);
+    padding: 0px 4px 4px 0;
+    border-radius: 50px;
+    border: 1px solid var(--main-theme-color);
+}
+
+.action-ul.bottom-action.threed{
+	width: 427px;
+}
+.action-start ul li {
+    padding: 5px;
+    height: 40px;
+}
+.action-start ul li a img {
+    width: 35px;
+    height: 35px;
+}
+.action-layer {
+    position: relative;
+    top: -345px;
+    bottom: 0;
+    height: 290px;
+    right: -250px !important;
+}
+.action-layer .layers {
+    height: 290px;
+}
+
+.action-layer .arrow-footer {
+    border-top: 13px solid #fff;
+    border-right: 20px solid transparent;
+    position: absolute;
+    bottom: -13px;
+    left: 50px;
+    border-left: 20px solid transparent;
+}
+.action-layer .map-side-icon-img {
+    padding: 13px 12px 12px 12px;
+}
+/*action footer end*/
+
+/*Form set start*/
+.btn-indore {
+    background-color: var(--main-theme-color);
+    color: #fff;
+    font-size: 14px;
+    border-radius: 20px;
+    padding: 4px 20px;
+}
+.btn-indore:hover {
+    color: var(--main-theme-color);
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid var(--main-theme-color);
+}
+.layer-content select {
+    border-radius: 50px;
+    font-size: 14px;
+}
+.layer-content input {
+    border-radius: 50px;
+    font-size: 14px;
+    margin-right: 5px;
+    /* height: 25px;
+    width: 20px; */
+}
+
+.layer-content textarea {
+    font-size: 14px;
+}
+.layer-content input[type="file"] {
+    /* background-color: var(--main-langback); */
+    padding: 3px 3px 3px 10px;
+}
+/*Form set end*/
+
+/*footer Popup tool css start*/
+.measurement-ul {
+    padding: 0;
+    width: 160px;
+    list-style-type: none;
+    display: block;
+    float: left;
+}
+.select-measurement {
+    width: 110px;
+    display: inline-block;
+    float: left;
+    padding: 15px 0 0 5px;
+}
+.measurement-ul li{
+	display:inline-block;
+}
+.measurement-ul li a svg {
+    width: 40px;
+}
+.m-text-main{
+	font-size:14px;
+}
+
+.bookmark-data {
+    height: 140px;
+    overflow-y: auto;
+}
+
+.bookmarkdata-input {
+    height: 30px;
+    padding: 2px 15px;
+    border: 1px solid var(--main-theme-color);
+    width: 190px;
+}
+
+.bookmark-submit {
+    background: no-repeat;
+    width: 50px;
+    height: 50px;
+    border: none;
+}
+.bookmark-data {
+    height: 140px;
+    overflow: auto;
+    display: block;
+    width: 270px;
+}
+
+.bookmark-submit img {
+    width: 35px;
+    height: 35px;
+}
+.bookmark-val {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+}
+.main-book-val {
+    width: 88px;
+    float: left;
+    height: 70px;
+    padding: 0 10px;
+	margin: 4px 0 0 0;
+}
+.main-book-val.bookmark-select .bookmark-val {
+    font-weight: 700;
+    color: var(--main-theme-color);
+}
+.tooltip-link {
+    color: var(--main-theme-color);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.social-icon .map-side-icon-img {
+    padding: 2px;
+}
+
+.social-icon {
+    position: absolute;
+    top: 80px;
+    right: 10px;
+}
+
+/* .esri-icon {
+	display: none;
+} */
+
+.esri-icon-font-fallback-text {
+	display: none;
+}
+
+.esri-basemap-gallery__item-container {
+	list-style-type: none;
+}
+
+.esri-area-measurement-3d__hint {
+	display: none;
+}
+
+.esri-direct-line-measurement-3d__hint {
+	display: none;
+}
+
+
+
+ #HomeButton {
+    position: absolute;
+    top: 180px;
+    left: 130px;
+    z-index: 50;
+    }
+    
+    #LocateButton {
+    position: absolute;
+    top: 220px;
+    left: 130px;
+    z-index: 50;
+    }
+    
+    #titlePane{
+        width:280px;
+      }
+      
+    #search {
+    position: absolute;
+    z-index: 2;
+    top: 110px;
+    left: 175px;
+    transition: 0.8s all;
+    }
+    
+    #search.active{
+    	    left: 65px;
+    }
+}
+
+
+
+
+/*footer Popup tool css end*/
+
+.dijitArrowButtonChar {
+    display: inline-block !important;
+}
+
+.esriMeasurement .esriMeasurementResultLabel {
+    border-bottom: 1px solid var(--main-theme-color);
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.esriBookmarkTable {
+    width: 278px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+}
+
+.esriBookmarks .dojoDndItem {
+    padding: 0px;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+}
+
+.esriBookmarks {
+    width: 100%;
+   border-color: var(--main-theme-color);
+   min-height: 100%;
+}
+
+.esriBookmarkEditBox{
+	border: 1px solid var(--main-theme-color);
+	padding:5px;
+	height:20px;
+	margin:0px 0;
+	width:210px;
+	border-radius:5px;		
+}
+
+
+.esriAddBookmark {
+    margin: 0px;
+    padding: 3px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    position: relative;
+}
+
+.esriAddBookmark::after {
+    content: " ";
+    width: 16px;
+    height: 16px;
+    background: transparent url(../images/plus.png) no-repeat scroll center center;
+    position: absolute;
+    top: 5px;
+    right: 125px;
+}
+
+.esriBasemapGalleryNode {
+    height: 110px;
+}
+
+
+.esriBasemapGalleryLabelContainer span {
+    font-size: 11px;
+    line-height: 1;
+}
+
+.HomeButton .home {
+ 	background-color: #fff;	
+}
+
+.LocateButton .zoomLocateButton{
+	background-color: #fff;	
+}
+
+/* .error {
+    color: red !important;
+    font-weight: 400 !important;
+    font-size: 12px;
+} */
+
+.query-result-main.event-list {
+    margin: 5px 0 5px 0;
+    border-bottom: 1px solid var(--main-theme-color);
+}
+
+.event-list .result-task label{
+	width: 180px;
+}
+
+
+.kyp-list .result-task label {
+    width: 55px;
+}
+
+.ward-list .result-task label {
+    width: 160px;
+}
+
+.esriPrintButton{
+	width: 100%;
+    text-align: left;
+}
+
+.esriPrintButton .dijitButtonContents{
+	text-align: left;
+    margin: 0 0 0 5px;
+}
+
+.esriPrintButton .dijitDownArrowButton{
+	width: 35px;
+}
+
+.esriPrintButton .dijitArrowButtonChar{
+	position: relative;
+    top: -5px;
+    display: inline-block !important;
+}
+
+.esriMeasurement .dijitArrowButtonChar{
+	display: inline-block !important;
+}
+
+.esriPrintButton .dijitButtonNode{
+	border: 1px solid var(--main-theme-color);
+}
+
+.calcite .esriPopup .titleButton.maximize:before {
+    content: "\e60e";
+}
+
+.calcite .esriPopup .titleButton.close:before {
+    content: "\e600";
+}
+
+/* changes */
+label.error {
+    color: red;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+
+#searchDiv {
+   position: absolute;
+    z-index: 2;
+    top: 60px;
+    right: 10px !important;
+    transition: 0.8s all;
+    left: unset !important;
+}
+
+/* bhargav */
+.map-func {
+    display: inline-block;
+    width: 120px;
+    position: absolute;
+    z-index: 10;
+    left: 305px;
+    transition: 0.8s all;
+}
+.map-func.three-d {
+    left: 301px;
+}
+/* .map-func.active{ */
+/* 	left: 65px; */
+/* } */
+div#print .arrow-footer {
+    left: 9px;
+}
+
+div#print {
+    right: -290px !important;
+}
+
+.measurement-three-d::before{
+	background-image: url(../images/Measure_Area16.png);
+}
+.img-cust-map::before{
+	content: "";
+	width: 20px;
+    height: 20px;
+    background-size: 16px;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: 2px;
+}
+.page-content-wrapper .esri-icon-measure-area:before, .page-content-wrapper .esri-icon-measure-line:before:before{
+	content: '';
+}
+.distance-three-d::before{
+	background-image:url("../images/Measure_Distance16.png");
+    background-position: 2px 4px;
+}
+
+/* bhargav */
+.map-func ul li {
+    background: #fff;
+}
+
+
+/**
+for 3d
+*/
+
+.esri-icon-minus:before {
+    content: "\e621";
+    color: inherit;
+}
+
+/**
+for locate button icon
+*/
+.esri-icon-locate:before {
+    content: "\e630";
+    color: inherit;
+}
+
+/**
+for measurement button icon
+*/
+.esri-icon-measure-area:before {
+    content: "\e90b";
+    color: inherit;
+}
+
+.esri-widget--button.active,
+      .esri-widget--button.active:hover,
+      .esri-widget--button.active:focus {
+        cursor: default;
+        background-color: #999696;
+      }
+.esri-widget--button.active path,
+.esri-widget--button.active:hover path,
+.esri-widget--button.active:focus path {
+        fill: #e4e4e4;
+}
+
+
+/* .esri-ui-corner {
+    right: 472px;
+} */
+
+#topbar {
+    position: absolute;
+    top: 55px;
+    right: 200px;
+    cursor: default;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+/* bhargav */
+.esri-component.esri-search.esri-widget{
+    position: absolute;
+    top: 25px;
+    left: 50px;
+}
+
+.main-book-val .main-book-in{
+	display: inline-block;
+    width: 15px;
+    top: 2px;
+    position: relative;
+    margin: 0 1px 0 0;
+    outline: none;
+    height: 15px;
+}
+.main-book-val .main-book-img{
+    display: inline-block;
+    margin: 0 0 0 -10px;
+    cursor: pointer;
+}
+/* bhargav */
+
+
+.announce_desc{
+	cursor: pointer;
+}
+
+/*
+IMC Service
+*/
+
+
+
+.Service-linetab li a {
+    color: #865439 !important;
+    background-color: #ede4d8 !important;
+    margin: 2px;
+    padding: 4px 12px;
+    font-size:14px;
+}
+
+.Service-linetab li a.active {
+    /* border: unset !important; */
+    color: #fff !important;
+    background-color: var(--main-theme-color) !important;
+    /* border-bottom: 2px solid !important; */
+   
+}
+
+/* for layer list */
+
+.esriLayerList .esriToggleButton {
+    float: right;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    margin: 7px 10px 0 0;
+    /* margin-right: 10px; */
+   	padding: 0;
+}
+/*
+	scalebar
+*/
+.scalebar_bottom-right {
+    right: 200px;
+    bottom: 45px;
+}
+
+/*
+layer swipe
+*/
+.LayerSwipe{height:100%;}
+.LayerSwipe .vertical{top:0px !important;}
+
+/**
+basemap gallary
+*/
+
+.esriBasemapGalleryLabelContainer {
+    background-color: transparent;
+    text-align: center;
+    width: 100%;
+    height: 3em;
+    font-size: 13px;
+    overflow: hidden;
+    display: block;
+}
+.esriBasemapGalleryThumbnail {
+    margin: 0 !important;
+}
+
+.printBtn{
+	display: block;
+    margin-left: 100px;
+}
+
+.esri-view-height-xsmall .esri-expand .esri-widget--panel, .esri-view-height-xsmall .esri-expand .esri-widget--panel-height-only, .esri-view-height-xsmall .esri-ui-corner .esri-component.esri-widget--panel, .esri-view-height-xsmall .esri-ui-corner .esri-component.esri-widget--panel-height-only {
+    max-height: 200px;
+}
+.esri-ui-corner .esri-expand .esri-widget--panel, .esri-ui-corner .esri-expand .esri-widget--panel-height-only, .esri-ui-corner .esri-component .esri-widget--panel, .esri-ui-corner .esri-component.esri-widget--panel {
+    width: 204px;
+}
+
+/** For 2d map **/
+.esriControlsBR {
+    display: none;
+}
+
+/** For 3d map **/
+.esri-component.esri-attribution.esri-widget {
+    display: none;
+}
+
+/***  fIREFOX Scrollbar***/
+.scrollar {
+    scrollbar-color: #865439 aliceblue;
+    scrollbar-width: thin;
+} 
+
+/* .drop-down-reset, .drop-down-main{ */
+/* 	width:20px; */
+/* 	height:20px; */
+/* } */
+
+/** Query line seperator */
+
+.query-resultDiv-seperator{
+	border-bottom: 1px solid #865439 !important;
+}
+
+.query-resultDiv-seperator:last-child{
+	border-bottom:unset !important;
+}
+.small-icon {
+    width: 25px !important;
+}
+
+.direction-or{
+	text-align: center;
+    color: var(--main-theme-color);
+    margin-top: 8px;
+    font-weight: 600;
+    margin-bottom: 0px;
+}
+
+#mapInfoTool{opacity: 0.5;}
+
+#panDiv{opacity: 1.0;}
+
+/* #swipeLayer{opacity: 0.5;} */
+
+#zoomBoxMap{opacity: 0.5;}
+#zoomOutBoxMap{opacity: 0.5;}
+
+.simpleGeocoder .esriGeocoderContainer{width: 100% !important;}
+.simpleGeocoder .esriGeocoder input{    
+	width: 213px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    }
+    
+.layers-toggle div h5 button span {
+   	width: 238px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 10px 0 5px;
+}
+
+.collapse .card-body {
+   padding: 0.25rem !important;
+   margin: 0px 0 1px 20px;
+}
+
+/* .card{
+	border: 0px !important;
+} */
+
+#accordionExample .layers-toggle {
+    border: 0px !important;
+}
+
+img.depImage {
+    width: 25px;
+    height: 25px;
+}
+
+#coordinateDiv {
+    position: fixed;
+    bottom: 33px;
+    right: 238px;
+    color: #fff !important;
+    z-index: 990;
+    background: var(--main-theme-color) !important;
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+
+.np-main {
+    height: 40px;
+    padding: 20px 0 0 0;
+    /* position: fixed; */
+    bottom: 50px;
+    background: #fff;
+    float: right;
+}
+
+.np-main .with-np-link {
+    color: var(--main-theme-color) !important; 
+    padding: 6px 00px;
+    /* margin: 0 0 0 50px; */
+    float: right;
+    cursor: pointer;
+}
+.np-main .with-np-link:hover{
+	color:var(--main-theme-color) !important;
+	text-decoration:underline !important;	
+}
+
+.np-main .next {
+    margin: 0 0 0 110px;
+}
+
+.disable-np-link {
+    cursor: not-allowed !important;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.zoom-to-layer{
+	margin: 7px 0px 0px 28px;
+    cursor: pointer;
+}
+
+.pay-tax {
+    float: right;
+    margin: 0px -6px 0px 0px;
+}
+
+.see-more-details {
+    float: right;
+    margin: 0px 12px 0px 0px;
+}
+
+
+.tab-with-smallw li {
+    /* width: 90px; */
+    width: 68px;
+}
+
+span.esriLegendServiceLabel {
+    color: var(--main-theme-color);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.range-slider .range-input {
+    width: 100%;
+    position: relative;
+}
+.range-slider {
+    position: relative;
+    width: 100%;
+    margin: 10px 0 0 0;
+}
+
+.range-slider .range-input::after {
+    content: "100%";
+    position: absolute;
+    right: 0;
+    top: 20px;
+}
+
+.range-slider .range-input::before {
+    content: "0%";
+    position: absolute;
+    left: 0;
+    top: 20px;
+}
+
+span.opaque {
+    position: absolute;
+    right: 0;
+    font-size: 12px;
+}
+
+span.transparent {
+    position: absolute;
+    left: 0;
+    font-size: 12px;
+}
+
+/* .withlink a {
+    width: 56%;
+}
+
+.withlink label {
+    width: 100% !important;
+}
+
+.withlink p a {
+    width: 100% !important;
+}
+
+.withlink p  {
+    width: 100% !important;
+} */
+
+.bottom-action li {
+     height: 44px !important;
+    border-radius: 50%;
+    margin: 0 2px 0 0px !important;
+    width: 40px;
+}
+
+.bottom-action li.active a img {
+    border: 2px solid var(--main-theme-color);
+    border-radius: 50%;
+}
+
+.bottom-action li:hover a img{
+    border: 2px solid var(--main-theme-color);
+    border-radius: 50%;
+}
+
+
+.map-detail-custom td{
+	padding:5px !important;
+}
+
+
+.esriPopup .sizer {
+    width: 320px !important;
+}
+
+.new-announcement {
+	float: right;
+    height: 20px;
+    width: 40px;
+    padding: 0px 0px;
+    font-size: 15px;
+	background: none;
+	border:none;
+	color: #fff;
+/* 	border-radius: 20px; */
+	border: none;
+	animation-name: blink_new;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+  @keyframes blink_new {
+  0%   {color:#ea9903;}
+  25%  {color:blue;}
+  75%  {color:#ea9903;}
+  100% {color:blue;}
+}
+
+/**
+	zoom to feature CSS end
+*/
+
+.query-zoom-feature{
+	cursor: pointer; 
+	 float: right;
+    background: var(--main-btn-color);
+    color: #fff;
+    padding: 5px;
+    margin-left:85%;
+}
+
+/**
+	zoom to feature CSS end
+*/
+
+.announcement-zoom{font-size: 15px;
+    float: right;
+    background: var(--main-btn-color);
+    color: #fff;
+    padding: 5px;}
+    
+/** FEATURE INFO FOR 3D MAP START **/    
+    
+ .feature-info-table tr th {
+    width: 50%;
+    text-align: left;
+    border-right: 3px solid rgba(0,0,0,0.05);
+}
+.feature-info-table tr td, .feature-info-table tr th {
+    padding: 0.5em 0.7em;
+    word-break: break-word;
+    vertical-align: top;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+
+.feature-info-table tr td {
+    width: 50%;
+}
+
+.feature-info-element:last-child {
+    padding-bottom: 0;
+}
+.feature-info-element {
+    padding: 0 7px 24px;
+}
+
+.feature-info-table {
+    color: #323232;
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.feature-info-table tr:nth-child(odd) {
+    background-color: rgba(76,76,76,0.1);
+}
+
+.feature-info-table tr:nth-child(even) {
+    background-color: rgba(76,76,76,0.02);
+}
+
+/**
+legend heading bold start
+*/
+.esriLegendGroupLayer > .esriLegendLayerLabel {
+    font-weight: bold !important;
+}
+
+#legendDiv_layer1_0_group > .esriLegendLayerLabel {
+    font-weight: bold !important;
+}
+
+#legendDiv_layer2_0_group> .esriLegendLayerLabel {
+    font-weight: bold;
+}
+
+ /**
+legend heading bold end
+*/
+    
+ /** FEATURE INFO FOR 3D MAP END **/   
+    
+
+/****End*****/
+/* .tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    } */
+    
+  .dep-modal .modal-header {
+    padding: 5px 20px;
+}
+
+.dep-modal .modal-title {
+    font-size: 16px;
+    color: var(--main-theme-color);
+    font-weight: 700;
+}
+
+.dep-modal .modal-header .close {
+    color: #fff;
+    background-color: var(--main-theme-color);
+    padding: 0;
+    position: relative;
+    top: 17px;
+    right: 15px;
+    font-size: 15px;
+    font-weight: 200;
+    border-radius: 50%;
+    width: 22px;
+    opacity: 1;
+    height: 22px;
+}	
+
+.dep-modal .modal-body {
+    max-height: 65vh;
+    overflow: auto;
+}
+
+.tmc-img-logo {
+    width: 75px;
+    position: relative;
+    left: 47%;
+}  
+
+.ward-list-card{
+	margin:0 !important;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 230px);
+    height: 25px;
+    box-shadow: 0px 0px 14px -10px #000;
+    background: var(--main-theme-color);
+    left: 230px;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+
+.text-right {
+    text-align: right!important;
+}
+
+.footer-mian div p {
+    margin: 0;
+    color: #fff;
+    padding: 3px 4px;
+    font-size: 12px;
+}
+
+.footer-mian div a {
+    color: #fff;
+}
+
+footer.closeNav {
+    width: 100%;
+    left: 0;
+}
+
+.visitor_count{
+	margin-right: 30px;
+}
+
+.multiselectmain {
+    float: right;
+    color: var(--main-theme-color);
+    font-size: 14px;
+    font-weight: 500;
+    margin: 10px 0 10px 0;
+}
+
+.action-start-top {
+    position: absolute;
+    top: 22%;
+    display: inline-block;
+    width: 7%;
+    margin: 0 0 0 18px;
+}
+
+.action-start-top .action-ul-top {
+    display: inline-block;
+    padding: 0;
+    list-style-type: none;
+    position: relative;
+    background: rgb(134 84 57 / 0.4);
+    padding: 0px 4px 4px 0;
+    border-radius: 50px;
+    border: 1px solid var(--main-theme-color);
+}
+
+.action-layer-top {
+    height: 125px !important;
+    right: -320px !important;
+    bottom: -25px !important;
+}
+
+a.action-layer-close-top-main img {
+    width: 20px !important;
+    margin: 0 10px 0 0;
+}
+
+
+
+.maptools-ul {
+    width: 100%;
+    padding: 0;
+    list-style-type: none;
+}
+
+.maptools-ul li {
+    display: inline-block;
+    padding: 3px;
+}
+
+.maptools-ul li a img {
+    width: 45px;
+    height: 45px;
+    padding: 0px;
+    margin: 0 0px 5px 5px;
+    border: 2px solid var(--main-theme-color);
+    border-radius: 50%;
+}
+
+.action-layer-top span {
+    border-top: 25px solid #fff;
+    border-right: 30px solid transparent;
+    position: absolute;
+    top: 70px;
+    left: -37px;
+    border-left: 30px solid transparent;
+    transform: rotate(89deg);
+}
+
+.action-start-top ul li {
+    padding: 5px;
+    height: 40px;
+}
+
+.action-start-top ul li a img {
+    width: 35px;
+    height: 35px;
+}
+
+.esriSimpleSliderTL {
+    top: 5px;
+    left: 20px;
+}
+.back-tc-img {
+    background-image: url(../images/RajwadaPalace.png);
+    background-size: cover;
+}
+
+.back-text {
+    position: relative;
+    background: #ffffffeb;
+}
+
+.list-wardinfo {
+    list-style-type: none;
+    padding: 0;
+    float: right;
+    width: 46%;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--main-theme-color);
+}
+
+.list-wardinfo li {
+    border-bottom: 1px solid var(--main-grid-border);
+    padding: 5px 0 5px 0;
+}
+
+.list-wardinfo li:last-child {
+    border-bottom: none;
+}
+
+#thana_call_text > p {
+    font-size: 16px;
+    color: var(--main-theme-color);
+    font-weight: 500;
+}
+
+#direction_distance > p {
+    font-size: 16px;
+    color: var(--main-theme-color);
+    font-weight: 500;
+    margin:0 0 0 50px;
+    padding: 20px 0 0 0;
+    
+}
+
+.layer-popup.resize-layer .side-layer-resize img {
+    transform: rotate(180deg);
+}
+.layer-popup.resize-layer {
+    height: 20px;
+
+    bottom: 28px !important;
+}
+.user_authenticationAlert{
+	    background: #613218;
+    color: #fff;
+    opacity: 0.8;
+/*     font-weight: 700; */
+    font-size: 18px;
+        padding: 5px;
+}
+.user_authenticationAlert a {
+    background: #fff;
+    text-decoration: none;
+    color: var(--main-theme-color);
+    /* width: 36px; */
+    border-radius: 20px;
+    padding: 6px 21px 6px 18px;
+    position: relative;
+    top: 17px;
+    opacity: 1;
+}
+.authenticate-close{background: #fff;
+   background: #fff !important;
+    width: 24px;
+    border-radius: 10px;
+    opacity: 1 !important;
+ 
+    border-radius: 10px;}
+    .authenticate-close:focus{outline: none;}
+    
+     /*Submenu Design */
+    .nav-ul-citi li i {
+	    color: var(--main-btn-color);
+	    font-weight: 700;
+	    position: absolute;
+	    top: 13px;
+	    right: 10px;
+	}
+    .nav-ul-citi li.active i {
+    	color: #fff;
+	    transform: rotate(180deg);
+	}
+    .sub-item {
+	    display: none;
+	}
+    
+   .nav-ul-citi li.active > .sub-item {
+	    display: block;
+	    list-style-type: square;
+	    padding-left: 5px;
+	}
+	.nav-ul-citi li a.active i {
+	    color: #fff;
+	}
+	 /*Submenu Design */
+#search {
+	    position: absolute;
+	    z-index: 2;
+	    top: 70px;
+	    right: 10px !important;
+	    transition: 0.8s all;
+	    left: unset !important
+	}
+	
+.action-layer-close img {
+	    padding: 5px !important;
+	}
+	
+.search-layer-lagend .checkbox {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.row-fluid.search-layer-lagend {
+    position: relative;
+}
+	
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+	                      
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-width : 320px) and (max-width : 620px) {
+	.page-content-wrapper {
+		width: 100%;
+	}
+	
+	.header_title{
+			width: 100%;
+	}
+	.user-info {
+    padding: 0 0 0 10px;
+    width: 90px;
+    
+}
+
+.tmc-img-logo {
+    left: 17%;
+}
+
+.drop-container {
+    top: 80px;
+}
+
+#map_tools{
+	width: 190px;
+    right: -210px !important;
+}
+
+a.logo-text h4 {
+    /* float: left; */
+    color: var(--main-theme-color);
+    font-size: 17px;
+    font-family: serif;
+    font-weight: 700;
+    padding: 5px 0 0 0;
+}
+
+
+#map_zoom_slider {
+    top: 50px;
+}
+
+.header-right {
+    float: right;
+    width: 100%;
+    display: block;
+    
+}
+
+#map_tools .layer-title-main {
+	width: 190px !important;
+}
+	.nav-main {
+		margin: 0 0 0 -230px;
+	}
+	.header-main {
+	    width: 100%;
+	    height: 104px;
+	}
+	a.logo-text img {
+		width: 60px;
+		padding-top: 14px;
+	}
+	a.side-menu-click {
+		left: 10px;
+	}
+	.nav-main.closeNav {
+	    margin-left: 0;
+	    position: absolute;
+	    width: 230px;
+	    background: #fff;
+	    height: 100%;
+	    z-index: 99;
+	}
+	.closeNav a.side-menu-click {
+	    left: 230px;
+	    background: #fff;
+	}
+	
+	.layer-popup {
+		bottom: 50px;
+		position: absolute;
+		height: calc(100vh - 150px);
+		z-index: 9999;
+	}
+	footer {
+		left: 0;
+		width: 100%;
+		height: 45px;
+		bottom: 0px !important;
+		position: fixed;
+	}
+	.action-start .action-ul {
+	    display: inline-block;
+	    width: 295px;
+	    top: -80px;
+	    position: relative;
+	}
+	
+	.action-start ul li a img {
+	    width: 34px;
+	    height: 41px;
+	    margin: 0 0 0 2px;
+	}
+	.action-start ul li {
+	    margin: 0 0 5px 0;
+	    display: contents;
+	}
+	.action-layer {
+		right: 0 !important;
+		position: fixed;
+		top: 65%;
+		width: 100%;
+	}
+	.action-layer .layers{
+		width:100%;
+	}
+	.bookmark-data{
+		width:100%;
+	}
+	
+	.arcgisSearch {
+	    left: 5px !important;
+	}
+	.page-content-wrapper.closeNav .arcgisSearch {
+	    left: 90px !important;
+	}
+	
+	.esriSimpleSliderTL {
+	    top: 90px;
+	    left: 5px;
+	}
+	
+	/* bhargav */
+	.map-func {
+    	top: 160px;
+	    left: 100px;
+	}
+	
+	
+	
+	#search {
+	   position: absolute;
+	    z-index: 2;
+	   top: 117px;
+    	right: 10px !important;
+	    transition: 0.8s all;
+	}
+/* 	.map-func.three-d{ */
+/*     	left: 65px; */
+/* 	} */
+/* 	.map-func.active{ */
+/*     	left: 90px; */
+/* 	} */
+	.map-func.three-d.active{
+		left: 150px;
+	}
+	/* bhargav */
+	
+	.map-func.three-d{
+    	left: 65px;
+    	top: 110px;
+	}
+	
+	.esri-ui-corner .esri-expand .esri-widget--panel-height-only, .esri-ui-corner .esri-component .esri-widget--panel, .esri-ui-corner .esri-component.esri-widget--panel {
+    width: 190px;
+}
+
+.esri-view-height-small .esri-expand .esri-widget--panel, .esri-view-height-small .esri-expand .esri-widget--panel-height-only, .esri-view-height-small .esri-ui-corner .esri-component.esri-widget--panel, .esri-view-height-small .esri-ui-corner .esri-component.esri-widget--panel-height-only {
+    max-height: 277px;
+}
+
+.action-start {
+    position: absolute;
+    /* top: 85%; */
+    display: inline-block;
+    width: 60%;
+    margin: 0 0 0 10px;
+    bottom: 60px;
+}
+
+.action-start-top {
+    top: 36%;
+       margin-left: 9px;
+}
+/*
+.action-start-top .action-ul-top {
+    display: inline-block;
+    width: 285px;
+    top: -30px;
+    position: relative;
+}
+*/
+.action-start-top ul li {
+    margin: 0 0 5px 0;
+    display: contents;
+}
+
+.arcgisSearch .searchGroup .searchInput{
+  	width: 140px;
+    padding-right: 2px;
+    padding-left: 5px;
+}
+#coordinateDiv{
+	display:none !important;
+}
+
+.action-start-top ul li a img {
+    width: 34px;
+    height: 34px;
+    margin: 0 0 0 5px;
+}
+
+.action-start .threed li a img {
+    width: 28px;
+}
+
+.action-ul.bottom-action.threed {
+    width: 347px;
+    top: -80px;
+}
+
+.layer-popup.resize-layer .layer-content {
+    padding: 0;
+}
+.layer-popup.resize-layer {
+    height: 40px;
+    bottom: 100px !important;
+}
+
+.layer-content{
+	padding: 10px 10px 50px 10px;
+}
+
+.nav-ul-citi li.active > .sub-item {
+    padding: 0 0 0 20px;
+}
+
+}
+
+/* .scroller { */
+
+/*  background: var(--main-theme-color); */
+/*     border-radius: 10px; */
+
+/* } */

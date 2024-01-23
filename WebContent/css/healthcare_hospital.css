@@ -1,0 +1,160 @@
+/* 1_ Data Table  */
+/* 2_ height  */
+/* 3_Custom */
+
+    /* 1_ Data Table  */
+/* 4_Mobile Screen ----------- */
+.dataTables_wrapper .dt-buttons{
+        position: relative;
+        float: unset;
+        bottom: unset;
+        right: unset;
+}
+.dataTables_wrapper .dataTables_scrollHeadInner {
+    width: 100% !important;
+}
+
+.tbl_dep thead tr th{
+    white-space: nowrap;
+}
+
+/* 2_ height  */
+.hospitolR-h65{height: 65%;}
+.hospitolR-h57{height: 57%;}
+.hospitolR-h35{height: calc(35% - 8px);}
+.hospitolR-h100{height: 100%;}
+/* 3_Custom */
+.postion-relative-slider{
+    position: relative;
+}
+
+.border-bottom-map{border-bottom:1px solid #ece4d7; }
+.sidebar-slider-map, .sidebar-slider-map:hover {
+    padding: 2px 10px;
+    width: 44px;
+    background: #865439;
+    color: #fff;
+    text-decoration: none;
+    position: absolute;
+    right: 0px;
+    z-index: 4;
+    text-align: center;
+    cursor: pointer;
+    top: -4px;
+    display: none;
+}
+
+.sidebar-slider-map.show, .sidebar-slider-map.show:hover{
+    display: block;
+}
+
+.map_panel {
+    width: 410px;
+    height: 100%;
+    background: #ffffff;
+    position: absolute;
+    right: -410px;
+    z-index: 4;
+    padding: 0;
+    top: 0;
+    display: none;
+}
+.map_panel .title-slider{background: #865439;color: #fff;font-weight: 500;font-size: 1.2rem;}
+.map_panel .title-slider img{width: 15px;cursor: pointer;}
+
+.map_panel.opacity{display: block;}
+
+/* 3.1_ filtersidebar */
+.filter-slider-map, .filter-slider-map:hover {
+    padding: 10px 20px;
+    background: #ece4d7;
+    color: #fff;
+    text-decoration: none;
+    position: absolute;
+    left: -46px;
+    text-align: center;
+    z-index: 10;
+    cursor: pointer;
+    top: 45px;
+    display: none;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    width: 46px;
+}
+
+.filter-slider-map.show{
+    display: block;
+}
+
+.map-panel-filter {
+    width: 310px;
+    height: calc(100% - 45px);
+    background: #ffffff;
+    position: absolute;
+    right: 9px;
+    z-index: 1;
+    padding: 0;
+    top: 45px;
+    display: none;
+    border-right: 1px solid #ece4d7;
+    overflow: auto;
+}
+.map-panel-filter .title-slider{background: #ece4d7;color: #865439;font-weight: 500;font-size: 1.2rem;}
+.map-panel-filter .title-slider img{width: 15px;cursor: pointer;}
+
+.map-panel-filter.opacity{display: block;}
+
+	/**	
+for feature table	
+*/	
+.esri-feature-table-menu-item.esri-feature-table-button.esri-icon-menu.icon-ui-menu {	
+    /* padding: 0px 0 2px 0px; */	
+    margin: 0px 19px 0px 0px;	
+}	
+
+#HomeButton {
+      position: absolute;
+      top: 85px;
+      left: 25px;
+      z-index: 50;
+}
+
+.HomeButton .home {
+	background-color: rgba(220, 212, 212, 0.8);	
+}
+
+
+.esriControlsBR {
+    display: none;
+}
+
+.dgrid-header-row {
+    right: 4px;
+}
+
+button.ui-icon.dgrid-hider-toggle {
+    margin: 12px 5px 0px 0px;
+}
+
+   .chart-overflow{overflow: hidden;} 
+
+/* Mobile Screen ----------- */
+@media only screen and (max-width : 620px)  {
+    .map-panel-filter.opacity {z-index: 4;zoom: 0.7;left: 9px;}
+    .map_panel.opacity {zoom: 0.67;}
+    .sidebar-slider-map.show, .sidebar-slider-map.show:hover{zoom: 0.67;}
+
+    /* DataTable */
+    div.dataTables_wrapper div.dataTables_info {padding-top: 0.5em;width: auto;font-size: 0.6rem;line-height: 1.5rem;}
+    a.page-link {font-size: 0.8rem;}
+
+}
+
+@media only screen and (min-width : 621px) and (max-width:1024px)  {
+    .map_panel.opacity {zoom: 0.68;}
+    .map-panel-filter.opacity {zoom: 0.68;}
+    .sidebar-slider-map.show, .sidebar-slider-map.show:hover{zoom: 0.68;}
+
+
+}
+

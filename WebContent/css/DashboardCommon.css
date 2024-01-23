@@ -1,0 +1,636 @@
+/* Import colors from the color variable css */
+ @import './color-variable.css';  
+
+/*Department Dashboard Start*/
+.side-dashboard-main {
+    position: absolute;
+    width: 1100px;
+    right: 0;
+    top: 145px;
+    height: 76%;
+	z-index: 3000;
+	border: 1px solid #f3f3f3;
+    background: #fff;
+	-webkit-transition: all .8s ease-in-out;
+	-moz-transition: all .8s ease-in-out;
+	-o-transition: all .8s ease-in-out;
+	transition: all .8s ease-in-out;
+    margin-right: -1200px;
+     
+}
+
+.side-dashboard-main.active {
+    margin-right: 0px;
+}
+
+.map-info-tab-link a {
+    color: #fff !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 4px;
+}
+
+.map-info-tab-link {
+    position: absolute;
+    width: 28px;
+    text-align: center;
+    transform: rotate(-90deg);
+    top: 50px;
+    right: 1200px;
+    cursor: pointer;
+    background: var(--main-theme-color);
+    -webkit-transition: all .8s ease-in-out;
+    -moz-transition: all .8s ease-in-out;
+    -o-transition: all .8s ease-in-out;
+    transition: all .8s ease-in-out;
+}
+.tab-link-active{right: 1100px !important;}
+
+.map-info-tab-link::before {
+	background-image: url(../images/1.png);
+    background-repeat: no-repeat;
+    width: 51px;
+    height: 62px;
+    content: ' ';
+    position: absolute;
+    z-index: 0;
+    margin: 16px -55px 0 0;
+    right: 12px;
+    top: -32px;
+    transform: rotate(90deg);
+}
+
+
+.map-info-tab-link::after {
+	background-image: url(../images/2.png);
+    background-repeat: no-repeat;
+    width: 43px;
+    height: 48px;
+    content: ' ';
+    position: absolute;
+    z-index: 0;
+    margin: 0 -55px 0 0;
+    right: 85px;
+    bottom: -6px;
+    transform: rotate(90deg);
+}
+
+.side-dashboard-main.active .map-info-tab-link a span i {
+    font-size: 18px;
+    font-weight: 700;
+    transform: rotate(90deg);
+}
+
+.map-info-tab-link a span i {
+    font-size: 18px;
+    font-weight: 700;
+    transform: rotate(-90deg);
+}
+
+.solid-wast-management{
+	height: 70%;
+}
+
+.side-dashboard-main-inner {
+    position: absolute;
+    bottom: 0px;
+    margin: 0;
+	width: 100%;
+    height: 100%;
+	overflow: auto;
+}
+
+.side-dashboard-title {
+    height: 30px;
+    padding: 10px 10px 0px 10px;
+}
+.side-dashboard-title h4 {
+    color: var(--main-theme-color);
+    font-size: 18px;
+    font-weight: 500;
+}
+.side-dashboard-card .card {
+    background: var(--main-inputback-color);
+    height: 100%;
+}
+.side-dashboard-card {
+    height: 90px;
+    padding: 0;
+}
+.chart-section-solid {
+    width: 100%;
+    max-height: 350px;
+    height: 100%;
+}
+.chart-section-solid-bottom {
+    width: 100%;
+    height: 90px;
+}
+.chart-title .title-chart-inner h4 {
+    width: calc(100% - 10px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--main-theme-color);
+    font-size: 18px;
+    font-weight: 500;
+	margin: 0 0 5px 0;
+}
+
+.title-chart-inner {
+    padding: 10px 10px 5px 10px;
+    background-color: var(--main-inputback-color);
+}
+
+.title-chart-inner a, a:hover {
+    color: var(--main-theme-color);
+}
+
+.chart-main {
+    width: 100%;
+    height: calc(100% - 45px);
+}
+
+.chart-main-fullh{
+	height: calc(100% - 0px);
+}
+
+.chart-inner {
+    height: 100%;
+    box-shadow: 0px 0px 6px 4px var(--main-inputback-color);
+    margin: 5px 0 0 0;
+    padding: 10px;
+    max-height: 270px;
+}
+
+.card-custom {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.card-text-cust {
+    width: calc(100% - 60px);
+    display: inline-block;
+    padding: 15px;
+}
+
+.card-custom img {
+    width: 50px;
+    /* height: 79%; */
+    height: 68px;
+    margin: 10px 0 0 5px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.card-text-top span {
+    font-size: 11px;
+	font-weight: 300;
+}
+
+.card-text-top {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: .2px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--main-tabback);
+    border-bottom: 1.5px solid var(--main-tabback);
+    padding: 0 0 3px 0;
+}
+
+.card-text-title {
+    font-size: 12px;
+    margin: 0;
+    font-weight: 500;
+    text-align: left;
+}
+
+.card-text-title {
+    font-size: 12px;
+    margin: 5px 0 0 0;
+    font-weight: 500;
+    text-align: left;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chart-inner h4 {
+    color: var(--main-theme-color);
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 1px solid;
+    padding: 0 0 10px 0;
+    border-bottom: 1px solid var(--main-tabback);
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.card-custom {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background: var(--main-inputback-color);
+}
+
+.chart-section {
+    height: calc(100% - 135px);
+}
+
+.solid-footer-card-mian {
+    height: calc(100% - 5px);
+    width: 100%;
+    background: var(--main-inputback-color);
+	
+}
+
+.solid-footer-card {
+    width: calc(100% - 15px);
+    margin: 0 0 0 7px;
+}
+
+.footer-card-count {
+    font-size: 22px;
+    font-weight: 600;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--main-tabback);
+    line-height: 55px;
+    vertical-align: middle;
+    padding: 0 10px;
+    margin: 15px 0;
+    background: #fff;
+    border-radius: 30px;
+	text-align:center;
+}
+.footer-card-count span{
+	font-size: 12px;
+    font-weight: 300;
+}	
+
+.card-count-custom {
+    padding: 5px 5px 10px 5px;
+}
+.card-count-custom {
+    background: var(--main-inputback-color);
+    border-right: 6px solid #fff;
+    border-top: 4px solid #fff;
+    border-bottom: 9px solid #fff;
+    border-left: 4px solid #fff;
+}
+
+.count-dept {
+       width: 70px;
+    height: 60px;
+    display: inline-block;
+    text-align: center;
+    font-size: 29px;
+    background: #fff;
+    border-radius: 10px;
+    margin: 0 0 7px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 2px;
+}
+
+.title-sub-dept {
+    color: var(--main-theme-color);
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    padding: 0 0 10px 0;
+}
+
+
+.Water-department-management {
+    width: 1200px;
+    margin-right: -1200px;
+}
+
+.Water-department-management .map-info-tab-link {
+    right: 1200px;
+}
+
+.chart-section-without-title {
+    max-height: 300px;
+}
+
+.ul-cards ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+.ul-cards ul li .title-sub-dept {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+    height: 60px;
+    line-height: 55px;
+    border-bottom: 2px solid var(--main-inputback-color);
+    min-width: 180px;
+    padding: 0 62px 0 0;
+}
+
+.ul-cards ul li .title-sub-dept .count-dept {
+    display: inline-block;
+    position: absolute;
+    width: 60px;
+	height: 55px;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 0;
+    right: 0;
+	font-size: 22px;
+    background: var(--main-inputback-color);
+}
+.ul-cards ul li:last-child .title-sub-dept {
+    border: none;
+}
+.ul-cards ul li .title-sub-dept .count-dept small {
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.title-with-filter {
+    position: relative;
+}
+
+.filter-select-main {
+    position: absolute;
+    display: flex;
+    padding: 0;
+    top: -10px;
+    right: 0;
+}
+
+.filter-select select {
+    padding: 2px;
+    height: 28px;
+    border-radius: 20px;
+	font-size: 12px;
+	font-weight: 500;
+	background-color: #ede4d8 ;
+	color:var(--main-theme-color);
+}
+.filter-select input {
+    padding: 2px;
+    height: 28px;
+    border-radius: 20px;
+	font-size: 12px;
+	font-weight: 500;
+	background-color: #ede4d8 ;
+	color:var(--main-theme-color);
+}
+
+.filter-select {
+   width: 200px;
+    padding: 0;
+    height: 40px;
+    padding: 4px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/*  .icds-department-management{ 
+	width: 450px; 
+ 	margin-right: -450px; 
+    height: 60%;
+} */
+
+.icds-department-management .map-info-tab-link {
+    right: 450px;
+}
+
+.custom-row-b {
+    width: calc(100% - 150px);
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.np-modal select {
+    height: 29px;
+    width: 45px !important;
+    padding: 5px;
+}
+
+.count-dept.big {
+    width: 100px;
+}
+
+.awas-single-management {
+    height: 60%;
+}
+
+.btn-indore-table span{
+	color: var(--main-theme-color) !important;
+}
+
+.box-layout-management {
+    width: 800px;
+    margin-right: -800px;
+	height: 80%;
+}
+
+.inactive {
+	display: none;
+}
+
+.box-layout-management .map-info-tab-link {
+    right: 800px !important;
+}
+
+.map-info-tab-link.align-self-center.wwomen_child_tab.tab-link-active {
+/*     right: 450px !important; */
+}
+/*Department Dashboard End*/
+
+.dash-date label{border: none;font-size: 13px;}
+.education_dept{display: none;}
+.form-group.filter-select.rounded-brdr{width:130px;}
+.table-data{width:100% !important;}
+.table-data thead tr th {
+    padding: 10px;
+    color: var(--main-theme-color);
+    font-size: 14px;
+    font-weight: 500;
+}
+.table-data tr th {
+    border: 1px solid #d4d4d4;
+}
+.table-data tr td {
+    border: 1px solid var(--main-inputback-color);
+    padding: 5px;
+    color: var(--main-font-color);
+    font-size: 14px;
+}
+.np-modal .modal-header {
+    background: var(--main-theme-color);
+    color: #fff;
+    padding: 3px;
+    border-radius: unset;
+}
+.count-dept.idaboundrycount {
+    width: 75px;
+    height: 75px;
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+	 
+		/*Department Dashboard Start*/
+		.side-dashboard-main {
+			width: 650px;
+			margin-right: -650px;
+		}
+		
+		.side-dashboard-main {
+			width: 650px;
+		}
+		
+		.side-dashboard-main.active {
+			margin-right: 0px;
+		}
+		
+		.map-info-tab-link{
+			 right: 650px;
+		}
+		.Water-department-management .map-info-tab-link {
+			right: 650px !important;
+		}
+		
+		.awas-single-management .chart-inner{
+			margin-left: 0px !important;
+			margin-right: 0px !important;
+		}
+		
+		
+		.chart-section-solid-md {
+			height: 690px;
+			max-height: unset;
+			overflow: auto;
+		}
+		.custom-row-b {
+			width: calc(100% - 110px);
+		}
+		.card-count-custom {
+			 max-height: 287px;
+		 }
+		 
+		/*Department Dashboard End*/
+		
+}
+.zone_select select{border-radius: 50px;
+    padding: 2px;
+    background: #ede4d8;
+    color: var(--main-theme-color);
+    font-size: 14px;
+    width:130px;}
+.lineHeight-10{line-height: 10px;}
+.date-input input{width: 100px;border: 1px solid #ced4da;}
+.large-digit-box.count-dept {
+    width: 130px;
+}
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-width : 320px) and (max-width : 620px) {
+	/*Department Dashboard Start*/
+	.side-dashboard-main {
+		width: 320px;
+		margin-right: -320px;
+	}
+	
+	.awas-single-management {
+		height: 90%;
+	}
+	
+	.awas-single-management .chart-inner{
+		margin-left: 5px !important;
+		margin-top: 30px;
+	}
+	
+	.custom-row-b {
+		width: calc(100% - 0px);
+	 }
+	 
+	.icds-department-management{
+		width: 320px;
+		margin-right: -320px;
+	}
+	
+	.side-dashboard-main.active {
+		margin-right: 0px;
+	}
+	
+	.map-info-tab-link{
+		 right: 320px !important;
+	}
+	.chart-inner h4 {
+		width: 270px;
+	}
+	.side-dashboard-card {
+		margin: 0 0 5px 0;
+	}
+	.chart-section-solid {
+		height: auto !important;
+		max-height: unset;
+	}
+	
+	.side-dashboard-title h4 {
+		text-align: left;
+	    width: 200px;
+	    text-overflow: ellipsis;
+	    white-space: nowrap;
+	    overflow: hidden;
+	}
+	
+	.dashboard-ward-filter {
+	    width: 85px !important;
+	    position: relative;
+	    left: 100px;
+	}
+	
+	.chart-main {
+		height: calc(100% - 55px);
+	}
+	.chart-inner {
+		height: 260px;
+		margin-right: 0 !important;
+	}
+	.title-chart-inner {
+		margin-right: 0 !important;
+	}
+	.filter-select-main {
+		position: absolute;
+		top: 30px;
+	}
+	.side-dashboard-title .filter-select-main {
+		top: -10px;
+		margin: 0;
+		bottom: 0;
+	}
+	
+	.side-dashboard-main-inner {
+    	padding-bottom: 100px;
+	}
+	/*Department Dashboard End*/
+}
+.dash-date label{border: none;font-size: 13px;}
+.education_dept{display: none;}

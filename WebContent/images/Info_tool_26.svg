@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="50px" height="50px"
+	 viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve">
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  height="585" width="190.009" x="-0.009" y="-585" bottomLeftOrigin="true"></sliceSourceBounds>
+		<optimizationSettings>
+			<targetSettings  fileFormat="PNG24Format" targetSettingsID="0">
+				<PNG24Format  transparency="true" noMatteColor="false" matteColor="#FFFFFF" interlaced="false" filtered="false">
+					</PNG24Format>
+			</targetSettings>
+		</optimizationSettings>
+	</sfw>
+</metadata>
+<path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M25.001,0c13.807,0,24.998,11.193,24.998,25S38.808,50,25.001,50
+	c-13.806,0-25-11.193-25-25S11.195,0,25.001,0"/>
+<path fill="#855439" d="M24.963,38.97c-7.706,0-13.975-6.267-13.975-13.97s6.269-13.97,13.975-13.97
+	c7.703,0,13.97,6.267,13.97,13.97S32.666,38.97,24.963,38.97z M24.963,12.614c-6.831,0-12.389,5.557-12.389,12.386
+	s5.558,12.386,12.389,12.386c6.829,0,12.386-5.557,12.386-12.386S31.792,12.614,24.963,12.614z"/>
+<path fill-rule="evenodd" clip-rule="evenodd" fill="#855439" d="M23.614,32.133c-0.053,0.139-0.08,0.299-0.08,0.482
+	c0,0.177,0.023,0.33,0.073,0.46c0.05,0.123,0.13,0.245,0.229,0.353c0.1,0.1,0.219,0.176,0.356,0.223
+	c0.157,0.061,0.345,0.084,0.563,0.084c0.219,0,0.406-0.023,0.563-0.084c0.142-0.047,0.264-0.123,0.36-0.223
+	c0.104-0.107,0.18-0.229,0.234-0.36c0.05-0.13,0.077-0.283,0.077-0.452c0-0.176-0.027-0.337-0.081-0.467
+	c-0.05-0.138-0.134-0.261-0.241-0.368c-0.1-0.1-0.222-0.184-0.364-0.229c-0.153-0.062-0.337-0.092-0.548-0.092
+	c-0.207,0-0.387,0.03-0.536,0.084c-0.146,0.054-0.272,0.131-0.375,0.237C23.745,31.88,23.664,31.995,23.614,32.133 M23.833,27.383
+	c-0.042,0.283-0.073,0.59-0.084,0.935h1.877c0.035-0.452,0.111-0.866,0.226-1.241c0.161-0.514,0.398-0.95,0.716-1.311l1.54-1.531
+	c0.59-0.613,1.027-1.227,1.318-1.84c0.279-0.598,0.422-1.194,0.422-1.8c0-0.705-0.104-1.317-0.314-1.854
+	c-0.203-0.514-0.514-0.965-0.919-1.333c-0.839-0.767-2.027-1.149-3.563-1.149c-0.754,0-1.437,0.1-2.03,0.299
+	c-0.586,0.191-1.099,0.482-1.536,0.866c-0.437,0.375-0.766,0.827-0.984,1.333c-0.168,0.398-0.276,0.835-0.322,1.311h2.072
+	c0.031-0.215,0.088-0.422,0.165-0.613c0.134-0.337,0.333-0.629,0.601-0.881c0.265-0.238,0.571-0.422,0.919-0.545
+	c0.341-0.114,0.713-0.176,1.115-0.176c0.421,0,0.805,0.062,1.138,0.184c0.352,0.131,0.651,0.322,0.893,0.583
+	c0.237,0.245,0.417,0.56,0.536,0.919c0.111,0.345,0.168,0.743,0.168,1.172c0,0.33-0.05,0.659-0.146,0.981
+	c-0.096,0.313-0.241,0.62-0.429,0.903c-0.126,0.192-0.326,0.438-0.598,0.736c-0.26,0.283-0.594,0.628-0.996,1.011
+	c-0.383,0.376-0.705,0.735-0.954,1.065c-0.245,0.329-0.433,0.644-0.556,0.935C23.99,26.632,23.898,26.984,23.833,27.383z"/>
+</svg>

@@ -1,0 +1,538 @@
+/* Import colors from the color variable css */
+@import '../css/color-variable.css';
+
+.home-full-back {
+    background-image: url(../images/home/ScreenDesignLeft.svg);
+    background-repeat: no-repeat;
+    background-position: -320px 0px;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+	z-index:1;
+}
+/*Header start*/
+a.menu-click i {
+    width: 30px;
+    color: #fff;
+}
+
+a.menu-click {
+    display: inline-block;
+    width: 30px;
+}
+
+.click-another-page {
+    display: inline-block;
+    width: 200px;
+}
+
+.click-another-page {
+    display: inline-block;
+    width: 200px;
+}
+
+.re-another {
+    background: #fff;
+    color: var(--main-theme-color);
+    font-size: 18px;
+    padding: 5px 20px;
+    border-radius: 50px;
+    margin: 0 0 0 2px;
+}
+.sos-link a {
+    padding: 0px;
+}
+
+.sos-link {
+    display: inline-block;
+    width: 200px;
+    padding: 0 0 0 40px;
+}
+
+.language-ul {
+    display: inline-flex;
+    width: 140px;
+}
+
+.language-ul li {
+    border-collapse: collapse;
+    border: 1px solid;
+    padding: 0;
+    margin: 7px 0 0 0;
+}
+.language-ul li a {
+    color: var(--main-theme-color);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 12px;
+    border-radius: unset !important;
+	background: #fff;
+}
+.language-ul li a.active {
+    background-color: var(--main-langback) !important;
+    color: var(--main-theme-color) !important;
+    font-weight: 700;
+}
+.menu-lang-sos.loginsignup-sos {
+    position: relative;
+    top: 10px;
+    left: 40px;
+}
+.loginsignup-content {
+    position: relative;
+    top: 10%;
+    width: 45%;
+    left: 40px;
+    color: #fff;
+    font-size: 14px;
+    height: 160px;
+    overflow-y: auto;
+}
+
+.content-text a {
+    color: #fff;
+}
+
+.indore-sign {
+    position: absolute;
+    right: 70px;
+    bottom: 25.5%;
+	z-index: 1;
+}
+
+.indore-sign img {
+		width: 90%;
+	 }  
+
+/*Header end*/
+
+/*Set Page login sign up start*/
+.top-loginsignup {
+    height: 40vh;
+	width:100%;
+	position: relative;
+}
+.bottom-loginsignup {
+    height: 60vh;
+    width: 100%;
+    position: relative;
+    background-color: var(--main-loginsignup);
+}
+
+.categoryslider-mian {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+.categoryslider {
+    padding: 0 80px;
+    width: 100%;
+	opacity: 1;
+}
+ 
+
+ .category-sub {
+    text-align: center;
+}
+
+a:hover {
+    text-decoration: none;
+}
+.category-link {
+    width: 100%;
+    height: 120px;
+    padding: 20px;
+}
+.category-link:hover {
+    background: #7b492e;
+    border-radius: 20px;
+    padding: 10px;
+	-webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+
+.category-link:hover .category-sub h4{
+   font-size:20px;
+   color:#fff;
+   -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+.category-sub img {
+    display: inline-block;
+    background: #7b492e;
+    padding: 10px;
+    margin: 0 0 8px 0;
+    border-radius: 10px;
+    width: 50px;
+}
+
+.category-sub h4 {
+    font-size: 18px;
+    color: var(--main-tabback);
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+.category-sub h4:hover {
+    text-decoration: none;
+}
+ 
+/*Set Page login sign up end*/
+
+/*form start*/
+.form-loginsignup {
+    width: 70%;
+    height: 100%;
+    display: inline-block;
+}
+.sm-logo {
+    width: 20%;
+    display: inline-block;
+}
+.sm-logo img {
+    width: 100%;
+    padding: 34px;
+    border-right: 1px solid #d3d3d3;
+    margin: 20px 0 0 0;
+}
+
+.form-logsign {
+    width: 40%;
+    display: inline-block;
+    margin: 30px 0 0 0;
+    padding: 0 0 0 20px;
+    position: absolute;
+    background: #fff;
+    max-height: 210px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+
+.accept-check input {
+    margin-top: 2px;
+}
+
+.form-check.accept-check #tc_accept-error {
+    position: absolute;
+    top: 13px;
+}
+
+.main-form-login {
+    -webkit-transition: all .9s ease-in-out;
+    -moz-transition: all .9s ease-in-out;
+    -o-transition: all .9s ease-in-out;
+    transition: all .9s ease-in-out;
+    top: 0;
+}
+
+.main-form-signup{
+	-webkit-transition: all .9s ease-in-out;
+    -moz-transition: all .9s ease-in-out;
+    -o-transition: all .9s ease-in-out;
+    transition: all .9s ease-in-out;
+	top: -150%;
+}
+
+.form-group.wi-30 {
+    width: 30%;
+    display: inline-block;
+}
+.form-group.wi-70 {
+    width: 60%;
+    display: inline-block;
+}
+.form-group.wi-91 {
+    width: 91%;
+    display: inline-block;
+}
+
+.form-logsign input[type="text"]{
+    height: 30px;
+    font-size: 12px;
+    border: 1px solid var(--main-theme-color);
+}
+
+.form-logsign input[type="password"]{
+    height: 30px;
+    font-size: 12px;
+    border: 1px solid var(--main-theme-color);
+}
+.form-logsign select {
+    height: 30px;
+    font-size: 12px;
+    border: 1px solid var(--main-theme-color);
+}
+
+.btn-indore {
+    background-color: var(--main-theme-color);
+    color: #fff;
+    font-size: 14px;
+    border-radius: 20px;
+    padding: 4px 20px;
+}
+
+.btn-indore:hover {
+    color: var(--main-theme-color);
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid var(--main-theme-color);
+}
+.chng-btn-bg {
+    background-color: #c9c0ac;
+}
+
+.form-logsign label {
+    font-size: 12px;
+}
+
+.error {
+    color: red !important;
+    font-weight: 400 !important;
+    font-size: 12px;
+}
+
+.Captcha input {
+    width: 110px !important;
+    margin: 0 0 3px 0 !important;
+    border-radius: 5px !important;
+}
+
+.input-group.Captcha {
+    margin: 0 0 0 8px;
+}
+
+.input-group.Captcha .error {
+    position: relative;
+    width: 150px;
+}
+
+/* changes */
+.form-group{
+	vertical-align: top;
+}
+
+.form-forgot {
+    width: 40%;
+    display: inline-block;
+    margin: 30px 0 0 0;
+    padding: 0 0 0 20px;
+    position: absolute;
+    background: #fff;
+}
+
+
+.form-forgot input[type="text"] {
+    height: 30px;
+    font-size: 12px;
+    border: 1px solid var(--main-theme-color);
+}
+
+/* a.forgot_click {
+    position: absolute;
+    right: 0;
+    color: var(--main-theme-color);
+    font-size: 12px;
+    left: 193px;
+    width: 100%;
+    top: 5px;
+} */
+
+a.forgot_click {
+    color: var(--main-theme-color);
+    font-size: 12px;
+    position: absolute;
+    right: 0;
+}
+
+.main-form-forgot {
+    -webkit-transition: all .9s ease-in-out;
+    -moz-transition: all .9s ease-in-out;
+    -o-transition: all .9s ease-in-out;
+    transition: all .9s ease-in-out;
+    top: -100%;
+}
+
+/***  fIREFOX Scrollbar***/
+.scrollar {
+    scrollbar-color: #865439 aliceblue;
+    scrollbar-width: thin;
+}
+/*.counter-count{      
+   display: inline-block;
+    float: right;
+    font-family: lucida handwriting;
+    font-weight: 900;}
+    footer{ position: fixed; bottom: 0; background: #fff;width:100%;}
+      footer p{    font-size: 14px;}*/
+      
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 25px;
+    box-shadow: 0px 0px 14px -10px #000;
+    background: var(--main-theme-color);
+    left: 0px;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+
+.footer-mian div p {
+    margin: 0;
+    color: #fff;
+    padding: 3px 4px;
+    font-size: 12px;
+}
+
+.footer-mian div a {
+    color: #fff;
+}
+
+.visitor_count{
+	margin-right: 30px;
+}
+      
+/*form end*/
+
+
+.terms-header{
+    background-color: var(--main-theme-color);
+    margin: 10px;
+    padding: 10px 15px;
+    color: #fff;
+}
+
+.terms-label {
+	color: var(--main-theme-color);
+}
+
+.terms-modal .close{
+	color: #fff;
+	padding: 0;
+    position: relative;
+    top: 17px;
+    right: 15px;
+    font-size: 15px;
+    font-weight: 200;
+    border-radius: 50%;
+    width: 22px;
+    opacity: 1;
+    height: 22px;	
+}
+
+.terms-modal .modal-body{
+	max-height: 65vh;
+    overflow: auto;
+}
+/* iPads (portrait and landscape) ----------- */
+
+@media (max-height: 800px) and (min-width: 1300px) {
+	 .indore-sign img {
+		width: 350px;
+	 }     
+	 .indore-sign {
+		bottom: 25.5%;
+	}
+}
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+	         .form-loginsignup {
+				width: 100%;
+			}
+			.form-logsign {
+				width: 80%;
+			}
+			.indore-sign {
+				right: -28%;
+				bottom: 35.5%;
+			}
+			.indore-sign img {
+				width: 45%;
+			}
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-width : 320px) and (max-width : 620px) {
+	.indore-sign {
+		display: none;
+	}
+	.form-loginsignup {
+		width: 100%;
+	}
+	.sm-logo {
+		width: 100%;
+		display: inline-block;
+	}
+	.sm-logo {
+		width: 100%;
+		display: inline-block;
+		text-align: center;
+	}
+	.sm-logo img {
+		width: 70px;
+		padding: 34px;
+		border-right: unset;
+		margin: 20px 0 0 0;
+		padding: 0;
+	}
+	.top-loginsignup {
+		height: 60vh;
+	}
+	.bottom-loginsignup {
+		height: 50vh;
+	}
+	.loginsignup-content {
+		width: 80%;
+		height: 89px;
+	}
+	.categoryslider{
+		margin:0;
+	}
+	form.main-form-login.form-logsign {
+    position: relative;
+    width: 100%;
+    margin: -188px 0 0 0;
+    padding: 0 0 130px 20px;
+    display: block;
+}
+
+	form.main-form-signup.form-logsign {
+	    position: relative;
+	    width: 100%;
+	    overflow: auto;
+	    height: 180px;
+	}
+	.closeNav a.side-menu-click {
+	    left: 70px;
+	}
+	.form-forgot{
+		position: relative;
+	    width: 100%;
+	    margin: -215px 0px 0px;
+	    padding: 0px 0px 130px 20px;
+	    display: block;
+	}
+	footer {
+    	height: 45px;
+   	}
+   	.categoryslider-mian {
+	    display: none;
+	}
+}
+@media only screen   and (min-width : 768px)   and (max-width : 1900px)  {
+	.form-logsign label {
+    width: 100%;
+}
+	a.forgot_click{    position: unset;} }  
+	@media only screen   and (min-device-width : 320px)   and (max-device-width : 767px)  {
+	.form-logsign label {
+    width: 100%;
+    font-size: 10px;
+}
+	a.forgot_click{    position: unset;} }  

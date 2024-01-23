@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="50px" height="50px"
+	 viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve">
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  height="303.334" width="464.814" y="-303.334" x="-9.982" bottomLeftOrigin="true"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<path fill="none" stroke="#732F31" stroke-width="3.8285" stroke-linecap="round" d="M39.871,26.738c-3.449,0.176-3.587,2.725-7.281,2.725c-3.825,0-3.825-2.742-7.649-2.742
+	c-3.825,0-3.825,2.742-7.65,2.742c-3.694,0-3.831-2.548-7.279-2.725c-0.043,0.459-0.07,0.922-0.07,1.392
+	c0,8.271,6.729,15.001,15,15.001c8.271,0,15-6.73,15-15.001C39.943,27.66,39.914,27.198,39.871,26.738z M42.104,38.137
+	c1.721-2.942,2.712-6.359,2.712-10.008c0-9.057-6.092-16.712-14.391-19.098V5.134h2.658V2.339L31.311,0H18.57l-1.773,2.339v2.794
+	h2.659v3.898C11.157,11.418,5.064,19.075,5.064,28.13c0,3.679,1.008,7.123,2.758,10.082l-5.876,5.877L2.923,50h44.156l0.975-5.912
+	L42.104,38.137z M24.94,45.345c-9.491,0-17.216-7.723-17.216-17.215s7.725-17.216,17.216-17.216c9.494,0,17.217,7.724,17.217,17.216
+	S34.435,45.345,24.94,45.345z"/>
+</svg>
