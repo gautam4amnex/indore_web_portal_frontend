@@ -180,6 +180,81 @@ require(
 		 * Click Information end
 		 */
 		
+		
+		var vector_arr = [];
+		var draw;
+		var draw_rectangle_layer;
+		$('.draw-tools-select li a').on('click',function() {
+			var tool = this.title;
+			
+			if(tool == "Rectangle"){
+				draw_rectangle();
+			}else{
+				draw_ploygons(tool);
+			}
+											
+
+			 
+			
+		});
+		
+		
+	    function draw_rectangle() {
+
+
+	        const rectangle_source = new ol.source.Vector({ wrapX: false });
+
+	        const rectangle_vector = new ol.layer.Vector({
+	            source: rectangle_source,
+	            //style: styles,
+	        });
+
+	        vector_arr.push(rectangle_vector);
+	        var geometryFunction = ol.interaction.Draw.createBox();
+
+
+	        draw_rectangle_layer = new ol.interaction.Draw({
+	            source: rectangle_source,
+	            type: "Circle",
+	            geometryFunction: geometryFunction,
+	        });
+	        map.addInteraction(draw_rectangle_layer);
+	        draw_rectangle_layer.on("drawend", function (e) {
+	            var rectangle_writer = new ol.format.GeoJSON();
+
+	            var rectangle_geojsonStr = rectangle_writer.writeFeatures([e.feature]);
+	            
+	        });
+
+	        map.addLayer(rectangle_vector);			        
+	    }
+		
+	    function draw_ploygons(selecte_type) {
+	        var value = selecte_type;
+	        var source = new ol.source.Vector({ wrapX: false });
+
+	        var vector = new ol.layer.Vector({
+	            source: source,
+	            //style: styles,
+	        });
+
+	        vector_arr.push(vector);
+	        //vector_arr.push(vector);
+	        if (value !== 'None') {
+	        	draw = new ol.interaction.Draw({
+	                source: source,
+	                type: /** @type {ol.geom.GeometryType} */ (selecte_type)
+	            });
+	            map.addInteraction(draw);
+	            //var feature;
+	            draw.on("drawend", function (e) {
+	                var writer = new ol.format.GeoJSON();
+	               
+	            });
+	            map.addLayer(vector);
+	           
+	        }
+	    }
 			function mouseHoverFeatureSymbology(mapPoint){
 			
 					if(map_info_tool == true){
@@ -466,6 +541,14 @@ require(
 //				$("#tool_text").val("");
 //				$('.draw-tools-select li a').removeClass('active');
 //				$("#lblDrawTxt").text("");
+				
+				map.removeInteraction(draw);
+		        map.removeInteraction(draw_rectangle_layer);
+		        for (var i = 0; i < vector_arr.length; i++) {
+		            map.removeLayer(vector_arr[i]);
+		        }
+		        draw_ploygons("None");
+				
 			})
 			
 			// close pop-up event
@@ -602,10 +685,15 @@ require(
 			});
 			
 			$("#clear_predefineQuery").click(function(){
-				$("#form_query").trigger("reset");
-				$("#attribute_query_rslt").html("");
-				map.graphics.clear();
-				map.setExtent(initialExtent);
+//				$("#form_query").trigger("reset");
+//				$("#attribute_query_rslt").html("");
+//				map.graphics.clear();
+//				map.setExtent(initialExtent);
+				
+		        for (var i = 0; i < citizen_arr.length; i++) {
+		            map.removeLayer(citizen_arr[i]);
+		        }		       
+				
 			});
 			
 			$("#clear_swipe_layer").click(function(){
@@ -4118,6 +4206,98 @@ require(
 					}
 		}, 'Please select ward');
 		
+//		$('form[id="form_query"]')
+//		.validate(
+//				{
+//					rules : {
+//						poi_layer_select : {
+//							required : true,
+//							dropDownValidation : true
+//						}
+//					},
+//					messages : {
+//						poi_layer_select : {
+//							required : "Please Select Layer",
+//							dropDownValidation : "Please Select Layer",
+//						},
+//					},
+//					submitHandler : function(form, e) {
+//						e.preventDefault();
+//						try {
+//							/**
+//							 * for showing result tab
+//							 */
+//							$("#attribute_query_rslt").html("");
+//							let ward_id = $("#location_select").val();
+//							let l_id = $("#poi_layer_select").val();
+//							let locality = $("#poi_locality").val();
+//							try {
+//								
+//								
+//								// update checkbox status in layer panel
+//								$('#accordionExample .layers-toggle-body input').each(function() {
+//									let layer_id = $(this).data('layerid');
+//									let child_id  = $(this).attr('id');
+//									if(l_id == layer_id){
+//										$("#"+child_id).prop('checked', true);
+//									}
+//								});
+//								
+//								// enable layer query wise
+//								var visible = [];
+//								$('#accordionExample .layers-toggle-body input:checked').each(function() {
+//									let visible_id = $(this).data('layerid');
+//									if(visible_id){
+//										visible.push(visible_id);	
+//								    }
+//								});
+//								
+//								 if (visible.length === 0) {
+//							            visible.push(-1);
+//							     }
+//								 symbology_layers.setVisibleLayers(visible);
+//								
+//								let queryByAttributeCriteria = window.base.createQueryByAttributeCriteria(l_id,ward_id,locality);
+//								
+//								if(queryByAttributeCriteria == undefined){
+//									return;
+//								}
+//								
+//						        $(".loader").fadeIn();
+//						         
+//						        queryTask.execute(queryByAttributeCriteria,function(result){
+//						        	$(".loader").fadeOut();
+//						        	map.graphics.clear();
+//						        	map.removeLayer(resultedFeaturesLayer);
+//						        	 if(result.features.length == 0 ){
+//						        		 $u.notify("info", "Notification","No result found");
+//							        	 return;
+//						        	 }
+//						        	 $('#query_result_tab a[href="#query_result"]').tab('show');
+//						        	window.base.prepareAttributeQueryResult(result);
+//						         },function(error){
+//						        	   console.log(error);
+//						        	   $(".loader").fadeOut();
+//						         });
+//							} catch (e) {
+//								 $(".loader").fadeOut();
+//								 $u.notify("error", "Error","Something Happend Wrong");
+//							}
+//							
+//						} catch (e) {
+//							 $(".loader").fadeOut();
+//							 $u.notify("error", "Error","Something Happend Wrong");
+//						}
+//					}
+//				});
+		
+		let location_mark = new ol.style.Style({
+            image: new ol.style.Icon({
+                anchor: [0.5, 1],
+                src: 'images/icons/svgviewer-output.svg',
+            })
+        });
+		var citizen_arr = [];
 		$('form[id="form_query"]')
 		.validate(
 				{
@@ -4143,54 +4323,72 @@ require(
 							let ward_id = $("#location_select").val();
 							let l_id = $("#poi_layer_select").val();
 							let locality = $("#poi_locality").val();
+							
+							var form_data = {
+									wardId: ward_id,
+									tableName: l_id,
+									locality_area_name: locality
+							};
+							
 							try {
 								
+								$.ajax({
+			                        method: 'POST',
+			                        url: window.iscdl.appData.baseURL + "citizen/query/getcitizenquerydata",
+			                        data: JSON.stringify(form_data),
+			                        contentType: 'application/json',
+			                        async: false,			                        
+			                        success: function (result) {
+
+			                        	if(result.features.length > 0 ){
+			                     
+			                        	
+			                            const geoJSONFormat = new ol.format.GeoJSON();
+			                            var vectorSource = new ol.source.Vector({
+			                                features: geoJSONFormat.readFeatures(result, {
+			                                    featureProjection: 'EPSG:3857',
+			                                }),
+			                                format: geoJSONFormat,
+			                            });
+
+
+			                            vectorLayer = new ol.layer.Vector({
+			                                source: vectorSource,
+			                                style: location_mark,
+			                            });
+
+			                            vectorLayer.getSource().on('addfeature', function () {
+			                                map.setExtent(vectorLayer.getSource().getExtent());
+			                            });
+
+
+			                            const extent = vectorSource.getExtent();
+
+			                            map.getView().fit(extent);
+
+			                            //map1_layer.addLayer(layer_test1);
+			                            map.addLayer(vectorLayer);			                            
+			                            //window.depUtlityController.minimizePopup();
+			                            citizen_arr.push(vectorLayer);
+			                            
+			                            window.depUtlityController.minimizePopup();
+			                        	}
+			                        	else{
+			                        		$u.notify("error", "Error",
+					                        "No Data Found for selected fields");
+			                        	}
+			                        	
+			                        		
+
+			                        },
+			                        error: function (e) {
+			                            $(".loader").fadeOut();
+			                            console.log(e);
+			                        }
+			                    });
 								
-								// update checkbox status in layer panel
-								$('#accordionExample .layers-toggle-body input').each(function() {
-									let layer_id = $(this).data('layerid');
-									let child_id  = $(this).attr('id');
-									if(l_id == layer_id){
-										$("#"+child_id).prop('checked', true);
-									}
-								});
 								
-								// enable layer query wise
-								var visible = [];
-								$('#accordionExample .layers-toggle-body input:checked').each(function() {
-									let visible_id = $(this).data('layerid');
-									if(visible_id){
-										visible.push(visible_id);	
-								    }
-								});
 								
-								 if (visible.length === 0) {
-							            visible.push(-1);
-							     }
-								 symbology_layers.setVisibleLayers(visible);
-								
-								let queryByAttributeCriteria = window.base.createQueryByAttributeCriteria(l_id,ward_id,locality);
-								
-								if(queryByAttributeCriteria == undefined){
-									return;
-								}
-								
-						        $(".loader").fadeIn();
-						         
-						        queryTask.execute(queryByAttributeCriteria,function(result){
-						        	$(".loader").fadeOut();
-						        	map.graphics.clear();
-						        	map.removeLayer(resultedFeaturesLayer);
-						        	 if(result.features.length == 0 ){
-						        		 $u.notify("info", "Notification","No result found");
-							        	 return;
-						        	 }
-						        	 $('#query_result_tab a[href="#query_result"]').tab('show');
-						        	window.base.prepareAttributeQueryResult(result);
-						         },function(error){
-						        	   console.log(error);
-						        	   $(".loader").fadeOut();
-						         });
 							} catch (e) {
 								 $(".loader").fadeOut();
 								 $u.notify("error", "Error","Something Happend Wrong");

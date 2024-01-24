@@ -5050,7 +5050,7 @@
 			                            //map1_layer.addLayer(layer_test1);
 			                            map.addLayer(vectorLayer);
 			                            basic_query_layer_arr.push(vectorLayer);
-
+			                            //window.depUtlityController.minimizePopup();
 
 			                            console.log(result);
 			                        	}
