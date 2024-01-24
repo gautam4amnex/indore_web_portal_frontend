@@ -40,7 +40,8 @@
 	<link rel="stylesheet" href="${context}/css/esri/api-3-30.css">
 	<link rel="stylesheet" href="${context}/css/citizenmap.css">
 	<link rel="stylesheet" href="${context}/css/style.css">
-	
+	<script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css">
 	
 </head>
 
