@@ -2693,7 +2693,7 @@
 
 			        const rectangle_vector = new ol.layer.Vector({
 			            source: rectangle_source,
-			            style: styles,
+			            //style: styles,
 			        });
 
 			        vector_arr.push(rectangle_vector);
@@ -4075,11 +4075,16 @@
 				/**
 				 * basic-query clear event
 				 */
+				let basic_query_layer_arr = [];
 				$('#reset_basic_query').click(function(){
 					$("#department_queries_rslt").html("");
 					
 					$('#bas_field').empty().append(
 					'<option value="">Select Field</option>');
+					
+					for(var i=0; i<basic_query_layer_arr.length; i++){
+						map.removeLayer(basic_query_layer_arr[i]);
+					}
 					
 					map.graphics.clear();
 					map.setExtent(initialExtent);
@@ -5044,6 +5049,7 @@
 
 			                            //map1_layer.addLayer(layer_test1);
 			                            map.addLayer(vectorLayer);
+			                            basic_query_layer_arr.push(vectorLayer);
 
 
 			                            console.log(result);
@@ -5893,22 +5899,38 @@
 				
 				function dynamicLayerList(){
 						window.layerDataController.createDynamicLayerList();
-						$(".list-item").change(function(){
-							if(opacity_layer){
-								map.removeLayer(opacity_layer);	
-							}
-							var visible = [];
-							$('#accordionExample .layers-toggle-body input:checked').each(function() {
-							   let visible_id = $(this).data('layerid');
-								if(visible_id){
-									visible.push(visible_id);	
-							    }
-							});
+//						$(".list-item").change(function(){
+//							if(opacity_layer){
+//								map.removeLayer(opacity_layer);	
+//							}
+//							var visible = [];
+//							$('#accordionExample .layers-toggle-body input:checked').each(function() {
+//							   let visible_id = $(this).data('layerid');
+//								if(visible_id){
+//									visible.push(visible_id);	
+//							    }
+//							});
+//							
+//							 if (visible.length === 0) {
+//						            visible.push(-1);
+//						     }
+//							 symbology_layers.setVisibleLayers(visible);
+//						});
+						
+						$("input[type='checkbox'][class='list-item']").on("change", function () {
 							
-							 if (visible.length === 0) {
-						            visible.push(-1);
-						     }
-							 symbology_layers.setVisibleLayers(visible);
+					        var checkbox = $(this);
+
+					        var checkboxValue = checkbox.val();
+
+					        
+					        if (checkbox.is(":checked")) {
+					        	alert('checked');
+					        }else{
+					        	alert('unchecked');
+					        }
+					        	
+							
 						});
 						
 						$(".multiselectde").click(function () {
