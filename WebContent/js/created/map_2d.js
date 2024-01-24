@@ -14,6 +14,7 @@ var source_latlong_by_name ="",destination_latlong_by_name = "",thana_locality_n
 var sourceGeocoder,destGeocoder,localityThana,ward_opacity;
 
 var layer_names = [];
+var map_layers = [];
 var initial_visible_layers = [1, 34, 66, 67, 68, 69, 84, 85];// NEED TO
 																// CHANGE WHERE
 																// LAYER
@@ -119,18 +120,18 @@ require(
 				container : "map"
 			};
  
-		map = new Map("map", {
-				center : window.MAP_CENTER_POINT,
-				zoom : window.MAP_INITIAL_ZOOM,
-				minZoom: window.MAP_MIN_ZOOM,
-		        maxZoom:window.MAP_MAX_ZOOM,
-				container : appConfig.container,
-				ui : {
-					components : [ "attribution" ]
-				},
-				basemap : "streets",
-				
-		});
+//		map = new Map("map", {
+//				center : window.MAP_CENTER_POINT,
+//				zoom : window.MAP_INITIAL_ZOOM,
+//				minZoom: window.MAP_MIN_ZOOM,
+//		        maxZoom:window.MAP_MAX_ZOOM,
+//				container : appConfig.container,
+//				ui : {
+//					components : [ "attribution" ]
+//				},
+//				basemap : "streets",
+//				
+//		});
 			
 		// create layers and add into map-service-layer
 		symbology_layers = new ArcGISDynamicMapServiceLayer(window.INDORE_LAYERS_SYMBOLOGY);
@@ -309,6 +310,7 @@ require(
 			
 		}
 		
+			/*
 			map.addLayer(symbology_layers);
 			
 			map.on("load", initFunc);
@@ -335,7 +337,65 @@ require(
 		            layerInfos: legendLayers
 		          }, "legendDiv");
 		          legend.startup();
-		    });
+		    }); */
+			
+			
+			
+			/*
+			OPEN LAYER MAP START
+			*/
+			
+			const osm = new ol.layer.Tile({
+			    source: new ol.source.OSM
+			});
+			
+			const view = new ol.View({
+			    center: ol.proj.fromLonLat([75.8577, 22.7196]),
+			    projection: 'EPSG:3857',
+			    zoom: 11,
+			    maxZoom: 20
+			});
+			
+			const map = new ol.Map({
+			    layers: [osm],
+			    target: 'map',
+			    view: view
+			});
+			
+			const styles = {
+			        'Polygon': new ol.style.Style({
+			            stroke: new ol.style.Stroke({
+			                color: 'rgba(0, 0, 0, 0.0)',
+			                width: 3,
+			            }),
+			            fill: new ol.style.Fill({
+			                color: 'rgba(255, 255, 255, 0.0)',
+			                opacity: -5
+
+			            }),
+			        }),
+			    }
+			
+			var ward_boundary = new ol.layer.Tile({					 
+			      source: new ol.source.TileWMS({
+			    	  opacity: 0.5,
+	                 url: "https://apagri.infinium.management/geoserver/iscdl/wms?",
+	                 params: { 'LAYERS': 'iscdl:shp_ward_boundary', 'TILED': true},
+	                 serverType: 'geoserver',		                 
+	                 transition: 0,
+	                 style: styles,
+	              })
+			  });
+			
+			map.addLayer(ward_boundary);
+			
+			/*
+			OPEN LAYER MAP END
+			*/
+			
+			
+			
+			
 			
 			// restrict user to pan outside indore boundary
 			/*
@@ -344,7 +404,7 @@ require(
 			 * map.setExtent(initialExtent); } });
 			 */
 			
-			createWidgets();
+			//createWidgets();
 			var selected_print_opt;
 			
 			/**
@@ -841,6 +901,38 @@ require(
 		
 		function dynamicLayerList(){
 				window.layerDataController.createCitizenPortalDynamicLayerList();
+				
+				
+				$("input[type='checkbox'][class='list-item']").on("change", function () {
+					var checkbox = $(this);
+			        var checkboxValue = checkbox.val();
+			        var table_name = $(this).attr("data-tablename");
+			        var gis_id = $(this).attr("data-gisid");
+			        var wms_service_url = $(this).attr("data-wmsurl");
+			        
+			        if (checkbox.is(":checked")) {
+			        	let current_layer = new ol.layer.Tile({
+	                        source: new ol.source.TileWMS({
+	                            url: wms_service_url,
+	                            params: { 'LAYERS': gis_id, 'CRS': 'EPSG:4326' },
+	                            transition: 0,
+	                            crossOrigin: 'anonymous'
+	                        })
+	                    });
+
+	                    map.addLayer(current_layer);
+	                    map_layers.push(current_layer);
+	                    map_layers[table_name] = current_layer;
+			        	
+			        }else{
+			        	map.removeLayer(map_layers[table_name]);
+			        }
+			        	
+					
+				});
+				
+				
+				/*
 				$(".list-item").change(function(){
 					var visible = [];
 					
@@ -855,9 +947,11 @@ require(
 				            visible.push(-1);
 				     }
 					 symbology_layers.setVisibleLayers(visible);
-				});	
+				});	*/
+				
 				
 				$(".multiselectde").click(function () {
+					
 					let current_id = $(this).attr('id');
 					
 					let a ="#cor_d_c"+current_id + " .layers-toggle-body";
@@ -869,6 +963,8 @@ require(
 					});
 					
 					var visible = [];
+					
+					/*
 					$('#accordionExample .layers-toggle-body input:checked').each(function() {
 						let visible_id = $(this).data('layerid');
 						if(visible_id){
@@ -880,6 +976,36 @@ require(
 				            visible.push(-1);
 				     }
 					 symbology_layers.setVisibleLayers(visible);
+					 */
+					
+					$('#accordionExample .layers-toggle-body input:checked').each(function() {
+						var checkbox = $(this);
+				        var checkboxValue = checkbox.val();
+				        var table_name = $(this).attr("data-tablename");
+				        var gis_id = $(this).attr("data-gisid");
+				        var wms_service_url = $(this).attr("data-wmsurl");
+				        
+				        if (checkbox.is(":checked")) {
+				        	let current_layer = new ol.layer.Tile({
+		                        source: new ol.source.TileWMS({
+		                            url: wms_service_url,
+		                            params: { 'LAYERS': gis_id, 'CRS': 'EPSG:4326' },
+		                            transition: 0,
+		                            crossOrigin: 'anonymous'
+		                        })
+		                    });
+
+		                    map.addLayer(current_layer);
+		                    map_layers.push(current_layer);
+		                    map_layers[table_name] = current_layer;
+				        	
+				        }else{
+				        	map.removeLayer(map_layers[table_name]);
+				        }
+					});
+					
+					
+					 
 				});
 				
 				$('.zoom-to-layer').click(function(){
@@ -3746,9 +3872,9 @@ require(
 					}
 				});
 		
-		sourceGeocoder.on("select", geocoderFromLocation);
-		destGeocoder.on("select", geocoderToLocation);
-		localityThana.on("select", geocoderThanaLocation);
+//		sourceGeocoder.on("select", geocoderFromLocation);
+//		destGeocoder.on("select", geocoderToLocation);
+//		localityThana.on("select", geocoderThanaLocation);
 		
 		function geocoderFromLocation(evt) {
 			source_latlong_by_name = "";

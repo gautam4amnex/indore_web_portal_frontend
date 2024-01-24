@@ -206,6 +206,9 @@
 							let name= found_names[a].layer_name;
 							let id= found_names[a].layer_id;
 							let visibility= found_names[a].visibility;
+							let table_name = found_names[a].table_name;
+							let gis_id = found_names[a].gis_id;
+							let wms_url = found_names[a].wms_url;
 							
 							let checked = '';
 							if(visibility){
@@ -217,7 +220,7 @@
 							let combination = parent_id + "-" + id;
 							
 							html += "<label class='checkbox-inline' data-placement='right' title='"+name+"'>" +
-							  "<input id="+combination+" data-layerid="+id+" data-departmentid="+parent_id+" type='checkbox' class='list-item' value='"+name+"' "+checked+">"+name+" " +
+							  "<input id="+combination+" data-layerid="+id+" data-departmentid="+parent_id+" type='checkbox' class='list-item' data-tablename="+table_name+" data-gisid="+gis_id+" data-wmsurl="+wms_url+" value='"+name+"' "+checked+">"+name+" " +
 							"</label>" +
 							"<i class='fa fa-arrows-alt zoom-to-layer' aria-hidden='true' title='Zoom To Layer' " +
 							"depart-id="+parent_id+" id="+id+"></i>";
