@@ -14,6 +14,7 @@
 	 var zoom_box_tool,zoom_out_box_tool = false;
 	 var dashboardLayer = null;
 	 var opacity_layer;	
+	 var map_layers = [];
 	 
 	let base = {
 		getMap : function getMap(){
@@ -5080,7 +5081,6 @@
 				
 				
 				
-				
 				// advanced query form
 				$('form[id="form_advanced_query"]')
 				.validate(
@@ -5917,17 +5917,31 @@
 //							 symbology_layers.setVisibleLayers(visible);
 //						});
 						
+						
 						$("input[type='checkbox'][class='list-item']").on("change", function () {
 							
-					        var checkbox = $(this);
-
+							var checkbox = $(this);
 					        var checkboxValue = checkbox.val();
-
+					        var table_name = $(this).attr("data-layerid");
+					        var gis_id = $(this).attr("data-gisid");
+					        var wms_service_url = $(this).attr("data-wmsurl");
 					        
 					        if (checkbox.is(":checked")) {
-					        	alert('checked');
+					        	let current_layer = new ol.layer.Tile({
+			                        source: new ol.source.TileWMS({
+			                            url: wms_service_url,
+			                            params: { 'LAYERS': gis_id, 'CRS': 'EPSG:4326' },
+			                            transition: 0,
+			                            crossOrigin: 'anonymous'
+			                        })
+			                    });
+
+			                    map.addLayer(current_layer);
+			                    map_layers.push(current_layer);
+			                    map_layers[table_name] = current_layer;
+					        	
 					        }else{
-					        	alert('unchecked');
+					        	map.removeLayer(map_layers[table_name]);
 					        }
 					        	
 							
