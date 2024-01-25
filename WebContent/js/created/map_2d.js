@@ -13,6 +13,7 @@ var zoom_box_tool,zoom_out_box_tool = false;
 var source_latlong_by_name ="",destination_latlong_by_name = "",thana_locality_name = "";
 var sourceGeocoder,destGeocoder,localityThana,ward_opacity;
 
+var vectorSource = null;
 var layer_names = [];
 var map_layers = [];
 var initial_visible_layers = [1, 34, 66, 67, 68, 69, 84, 85];// NEED TO
@@ -6563,6 +6564,69 @@ require(
 			           			
 			           			window.base.zoomToWardInfoData(layer_name,layer_url,column_name,
 			           					ward_id,column_value,column_type);
+			           		},
+			           		zoomToWard : function zoomToWard(ward_id){
+			           			let form_data = new FormData();
+			           			form_data.append("wardNo",ward_id);
+			           			$.ajax({
+			                        method: 'POST',
+			                        url: window.iscdl.appData.baseURL + 'citizen/zoomToWardInfo/'+ward_id,
+			                        //data: { wardNo : ward_id },
+			                        async: false,
+			                        contentType: 'application/json',
+//			                        beforeSend: function (xhr) {
+//			                            xhr.setRequestHeader('Authorization', 'Bearer '+ localStorage.getItem('token'));
+//			                        },
+			                        success: function (response) {
+			                            
+			                            if (response.features.length > 0) {
+			                                if (vectorSource != undefined && vectorSource != null) {
+			                                    vectorSource.clear();
+			                                }
+			                                var geoJsonData = response.features[0];
+			                                const geoJSONFormat = new ol.format.GeoJSON();
+			                                vectorSource = new ol.source.Vector({
+			                                    features: geoJSONFormat.readFeatures(geoJsonData),
+			                                    featureProjection: 'EPSG:3857',
+			                                    format: geoJSONFormat,
+			                                });
+			                                const vectorLayer = new ol.layer.Vector({
+			                                    source: vectorSource,
+			                                    //style: styleFunction,
+			                                });
+//			                                vectorLayer.getSource().on('addfeature', function () {
+//			                                    mcgm_layer.setExtent(vectorLayer.getSource().getExtent());
+//			                                });
+
+			                                const style = new ol.style.Style({
+			                                    fill: new ol.style.Fill({
+			                                        color: 'red',
+			                                    }),
+			                                });
+			                                const extent = vectorSource.getExtent();
+
+			                                map.getView().fit(extent);
+			                                map.addLayer(vectorLayer);
+			                                
+			                                //map1_layer.addLayer(layer_test1);
+			                                //map1_layer.addLayer(vectorLayer);
+			                                //map2_layer.addLayer(vectorLayer);
+			                                //mapLayers2.push(vectorLayer);
+			                                //mapLayers1.push(vectorLayer);
+			                                //get_difference_data();
+			                                
+			                                
+			                            }
+
+			                            else {
+			                                $.notify("Something went wrong", "error");
+			                            }
+			                        },
+			                        error: function (e) {
+			                            console.log(e);
+			                        }
+
+			                    });
 			           		},
 			           		highlightWard : function highlightWard(ward_id){
 			           			

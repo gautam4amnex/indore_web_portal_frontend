@@ -203,7 +203,8 @@
        			 * ward_highlight_query 
        			 */
        			
-       			window.base.highlightWard(ward_id);
+       			//window.base.highlightWard(ward_id);
+				window.base.zoomToWard(ward_id);
 				window.wardInfoController.getWardInfo(ward_id);
 			});
 
