@@ -6603,7 +6603,12 @@ require(
 
 			                                const extent = vectorSource.getExtent();
 
-			                                map.getView().fit(extent);
+			                                map.getView().fit(extent,{
+			            						nearest : true,
+			            						duration : 1000,
+			            						padding: [170, 150, 130, 150],
+			            						maxZoom : 80,
+			            					});
 			                                map.addLayer(vectorLayer);
 			                                
 			                                //map1_layer.addLayer(layer_test1);
