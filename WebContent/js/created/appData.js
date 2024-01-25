@@ -3,13 +3,13 @@
 	global.iscdl = {};
 
 	let obj = {
-		baseURL : "http://localhost:1002/IndoreWebAPI/", // local URL
-		//baseURL : "https://apagri.infinium.management/IndoreWebAPI/", // local URL
+		baseURL : "http://localhost:1002/IndoreAPI/", // local URL
+//		baseURL : "https://apagri.infinium.management/IndoreAPI/", // local URL
 //		baseURL : "https://citymapindore.amnex.com/IndoreWebAPI/", // live URL AMNEX Server
 //		baseURL : "https://citymap.smartcityindore.org:8443/ISCDLWebAPI/", // live URL Indore Server
 //		baseURL : "https://indoresmartmap.org/ISCDLWebAPI/", // live URL Indore Server New
 		
-		webURLPrefix : "/web/", //local and live latest as discussed with M. Taha on 28th Dec 2020
+		webURLPrefix : "/indoregis/", //local and live latest as discussed with M. Taha on 28th Dec 2020
 
 		inactivityTime : function inactivityTime() {
 			let time, warnTime, showWarnPopup, refreshTime;

@@ -40,8 +40,8 @@ public class CORSFilter implements Filter {
 //		String homePageURL = "https://citymapindore.amnex.com/web/";//LIVE AMNEX SERVER
 //		String homePageURL = "https://citymap.smartcityindore.org:8443/web/";//LIVE ISCDL SERVER
 		
-		String homePageURLS = validOrigin + "/web/";
-		String homePageURLS1 = validOrigin1 + "/web/";
+		String homePageURLS = validOrigin + "/indoregis/";
+		String homePageURLS1 = validOrigin1 + "/indoregis/";
 		
 		
 		String mobile3DPageURLS = homePageURLS + "3d_view.jsp";
