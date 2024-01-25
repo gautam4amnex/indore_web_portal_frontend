@@ -451,18 +451,124 @@ require(
 			
 			map.addLayer(ward_boundary);
 			
-			map.on('click', function(evt){
-			    console.info(evt.pixel);
-			    console.info(map.getPixelFromCoordinate(evt.coordinate));
-			    console.info(ol.proj.toLonLat(evt.coordinate));
-			    var coords = ol.proj.toLonLat(evt.coordinate);
-			    var lat = coords[1];
-			    var lon = coords[0];
-			    var locTxt = "Latitude: " + lat + " Longitude: " + lon;
-			    // coords is a div in HTML below the map to display
-			    document.getElementById('coords').innerHTML = locTxt;
+//			map.on('click', function(evt){
+//			    console.info(evt.pixel);
+//			    console.info(map.getPixelFromCoordinate(evt.coordinate));
+//			    console.info(ol.proj.toLonLat(evt.coordinate));
+//			    var coords = ol.proj.toLonLat(evt.coordinate);
+//			    var lat = coords[1];
+//			    var lon = coords[0];
+//			    var locTxt = "Latitude: " + lat + " Longitude: " + lon;
+//			    // coords is a div in HTML below the map to display
+//			    document.getElementById('coords').innerHTML = locTxt;
+//			});
+			
+			
+			
+			
+			const info = document.getElementById('info');
+
+			let currentFeature;
+			const displayFeatureInfo = function (pixel, target) {
+			  const feature = target.closest('.ol-control')
+			    ? undefined
+			    : map.forEachFeatureAtPixel(pixel, function (feature) {
+			        return feature;
+			      });
+
+			    info.style.left = pixel[0] + 'px';
+			    info.style.top = pixel[1] + 'px';
+			    info.style.visibility = 'visible';
+			    info.innerText = 'Please Click On Map';
+
+			};
+
+//			map.on('pointermove', function (evt) {
+//			  if (evt.dragging) {
+//			    info.style.visibility = 'hidden';
+//			    currentFeature = undefined;
+//			    return;
+//			  }
+//			  const pixel = map.getEventPixel(evt.originalEvent);
+//			  displayFeatureInfo(pixel, evt.originalEvent.target);
+//			});
+			
+//			var dataObject = {
+//					flag : false,
+//					distance : (parseInt($("#nearMeRange").val()) * 1000),
+//					message : global.contents.click
+//				};
+			
+			$("#around_layer").change(function(){
+				
+				map.on('pointermove', function (evt) {
+					  if (evt.dragging) {
+					    info.style.visibility = 'hidden';
+					    currentFeature = undefined;
+					    return;
+					  }
+					  const pixel = map.getEventPixel(evt.originalEvent);
+					  displayFeatureInfo(pixel, evt.originalEvent.target);
+					});
+				
+				
+				dataObject.distance = $("#area_range").text().split(" ")[0] * 1000;				
+				
+				
 			});
 			
+			
+			
+			var circleCenter = [230225,725714];
+
+
+			var circleLayerSource = new ol.source.Vector({});
+			var circleStyle = new ol.style.Style({
+			    stroke: new ol.style.Stroke({
+			        color: 'rgba(0, 0, 0, 0.4)',
+			        width: 5
+			    }),
+			    fill: new ol.style.Fill({
+				    color: 'rgba(0, 255, 0, 0.4)'
+				})
+			});
+			var circleLayer = new ol.layer.Vector({
+			  source: circleLayerSource,
+			  style: circleStyle
+			});
+
+
+			function drawCircleWithHole(){
+			var circleGeom = new ol.geom.Polygon([
+			     createCirclePointCoords(circleCenter[0],circleCenter[1],30000,60)
+			]); 
+			circleLayer.getSource().addFeature(new ol.Feature(circleGeom));
+			}
+
+
+
+
+			/**
+			* pass the x, y center of the circle
+			* the radius of circle
+			* and the number of points to form the circle
+			* 60 points seems to be fine in terms of visual impact
+			*/
+			function createCirclePointCoords(circleCenterX,circleCenterY,circleRadius,pointsToFind) {
+			    var angleToAdd = 360/pointsToFind;
+			    var coords = [];  
+			    var angle = 0;
+			    for (var i=0;i<pointsToFind;i++){
+			        angle = angle+angleToAdd;
+			        var coordX = circleCenterX + circleRadius * Math.cos(angle*Math.PI/180);
+			        var coordY = circleCenterY + circleRadius * Math.sin(angle*Math.PI/180);
+			        coords.push([coordX,coordY]);
+			    }
+			    return coords;
+			}
+
+
+			drawCircleWithHole();
 			
 			/*
 			 * OPEN LAYER MAP END
@@ -541,7 +647,12 @@ require(
 // $("#tool_text").val("");
 // $('.draw-tools-select li a').removeClass('active');
 // $("#lblDrawTxt").text("");
-			})
+				
+				for(var i=0; i<vector_arr.length; i++){
+					map.removeLayer(vector_arr[i]);
+				}
+				draw_ploygons('None');
+			});
 			
 			// close pop-up event
 			$(".layer-close").click(function() {

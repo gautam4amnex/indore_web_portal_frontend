@@ -42,7 +42,24 @@
 	<link rel="stylesheet" href="${context}/css/style.css">
 	<script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css">
-	
+	<style>
+      #info {
+        position: absolute;
+        display: inline-block;
+        height: auto;
+        width: auto;
+        z-index: 100;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 4px;
+        padding: 5px;
+        left: 50%;
+        transform: translateX(3%);
+        visibility: hidden;
+        pointer-events: none;
+      }
+    </style>
 </head>
 
 <body>	
@@ -2668,6 +2685,7 @@ Advance Tools
 				<div id="LocateButton"></div> -->
 				<!--  <div id="measurementDiv"></div> -->
 				 <div id="swipeDiv"></div>
+				 <div id="info"></div>
 				</div>
 			</div>
 			
