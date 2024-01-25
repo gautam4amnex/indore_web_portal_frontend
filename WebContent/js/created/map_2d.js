@@ -120,18 +120,18 @@ require(
 				container : "map"
 			};
  
-//		map = new Map("map", {
-//				center : window.MAP_CENTER_POINT,
-//				zoom : window.MAP_INITIAL_ZOOM,
-//				minZoom: window.MAP_MIN_ZOOM,
-//		        maxZoom:window.MAP_MAX_ZOOM,
-//				container : appConfig.container,
-//				ui : {
-//					components : [ "attribution" ]
-//				},
-//				basemap : "streets",
+// map = new Map("map", {
+// center : window.MAP_CENTER_POINT,
+// zoom : window.MAP_INITIAL_ZOOM,
+// minZoom: window.MAP_MIN_ZOOM,
+// maxZoom:window.MAP_MAX_ZOOM,
+// container : appConfig.container,
+// ui : {
+// components : [ "attribution" ]
+// },
+// basemap : "streets",
 //				
-//		});
+// });
 			
 		// create layers and add into map-service-layer
 		symbology_layers = new ArcGISDynamicMapServiceLayer(window.INDORE_LAYERS_SYMBOLOGY);
@@ -144,18 +144,13 @@ require(
 		function mapReady () {
 			
 			map_selection =  map.on("click", executeIdentifyTask);	
-			/*map_hover = map.on("mouse-move", function(evt) {
-				if(map.infoWindow.isShowing == true){
-					return;
-				}else{
-					setTimeout(function() {
-				          if (lastState == evt.mapPoint) {
-				        	  mouseHoverFeatureSymbology(evt.mapPoint);
-				          }
-				        }, 4000);
-				        lastState = evt.mapPoint;
-				}
-			}); */
+			/*
+			 * map_hover = map.on("mouse-move", function(evt) {
+			 * if(map.infoWindow.isShowing == true){ return; }else{
+			 * setTimeout(function() { if (lastState == evt.mapPoint) {
+			 * mouseHoverFeatureSymbology(evt.mapPoint); } }, 4000); lastState =
+			 * evt.mapPoint; } });
+			 */
 		}
 		
 		function executeIdentifyTask (event) {
@@ -179,7 +174,82 @@ require(
 		/**
 		 * Click Information end
 		 */
+
+		var vector_arr = [];
+		var draw;
+		var draw_rectangle_layer;
+		$('.draw-tools-select li a').on('click',function() {
+			var tool = this.title;
+			
+			if(tool == "Rectangle"){
+				draw_rectangle();
+			}else{
+				draw_ploygons(tool);
+			}
+											
+
+			 
+			
+		});
 		
+		
+		
+	    function draw_rectangle() {
+
+
+	        const rectangle_source = new ol.source.Vector({ wrapX: false });
+
+	        const rectangle_vector = new ol.layer.Vector({
+	            source: rectangle_source,
+	            // style: styles,
+	        });
+
+	        vector_arr.push(rectangle_vector);
+	        var geometryFunction = ol.interaction.Draw.createBox();
+
+
+	        draw_rectangle_layer = new ol.interaction.Draw({
+	            source: rectangle_source,
+	            type: "Circle",
+	            geometryFunction: geometryFunction,
+	        });
+	        map.addInteraction(draw_rectangle_layer);
+	        draw_rectangle_layer.on("drawend", function (e) {
+	            var rectangle_writer = new ol.format.GeoJSON();
+
+	            var rectangle_geojsonStr = rectangle_writer.writeFeatures([e.feature]);
+	            
+	        });
+
+	        map.addLayer(rectangle_vector);			        
+	    }
+		
+	    function draw_ploygons(selecte_type) {
+	        var value = selecte_type;
+	        var source = new ol.source.Vector({ wrapX: false });
+
+	        var vector = new ol.layer.Vector({
+	            source: source,
+	            // style: styles,
+	        });
+
+	        vector_arr.push(vector);
+	        // vector_arr.push(vector);
+	        if (value !== 'None') {
+	        	draw = new ol.interaction.Draw({
+	                source: source,
+	                type: /** @type {ol.geom.GeometryType} */ (selecte_type)
+	            });
+	            map.addInteraction(draw);
+	            // var feature;
+	            draw.on("drawend", function (e) {
+	                var writer = new ol.format.GeoJSON();
+	               
+	            });
+	            map.addLayer(vector);
+	           
+	        }
+	    }
 			function mouseHoverFeatureSymbology(mapPoint){
 			
 					if(map_info_tool == true){
@@ -311,43 +381,35 @@ require(
 		}
 		
 			/*
-			map.addLayer(symbology_layers);
-			
-			map.on("load", initFunc);
-			map.on("load",function(){
-				$("#toggle_map_info").trigger('click');
-				// CHANGE MADE ON 24-12-2021 FOR REMOVE PLANNING BOUNDARY
-				// VISIBLE LAYER FROM MAP
-				symbology_layers.setVisibleLayers(initial_visible_layers);
-				
-			});
-			map.on("load", function() {
-				//let announcement_point = new Point(76.2161,22.8639);
-				//let graphic = new Graphic(announcement_point, m1);
-				//map.graphics.add(graphic);  
-				
-				map.on("mouse-move", showCoordinates);
-		          map.on("mouse-drag", showCoordinates);
-		    });
-			map.on('load', function () {
-				legendLayers.push({ layer: symbology_layers, title: "Indore GIS Layers" });
-				
-				var legend = new Legend({
-		            map: map,
-		            layerInfos: legendLayers
-		          }, "legendDiv");
-		          legend.startup();
-		    }); */
+			 * map.addLayer(symbology_layers);
+			 * 
+			 * map.on("load", initFunc); map.on("load",function(){
+			 * $("#toggle_map_info").trigger('click'); // CHANGE MADE ON
+			 * 24-12-2021 FOR REMOVE PLANNING BOUNDARY // VISIBLE LAYER FROM MAP
+			 * symbology_layers.setVisibleLayers(initial_visible_layers);
+			 * 
+			 * }); map.on("load", function() { //let announcement_point = new
+			 * Point(76.2161,22.8639); //let graphic = new
+			 * Graphic(announcement_point, m1); //map.graphics.add(graphic);
+			 * 
+			 * map.on("mouse-move", showCoordinates); map.on("mouse-drag",
+			 * showCoordinates); }); map.on('load', function () {
+			 * legendLayers.push({ layer: symbology_layers, title: "Indore GIS
+			 * Layers" });
+			 * 
+			 * var legend = new Legend({ map: map, layerInfos: legendLayers },
+			 * "legendDiv"); legend.startup(); });
+			 */
 			
 			
 			
 			/*
-			OPEN LAYER MAP START
-			*/
+			 * OPEN LAYER MAP START
+			 */
 			
 			const osm = new ol.layer.Tile({
 			    source: new ol.source.OSM
-			});
+			});			
 			
 			const view = new ol.View({
 			    center: ol.proj.fromLonLat([75.8577, 22.7196]),
@@ -389,9 +451,22 @@ require(
 			
 			map.addLayer(ward_boundary);
 			
+			map.on('click', function(evt){
+			    console.info(evt.pixel);
+			    console.info(map.getPixelFromCoordinate(evt.coordinate));
+			    console.info(ol.proj.toLonLat(evt.coordinate));
+			    var coords = ol.proj.toLonLat(evt.coordinate);
+			    var lat = coords[1];
+			    var lon = coords[0];
+			    var locTxt = "Latitude: " + lat + " Longitude: " + lon;
+			    // coords is a div in HTML below the map to display
+			    document.getElementById('coords').innerHTML = locTxt;
+			});
+			
+			
 			/*
-			OPEN LAYER MAP END
-			*/
+			 * OPEN LAYER MAP END
+			 */
 			
 			
 			
@@ -404,7 +479,7 @@ require(
 			 * map.setExtent(initialExtent); } });
 			 */
 			
-			//createWidgets();
+			// createWidgets();
 			var selected_print_opt;
 			
 			/**
@@ -425,7 +500,7 @@ require(
 				
 				if(map_selection){
 					map_selection.remove();
-					//map_hover.remove();
+					// map_hover.remove();
 				}
 				
 				var tool = this.title.toUpperCase().replace(/ /g, "_");
@@ -456,16 +531,16 @@ require(
 			// clear draw graphics
 			
 			$("#clear_draw_graphics").click(function(){
-//				map.graphics.clear();
+// map.graphics.clear();
 //				
-//				// for draw deactive
-//				if(toolbar){
-//					toolbar.deactivate();
-//				}
+// // for draw deactive
+// if(toolbar){
+// toolbar.deactivate();
+// }
 //				
-//				$("#tool_text").val("");
-//				$('.draw-tools-select li a').removeClass('active');
-//				$("#lblDrawTxt").text("");
+// $("#tool_text").val("");
+// $('.draw-tools-select li a').removeClass('active');
+// $("#lblDrawTxt").text("");
 			})
 			
 			// close pop-up event
@@ -641,10 +716,10 @@ require(
                 template.format = document.getElementById("print_format_id").value; 
                 template.preserveScale = false;
                 template.layoutOptions = {
-                    //legendLayers: [],
+                    // legendLayers: [],
                     scalebarUnit: "Kilometers",
                     titleText: printTitle,
-                    //showAttribution : false
+                    // showAttribution : false
                 };
 
                 var params = new PrintParameters();
@@ -933,21 +1008,16 @@ require(
 				
 				
 				/*
-				$(".list-item").change(function(){
-					var visible = [];
-					
-					$('#accordionExample .layers-toggle-body input:checked').each(function() {
-						let visible_id = $(this).data('layerid');
-						if(visible_id){
-							visible.push(visible_id);	
-					    }
-					});
-					
-					 if (visible.length === 0) {
-				            visible.push(-1);
-				     }
-					 symbology_layers.setVisibleLayers(visible);
-				});	*/
+				 * $(".list-item").change(function(){ var visible = [];
+				 * 
+				 * $('#accordionExample .layers-toggle-body
+				 * input:checked').each(function() { let visible_id =
+				 * $(this).data('layerid'); if(visible_id){
+				 * visible.push(visible_id); } });
+				 * 
+				 * if (visible.length === 0) { visible.push(-1); }
+				 * symbology_layers.setVisibleLayers(visible); });
+				 */
 				
 				
 				$(".multiselectde").click(function () {
@@ -965,17 +1035,13 @@ require(
 					var visible = [];
 					
 					/*
-					$('#accordionExample .layers-toggle-body input:checked').each(function() {
-						let visible_id = $(this).data('layerid');
-						if(visible_id){
-							visible.push(visible_id);	
-					    }
-					});
-					
-					 if (visible.length === 0) {
-				            visible.push(-1);
-				     }
-					 symbology_layers.setVisibleLayers(visible);
+					 * $('#accordionExample .layers-toggle-body
+					 * input:checked').each(function() { let visible_id =
+					 * $(this).data('layerid'); if(visible_id){
+					 * visible.push(visible_id); } });
+					 * 
+					 * if (visible.length === 0) { visible.push(-1); }
+					 * symbology_layers.setVisibleLayers(visible);
 					 */
 					
 					$('#accordionExample .layers-toggle-body input:checked').each(function() {
@@ -3112,30 +3178,28 @@ require(
 				 * });
 				 */
 	          
-	          /*var customBasemap = new Basemap({  
-	            layers: [
-	            	Pocket_1_Ortho_Part_25_layers,
-	            	Pocket_1_Ortho_Part_6_layers,Pocket_1_Ortho_Part_4_2_layers,
-	            	Pocket_1_Ortho_Part_26_layers,
-	            	Pocket_1_Ortho_Part_24_layers,Pocket_1_Ortho_Part_23_layers,
-	            	Pocket_1_Ortho_Part_22_layers,Pocket_1_Ortho_Part_21_layers,
-	            	Pocket_1_Ortho_Part_20_layers,Pocket_1_Ortho_Part_19_layers,
-	            	Pocket_1_Ortho_Part_18_layers,Pocket_1_Ortho_Part_17_layers,
-	            	Pocket_1_Ortho_Part_5_layers,Pocket_1_Ortho_Part_16_layers,
-	            	Pocket_1_Ortho_Part_14_layers,Pocket_1_Ortho_Part_12_layers,
-	            	Pocket_1_Ortho_Part_10_layers,Pocket_1_Ortho_Part_9_layers,
-	            	Pocket_1_Ortho_Part_8_layers,Pocket_1_Ortho_Part_7_layers,
-	            	Pocket_1_Ortho_Part_11_layers,Pocket_1_Ortho_Part_15_layers,
-	            	Pocket_1_Ortho_Part_27_layers,Pocket_1_Ortho_Part_28_layers,
-	            	Pocket_1_Ortho_Part_32_layers,Pocket_1_Ortho_Part_4_1_layers,
-	            	Pocket_1_Ortho_Part_3_layers,Pocket_1_Ortho_Part_2_layers,
-	            	Pocket_1_Ortho_Part_1_layers,Pocket_1_Ortho_Part_31_layers,
-	            	
-	            	],  
-	            title: "ISCDL Drone Image 2020",  
-	            thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/86de95d4e0244cba80f0fa2c9403a7b2" +
-	            		"/info/thumbnail/thumbnail1591224931210.jpeg"  
-	          }); */
+	          /*
+				 * var customBasemap = new Basemap({ layers: [
+				 * Pocket_1_Ortho_Part_25_layers,
+				 * Pocket_1_Ortho_Part_6_layers,Pocket_1_Ortho_Part_4_2_layers,
+				 * Pocket_1_Ortho_Part_26_layers,
+				 * Pocket_1_Ortho_Part_24_layers,Pocket_1_Ortho_Part_23_layers,
+				 * Pocket_1_Ortho_Part_22_layers,Pocket_1_Ortho_Part_21_layers,
+				 * Pocket_1_Ortho_Part_20_layers,Pocket_1_Ortho_Part_19_layers,
+				 * Pocket_1_Ortho_Part_18_layers,Pocket_1_Ortho_Part_17_layers,
+				 * Pocket_1_Ortho_Part_5_layers,Pocket_1_Ortho_Part_16_layers,
+				 * Pocket_1_Ortho_Part_14_layers,Pocket_1_Ortho_Part_12_layers,
+				 * Pocket_1_Ortho_Part_10_layers,Pocket_1_Ortho_Part_9_layers,
+				 * Pocket_1_Ortho_Part_8_layers,Pocket_1_Ortho_Part_7_layers,
+				 * Pocket_1_Ortho_Part_11_layers,Pocket_1_Ortho_Part_15_layers,
+				 * Pocket_1_Ortho_Part_27_layers,Pocket_1_Ortho_Part_28_layers,
+				 * Pocket_1_Ortho_Part_32_layers,Pocket_1_Ortho_Part_4_1_layers,
+				 * Pocket_1_Ortho_Part_3_layers,Pocket_1_Ortho_Part_2_layers,
+				 * Pocket_1_Ortho_Part_1_layers,Pocket_1_Ortho_Part_31_layers, ],
+				 * title: "ISCDL Drone Image 2020", thumbnailUrl:
+				 * "https://www.arcgis.com/sharing/rest/content/items/86de95d4e0244cba80f0fa2c9403a7b2" +
+				 * "/info/thumbnail/thumbnail1591224931210.jpeg" });
+				 */
 	          
 	          var image2015Basemap = new Basemap({
 	        	  layers: [tiled_image_2015],  
@@ -3154,15 +3218,16 @@ require(
 					thumbnailUrl: window.iscdl.appData.webURLPrefix + "images/Satellite_Image_2.png"
 			  })
 	          
-	          /*var image2017Basemap = new Basemap({
-	        	  layers: [iscdl_sat_image_2017_1,iscdl_sat_image_2017_2,iscdl_sat_image_2017_3,
-	        		  iscdl_sat_image_2017_4,iscdl_sat_image_2017_5,iscdl_sat_image_2017_6,
-	        		  iscdl_sat_image_2017_7,iscdl_sat_image_2017_8,iscdl_sat_image_2017_9,
-	        		  iscdl_sat_image_2017_10,iscdl_sat_image_2017_11,iscdl_sat_image_2017_12
-	        		  ],  
-		            title: "ISCDL Satellite Image 2017",  
-		            thumbnailUrl: window.iscdl.appData.webURLPrefix + "images/Satellite_Image_2.png"
-	          });*/
+	          /*
+				 * var image2017Basemap = new Basemap({ layers:
+				 * [iscdl_sat_image_2017_1,iscdl_sat_image_2017_2,iscdl_sat_image_2017_3,
+				 * iscdl_sat_image_2017_4,iscdl_sat_image_2017_5,iscdl_sat_image_2017_6,
+				 * iscdl_sat_image_2017_7,iscdl_sat_image_2017_8,iscdl_sat_image_2017_9,
+				 * iscdl_sat_image_2017_10,iscdl_sat_image_2017_11,iscdl_sat_image_2017_12 ],
+				 * title: "ISCDL Satellite Image 2017", thumbnailUrl:
+				 * window.iscdl.appData.webURLPrefix +
+				 * "images/Satellite_Image_2.png" });
+				 */
 	          
 	          /*
 				 * var abdAreaOrthoBasemap = new Basemap({ layers:
@@ -3172,9 +3237,9 @@ require(
 				 * "/info/thumbnail/thumbnail1591224931210.jpeg" });
 				 */
 	          
-	          //basemaps.push(customBasemap);
+	          // basemaps.push(customBasemap);
 	          basemaps.push(imageSatelliteImage);
-	          //basemaps.push(image2017Basemap);
+	          // basemaps.push(image2017Basemap);
 	          // basemaps.push(abdAreaOrthoBasemap);
 	          
 	          var noBasemap = new Basemap({
@@ -3326,7 +3391,7 @@ require(
 			map.setMapCursor("crosshair");
 			if(map_selection){
 				map_selection.remove();
-				//map_hover.remove();
+				// map_hover.remove();
 			}
 			mapClickEvtHandler = map.on("click", function(evt) {
 				if(map.graphics){
@@ -3335,7 +3400,7 @@ require(
 				
 				if(map_selection){
 					map_selection.remove();
-					//map_hover.remove();
+					// map_hover.remove();
 				}
 				
 				let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
@@ -3587,7 +3652,7 @@ require(
 			map.graphics.clear();
 			if(map_selection){
 				map_selection.remove();	
-				//map_hover.remove();
+				// map_hover.remove();
 			}
 			
 			map.setMapCursor("crosshair");
@@ -3595,7 +3660,7 @@ require(
 				map.graphics.clear();
 				if(map_selection){
 					map_selection.remove();	
-					//map_hover.remove();
+					// map_hover.remove();
 				}
 				let mp = webMercatorUtils
 						.webMercatorToGeographic(evt.mapPoint);
@@ -3628,7 +3693,7 @@ require(
 					map.setMapCursor("crosshair");
 					if(map_selection){
 						map_selection.remove();
-						//map_hover.remove();
+						// map_hover.remove();
 					}
 					mapClickEvtHandler = map.on("click", function(evt) {
 						let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
@@ -3642,7 +3707,7 @@ require(
 					map.setMapCursor("crosshair");
 					if(map_selection){
 						map_selection.remove();
-						//map_hover.remove();
+						// map_hover.remove();
 					}
 					mapClickEvtHandler = map.on("click", function(evt) {
 						let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
@@ -3872,9 +3937,9 @@ require(
 					}
 				});
 		
-//		sourceGeocoder.on("select", geocoderFromLocation);
-//		destGeocoder.on("select", geocoderToLocation);
-//		localityThana.on("select", geocoderThanaLocation);
+// sourceGeocoder.on("select", geocoderFromLocation);
+// destGeocoder.on("select", geocoderToLocation);
+// localityThana.on("select", geocoderThanaLocation);
 		
 		function geocoderFromLocation(evt) {
 			source_latlong_by_name = "";
@@ -4229,7 +4294,7 @@ require(
 						map.setMapCursor("crosshair");
 						if(map_selection){
 							map_selection.remove();
-							//map_hover.remove();
+							// map_hover.remove();
 						}
 						
 						if(dirLatLong){
@@ -4257,7 +4322,7 @@ require(
 							
 							if(map_selection){
 								map_selection.remove();
-								//map_hover.remove();
+								// map_hover.remove();
 							}
 							mapClickEvtHandler = map.on("click", function(evt) {
 								let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
@@ -4274,7 +4339,7 @@ require(
 						map.setMapCursor("crosshair");
 						if(map_selection){
 							map_selection.remove();
-							//map_hover.remove();
+							// map_hover.remove();
 						}
 						mapClickEvtHandler = map.on("click", function(evt) {
 							let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
@@ -4290,7 +4355,7 @@ require(
 						map.setMapCursor("crosshair");
 						if(map_selection){
 							map_selection.remove();
-							//map_hover.remove();
+							// map_hover.remove();
 						}
 						
 						mapClickEvtHandler = map.on("click", function(evt) {
@@ -4309,7 +4374,7 @@ require(
 						map.setMapCursor("crosshair");
 						if(map_selection){
 							map_selection.remove();
-							//map_hover.remove();
+							// map_hover.remove();
 						}
 						mapClickEvtHandler = map.on("click", function(evt) {
 							let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
@@ -6760,7 +6825,7 @@ require(
 							        	 }else{
 							        		 if(map_selection){
 													map_selection.remove();
-													//map_hover.remove();
+													// map_hover.remove();
 												}
 												$('#'+latitude_id).val(latitude.toFixed(6).toString());
 												$('#'+longitude_id).val(longitude.toFixed(6).toString());
@@ -6919,7 +6984,7 @@ require(
 							        		 if(type == "Source"){
 							        			 if(map_selection){
 														map_selection.remove();
-														//map_hover.remove();
+														// map_hover.remove();
 													}
 													let sel_point = latitude.toFixed(6).toString() + "," + 
 													longitude.toFixed(6).toString();
@@ -6944,7 +7009,7 @@ require(
 							        		 }else if(type == "Destination"){
 							        			 if(map_selection){
 														map_selection.remove();
-														//map_hover.remove();
+														// map_hover.remove();
 													}
 													
 													let sel_point = latitude.toFixed(6).toString() + "," 
@@ -7333,7 +7398,7 @@ require(
 				$('#mapInfoTool'). css('opacity', '0.5');
 				if(map_selection){
 					map_selection.remove();	
-					//map_hover.remove();
+					// map_hover.remove();
 				}
 			}
 		});
@@ -7367,7 +7432,7 @@ require(
 				
 				if(map_selection){
 					map_selection.remove();	
-					//map_hover.remove();
+					// map_hover.remove();
 				}
 				let title = "Rectangle";
 				let tool_name = title.toUpperCase().replace(/ /g, "_");
@@ -7392,7 +7457,7 @@ require(
 				
 				if(map_selection){
 					map_selection.remove();	
-					//map_hover.remove();
+					// map_hover.remove();
 				}
 				let title = "Rectangle";
 				let tool_name = title.toUpperCase().replace(/ /g, "_");
