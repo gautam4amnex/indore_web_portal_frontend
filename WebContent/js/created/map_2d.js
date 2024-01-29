@@ -477,8 +477,8 @@ require(
 			        return feature;
 			      });
 
-			    info.style.left = pixel[0] + 'px';
-			    info.style.top = pixel[1] + 'px';
+			    info.style.left = pixel[0]+80 + 'px';
+			    info.style.top = pixel[1]+20 + 'px';
 			    info.style.visibility = 'visible';
 			    info.innerText = 'Please Click On Map';
 
@@ -499,8 +499,10 @@ require(
 //					distance : (parseInt($("#nearMeRange").val()) * 1000),
 //					message : global.contents.click
 //				};
-			
-			$("#around_layer").change(function(){
+			var lat;
+		    var lon;
+		    var vectorLayer;
+			$("#around_layer").change(function(){				
 				
 				map.on('pointermove', function (evt) {
 					  if (evt.dragging) {
@@ -510,66 +512,70 @@ require(
 					  }
 					  const pixel = map.getEventPixel(evt.originalEvent);
 					  displayFeatureInfo(pixel, evt.originalEvent.target);
-					});
+					});			
 				
 				
-				dataObject.distance = $("#area_range").text().split(" ")[0] * 1000;				
-				
-				
+				map.on('click', function(evt){
+				map.removeLayer(vectorLayer);
+			    var coords = ol.proj.toLonLat(evt.coordinate);
+			    lat = coords[1];
+			    lon = coords[0];		
+			    
+			    createBufferForAroundMe(lat , lon);			    
+			   
+			    
+				});
+
 			});
 			
 			
+			$("#clear_aroundme_rslt").click(function(){
+				info.style.visibility = 'hidden';
+			});
 			
-			var circleCenter = [230225,725714];
-
-
-			var circleLayerSource = new ol.source.Vector({});
-			var circleStyle = new ol.style.Style({
-			    stroke: new ol.style.Stroke({
-			        color: 'rgba(0, 0, 0, 0.4)',
-			        width: 5
-			    }),
-			    fill: new ol.style.Fill({
-				    color: 'rgba(0, 255, 0, 0.4)'
-				})
-			});
-			var circleLayer = new ol.layer.Vector({
-			  source: circleLayerSource,
-			  style: circleStyle
-			});
-
-
-			function drawCircleWithHole(){
-			var circleGeom = new ol.geom.Polygon([
-			     createCirclePointCoords(circleCenter[0],circleCenter[1],30000,60)
-			]); 
-			circleLayer.getSource().addFeature(new ol.Feature(circleGeom));
+			
+			function createBufferForAroundMe(lat , lon){
+				var centerCoordinates = [lon , lat];  
+			      var radius = $("#area_range").text().split(" ")[0] * 1000; 	    
+			  
+			    
+			      
+			      var circle = new ol.Feature(new ol.geom.Circle(
+			        ol.proj.fromLonLat(centerCoordinates),
+			        radius
+			      ));
+			    
+			      
+			      circle.setStyle(new ol.style.Style({
+			        fill: new ol.style.Fill({
+			          color: 'rgba(255, 0, 0, 0.2)'
+			        }),
+			        stroke: new ol.style.Stroke({
+			          color: 'red',
+			          width: 2
+			        })
+			      }));
+			    
+			      
+			      var vectorSource = new ol.source.Vector({
+			        features: [circle]
+			      });
+			    
+			      vectorLayer = new ol.layer.Vector({
+			        source: vectorSource
+			      });
+			    
+			      
+			      map.addLayer(vectorLayer);
 			}
+			
 
-
-
-
-			/**
-			* pass the x, y center of the circle
-			* the radius of circle
-			* and the number of points to form the circle
-			* 60 points seems to be fine in terms of visual impact
-			*/
-			function createCirclePointCoords(circleCenterX,circleCenterY,circleRadius,pointsToFind) {
-			    var angleToAdd = 360/pointsToFind;
-			    var coords = [];  
-			    var angle = 0;
-			    for (var i=0;i<pointsToFind;i++){
-			        angle = angle+angleToAdd;
-			        var coordX = circleCenterX + circleRadius * Math.cos(angle*Math.PI/180);
-			        var coordY = circleCenterY + circleRadius * Math.sin(angle*Math.PI/180);
-			        coords.push([coordX,coordY]);
-			    }
-			    return coords;
-			}
-
-
-			drawCircleWithHole();
+			$("#near_area").change(function(){
+				
+				map.removeLayer(vectorLayer);
+				createBufferForAroundMe(lat , lon);
+			});
+			
 			
 			/*
 			 * OPEN LAYER MAP END
