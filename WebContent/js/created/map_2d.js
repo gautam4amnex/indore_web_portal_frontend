@@ -23,6 +23,8 @@ var initial_visible_layers = [1, 34, 66, 67, 68, 69, 84, 85];// NEED TO
 																// AGAIN OR
 																// LAYER ID
 																// CHANGE
+
+
 require(
 		[   "esri/map", "esri/dijit/HomeButton", "esri/dijit/LocateButton","esri/dijit/Search", "esri/dijit/BasemapGallery",
 			"esri/arcgis/utils", "dojo/parser", 
@@ -192,9 +194,7 @@ require(
 			 
 			
 		});
-		
-		
-		
+				
 	    function draw_rectangle() {
 
 
@@ -6598,20 +6598,23 @@ require(
 			                                });
 			                                const vectorLayer = new ol.layer.Vector({
 			                                    source: vectorSource,
-			                                    //style: styleFunction,
+			                                    style: {
+			                                        'stroke-color': 'rgba(0, 153, 0, 0.7)',
+			                                        'stroke-width': 5,
+			                                      },
 			                                });
-//			                                vectorLayer.getSource().on('addfeature', function () {
-//			                                    mcgm_layer.setExtent(vectorLayer.getSource().getExtent());
-//			                                });
+			                                vectorLayer.getSource().on('addfeature', function () {
+			                                    map.setExtent(vectorLayer.getSource().getExtent());
+			                                });
 
-			                                const style = new ol.style.Style({
-			                                    fill: new ol.style.Fill({
-			                                        color: 'red',
-			                                    }),
-			                                });
 			                                const extent = vectorSource.getExtent();
 
-			                                map.getView().fit(extent);
+			                                map.getView().fit(extent,{
+			            						nearest : true,
+			            						duration : 1000,
+			            						padding: [170, 150, 130, 150],
+			            						maxZoom : 80,
+			            					});
 			                                map.addLayer(vectorLayer);
 			                                
 			                                //map1_layer.addLayer(layer_test1);
