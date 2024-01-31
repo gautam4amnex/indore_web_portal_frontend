@@ -431,6 +431,7 @@
 				
 				//map.addLayer(symbology_layers);
 				
+				/*
 		         var basemaps = [];
 		         
 		          var Pocket_1_Ortho_Part_1_layers = new BasemapLayer({  
@@ -598,11 +599,6 @@
 			            url:    window.ISCDL_SAT_IMAGE_2017_12
 			          }); 
 		          
-		          /*var abd_ortho_image = new BasemapLayer({  
-			            url:    window.ABD_ORTHO_IMAGE
-			          });*/
-		          
-		          
 		          var noBasemapLayer = new BasemapLayer({
 		      		    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
 		      		    opacity : 0.0
@@ -612,29 +608,10 @@
 		      		    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
 			          });	 
 		      	  
-				  	 /* var darkGrayLayer = new BasemapLayer({
-				  		    url: "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer",
-				  	  });	 
-				  	  
-				  	  var grayLayer = new BasemapLayer({
-		      		    url: "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer",
-				  	  });	 
-		      	  
-				  	  var oceanLayer = new BasemapLayer({
-		      		    url: "https://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer",
-				  	  });*/	 
-		      	  
 			      	  var streetLayer = new BasemapLayer({
 			      		    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer",
 			      	  });	 
 		      	  
-			      	  /*var terrainLayer = new BasemapLayer({
-			      		    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer",
-			      	  });	 
-			      	  
-			      	  var topoLayer = new BasemapLayer({
-			      		    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer",
-			      	  });*/
 		          
 		          var customBasemap = new Basemap({  
 		            layers: [
@@ -676,11 +653,6 @@
 			            thumbnailUrl: window.iscdl.appData.webURLPrefix + "images/Satellite_Image_2.png"
 		          });
 		          
-		          /*var abdAreaOrthoBasemap = new Basemap({
-		        	  layers: [abd_ortho_image],  
-			            title: "ABD Area Ortho Image",  
-			            thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/86de95d4e0244cba80f0fa2c9403a7b2/info/thumbnail/thumbnail1591224931210.jpeg"
-		          });*/
 		          
 		          basemaps.push(customBasemap); 
 		          basemaps.push(image2015Basemap);
@@ -700,41 +672,12 @@
 		        	    thumbnailUrl:"https://www.arcgis.com/sharing/rest/content/items/2660b09ebb9f4b24b0c61cf2383d64f9/info/thumbnail/imagery_hybrid_in.jpg"
 		          });
 		          
-		         /* var darkGrayBasemap = new Basemap({
-		        	    layers: [darkGrayLayer],
-		        	    title: "Dark Gray ",
-		        	    thumbnailUrl:"https://www.arcgis.com/sharing/rest/content/items/c0dc85829e4b4b22aefb077de483e025/info/thumbnail/dg_canvas_in.jpg"
-		          });
-		          
-		          var grayLayerBasemap = new Basemap({
-		        	    layers: [grayLayer],
-		        	    title: "Light Gray",
-		        	    thumbnailUrl:"https://www.arcgis.com/sharing/rest/content/items/3495cd95e14b45f3abb48fa21a69460b/info/thumbnail/lg_canvas_in.jpg"
-		          });
-		          
-		          var oceanLayerBasemap = new Basemap({
-		        	    layers: [oceanLayer],
-		        	    title: "Ocean",
-		        	    thumbnailUrl:"https://www.arcgis.com/sharing/rest/content/items/799805972b604b2fb6f77de892682008/info/thumbnail/india_oceans.jpg"
-		          });*/
-		          
 		          var streetLayerBasemap = new Basemap({
 		        	    layers: [streetLayer],
 		        	    title: "Street",
 		        	    thumbnailUrl:"https://www.arcgis.com/sharing/rest/content/items/8d937fe6577d410a888df4fd50b45042/info/thumbnail/streets_in.jpg"
 		          });
 		          
-		          /*var terrainLayerBasemap = new Basemap({
-		        	    layers: [terrainLayer],
-		        	    title: "Terrain",
-		        	    thumbnailUrl:"https://www.arcgis.com/sharing/rest/content/items/db5eedd50fcb4672a1e3f231412306fc/info/thumbnail/terrain_in.jpg"
-		          });
-		          
-		          var topoLayerBasemap = new Basemap({
-		        	    layers: [topoLayer],
-		        	    title: "Topo",
-		        	    thumbnailUrl:"https://www.arcgis.com/sharing/rest/content/items/e65d1eb3c8da424292255a9024b9ddd7/info/thumbnail/TPTOsmall.png"
-		          });*/
 		          	          
 		          basemaps.push(hybridBasemap);
 		          //basemaps.push(darkGrayBasemap);
@@ -744,7 +687,8 @@
 		          //basemaps.push(terrainLayerBasemap);
 		         // basemaps.push(topoLayerBasemap);
 		          basemaps.push(noBasemap);
-				
+				*/
+		          
 				
 				// basemap gallery widget
 //				var basemapGallery = new BasemapGallery({
@@ -9575,6 +9519,16 @@
 					$('#visibility_layer').prop('disabled',true);
 					$("#visibility_layer").prop("checked",false);
 				});
+				
+				$('.ol-gallery-thumbnail').on("click", function (){
+					$('.ol-gallery-thumbnail').removeClass('img-height-full');
+					$(this).addClass('img-height-full');
+					let layerType = $(this).data("value");
+					
+					alert(layerType);
+					
+				})
+				
 				
 				/**
 				 * LOAD FUNCTION

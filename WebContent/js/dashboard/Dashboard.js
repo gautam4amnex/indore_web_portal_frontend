@@ -9,7 +9,7 @@
 	let dashboarddataurl = baseURL + "api/dashboard/getdashboarddata";
 	let wardurl = baseURL + "citizen/ward/getWardList";
 	let updatedDateUrl = baseURL + "api/dashboard/getDashboardUpdatedDate";
-	
+	//"http://localhost:1002/IndoreAPI/api/dashboard/getdashboarddata"
 	let direction = {
 		
 		
@@ -195,7 +195,7 @@
 		}, getDashboardData : function(dashboardid, wardid){
 			
 			
-			fetch(dashboarddataurl, {
+			fetch(dashboarddataurl , {
 				method : "POST",
 				headers : {
 					"Accept" : "application/json",

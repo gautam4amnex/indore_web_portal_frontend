@@ -12,7 +12,7 @@ var swipe_layer_tool = false;
 var zoom_box_tool,zoom_out_box_tool = false;
 var source_latlong_by_name ="",destination_latlong_by_name = "",thana_locality_name = "";
 var sourceGeocoder,destGeocoder,localityThana,ward_opacity;
-
+let map_point_click = [];
 var vectorSource = null;
 var layer_names = [];
 var map_layers = [];
@@ -408,6 +408,17 @@ require(
 			 * OPEN LAYER MAP START
 			 */
 			
+			const container = document.getElementById('popup');
+			
+			const overlay = new ol.Overlay({
+			    element: container,
+			    autoPan: {
+			        animation: {
+			            duration: 250,
+			        },
+			    },
+			});
+			
 			const osm = new ol.layer.Tile({
 			    source: new ol.source.OSM
 			});			
@@ -422,6 +433,7 @@ require(
 			const map = new ol.Map({
 			    layers: [osm],
 			    target: 'map',
+			    overlays: [overlay],
 			    view: view
 			});
 			
@@ -644,16 +656,16 @@ require(
 			// clear draw graphics
 			
 			$("#clear_draw_graphics").click(function(){
-// map.graphics.clear();
-//				
-// // for draw deactive
-// if(toolbar){
-// toolbar.deactivate();
-// }
-//				
-// $("#tool_text").val("");
-// $('.draw-tools-select li a').removeClass('active');
-// $("#lblDrawTxt").text("");
+			// map.graphics.clear();
+			//				
+			// // for draw deactive
+			// if(toolbar){
+			// toolbar.deactivate();
+			// }
+			//				
+			// $("#tool_text").val("");
+			// $('.draw-tools-select li a').removeClass('active');
+			// $("#lblDrawTxt").text("");
 				
 				for(var i=0; i<vector_arr.length; i++){
 					map.removeLayer(vector_arr[i]);
@@ -3087,6 +3099,7 @@ require(
 			
 			search.startup();
 
+			/*
 	         var basemaps = [];
 	         
 	          var Pocket_1_Ortho_Part_1_layers = new BasemapLayer({  
@@ -3268,57 +3281,12 @@ require(
       		    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
 	          });	 
       	  
-		  	 /*
-				 * var darkGrayLayer = new BasemapLayer({ url:
-				 * "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer",
-				 * });
-				 * 
-				 * var grayLayer = new BasemapLayer({ url:
-				 * "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer",
-				 * });
-				 * 
-				 * var oceanLayer = new BasemapLayer({ url:
-				 * "https://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer",
-				 * });
-				 */ 
-      	  
+		  	
+      	  	
 	      	  var streetLayer = new BasemapLayer({
 	      		    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer",
 	      	  });	 
       	  
-	      	 /*
-				 * var terrainLayer = new BasemapLayer({ url:
-				 * "https://services.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer",
-				 * });
-				 * 
-				 * var topoLayer = new BasemapLayer({ url:
-				 * "https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer",
-				 * });
-				 */
-	          
-	          /*
-				 * var customBasemap = new Basemap({ layers: [
-				 * Pocket_1_Ortho_Part_25_layers,
-				 * Pocket_1_Ortho_Part_6_layers,Pocket_1_Ortho_Part_4_2_layers,
-				 * Pocket_1_Ortho_Part_26_layers,
-				 * Pocket_1_Ortho_Part_24_layers,Pocket_1_Ortho_Part_23_layers,
-				 * Pocket_1_Ortho_Part_22_layers,Pocket_1_Ortho_Part_21_layers,
-				 * Pocket_1_Ortho_Part_20_layers,Pocket_1_Ortho_Part_19_layers,
-				 * Pocket_1_Ortho_Part_18_layers,Pocket_1_Ortho_Part_17_layers,
-				 * Pocket_1_Ortho_Part_5_layers,Pocket_1_Ortho_Part_16_layers,
-				 * Pocket_1_Ortho_Part_14_layers,Pocket_1_Ortho_Part_12_layers,
-				 * Pocket_1_Ortho_Part_10_layers,Pocket_1_Ortho_Part_9_layers,
-				 * Pocket_1_Ortho_Part_8_layers,Pocket_1_Ortho_Part_7_layers,
-				 * Pocket_1_Ortho_Part_11_layers,Pocket_1_Ortho_Part_15_layers,
-				 * Pocket_1_Ortho_Part_27_layers,Pocket_1_Ortho_Part_28_layers,
-				 * Pocket_1_Ortho_Part_32_layers,Pocket_1_Ortho_Part_4_1_layers,
-				 * Pocket_1_Ortho_Part_3_layers,Pocket_1_Ortho_Part_2_layers,
-				 * Pocket_1_Ortho_Part_1_layers,Pocket_1_Ortho_Part_31_layers, ],
-				 * title: "ISCDL Drone Image 2020", thumbnailUrl:
-				 * "https://www.arcgis.com/sharing/rest/content/items/86de95d4e0244cba80f0fa2c9403a7b2" +
-				 * "/info/thumbnail/thumbnail1591224931210.jpeg" });
-				 */
-	          
 	          var image2015Basemap = new Basemap({
 	        	  layers: [tiled_image_2015],  
 		            title: "ISCDL Satellite Image 2015",  
@@ -3336,24 +3304,6 @@ require(
 					thumbnailUrl: window.iscdl.appData.webURLPrefix + "images/Satellite_Image_2.png"
 			  })
 	          
-	          /*
-				 * var image2017Basemap = new Basemap({ layers:
-				 * [iscdl_sat_image_2017_1,iscdl_sat_image_2017_2,iscdl_sat_image_2017_3,
-				 * iscdl_sat_image_2017_4,iscdl_sat_image_2017_5,iscdl_sat_image_2017_6,
-				 * iscdl_sat_image_2017_7,iscdl_sat_image_2017_8,iscdl_sat_image_2017_9,
-				 * iscdl_sat_image_2017_10,iscdl_sat_image_2017_11,iscdl_sat_image_2017_12 ],
-				 * title: "ISCDL Satellite Image 2017", thumbnailUrl:
-				 * window.iscdl.appData.webURLPrefix +
-				 * "images/Satellite_Image_2.png" });
-				 */
-	          
-	          /*
-				 * var abdAreaOrthoBasemap = new Basemap({ layers:
-				 * [abd_ortho_image], title: "ABD Area Ortho Image",
-				 * thumbnailUrl:
-				 * "https://www.arcgis.com/sharing/rest/content/items/86de95d4e0244cba80f0fa2c9403a7b2" +
-				 * "/info/thumbnail/thumbnail1591224931210.jpeg" });
-				 */
 	          
 	          // basemaps.push(customBasemap);
 	          basemaps.push(imageSatelliteImage);
@@ -3390,10 +3340,6 @@ require(
 	          basemaps.push(streetLayerBasemap);
 	          basemaps.push(noBasemap);
 
-			/**
-			 * basemap gallery widget
-			 */
-
 			var basemapGallery = new BasemapGallery({
 				showArcGISBasemaps : false,
 				basemaps: basemaps,  
@@ -3405,6 +3351,8 @@ require(
 			basemapGallery.on("error", function(msg) {
 				console.log("basemap gallery error:  ", msg);
 			});
+			
+			*/
 			
 			/**
 			 * measurement
@@ -4489,6 +4437,43 @@ require(
 								'event_latitude-error','event_longitude','event_longitude-error');
 					},
 					fillThanaSelectedLatLong : function (){
+						
+						map.on('click', (event) => {	
+					    	for(var i=0;i<map_point_click.length;i++){
+						    	map.removeLayer(map_point_click[i]);
+						    }
+
+							const tran_coords = ol.proj.transform(event.coordinate, 'EPSG:3857', 'EPSG:4326');
+		                    var latitude = tran_coords[1];
+		                    var longitude = tran_coords[0];
+		                    $("#thana_xy_latitude").val(tran_coords[1]);
+		                    $("#thana_xy_longitude").val(tran_coords[0]);
+		                    
+		                    let pinStyle = new ol.style.Style({
+	                            image: new ol.style.Icon({
+	                                anchor: [0.5, 1],
+	                                src: 'https://apagri.infinium.management/temp/point_icon.png',
+	                            })
+	                        });
+		                    
+		                    let pointFeatures = [];
+		                    let pointSource = new ol.source.Vector({
+	                            features: pointFeatures
+	                        });
+		                    let pointLayer = new ol.layer.Vector({
+	                            source: pointSource
+	                        });
+		                    let newPoint = new ol.Feature({
+		                    	geometry: new ol.geom.Point(ol.proj.fromLonLat([longitude, latitude]))
+		                    });
+		                    pointSource.addFeature(newPoint);
+		                    map.addLayer(pointLayer);
+		                    map_point_click.push(pointLayer);
+		                    newPoint.setStyle(pinStyle);
+		                    
+						})
+						
+						/*
 						map.setMapCursor("crosshair");
 						if(map_selection){
 							map_selection.remove();
@@ -4498,12 +4483,30 @@ require(
 							let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
 							window.base.checkSelectedlocationWithinBoundry(mp.x,mp.y,'thana_xy_latitude',
 									'thana_xy_latitude-error','thana_xy_longitude','thana_xy_longitude-error');
-						});
+						});*/
+						
 					},
 					fillThanaCurrentLatLong : function (){
+						
+						map.on('click', (event) => {
+							const feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
+					            return feature;
+					        });
+							if (feature) {
+								const coordinates = feature.getGeometry().getCoordinates();
+								const tran_coords = ol.proj.transform(event.coordinate, 'EPSG:3857', 'EPSG:4326');
+			                    var latitude = tran_coords[1];
+			                    var longitude = tran_coords[0];
+			                    $("#thana_xy_latitude").val(tran_coords[1]);
+			                    $("#thana_xy_longitude").val(tran_coords[0]);
+							}
+						})
+						
+						/*
 						window.base.removeCursor();
 						window.base.checkCurrentlocationWithinBoundry(_current_long,_current_lat,'thana_xy_latitude',
 								'thana_xy_latitude-error','thana_xy_longitude','thana_xy_longitude-error');
+						*/
 					},
 					removeLatLongError : function (ipId,lblId){
 						$('#'+ipId).removeClass('error');
@@ -5128,9 +5131,9 @@ require(
 					
 					let announcement_point = new Point(longitude,latitude);
 					
-					map.graphics.clear();
-					let graphic = new Graphic(announcement_point, markerSymbol);
-					map.graphics.add(graphic);
+					//map.graphics.clear();
+					//let graphic = new Graphic(announcement_point, markerSymbol);
+					//map.graphics.add(graphic);
 					
 					let template_content = "";					
 					let table_content = '<table class="table table-bordered w-100 map-detail-custom">' +
@@ -5142,13 +5145,39 @@ require(
 					
 					template_content += table_content + '</tbody></table>';
 					let announcement_infoTemplate = new InfoTemplate("Announcement",template_content);
-					graphic.setGeometry(announcement_point);
-					graphic.setInfoTemplate(announcement_infoTemplate);
-					map.centerAndZoom(announcement_point,18); 
-					map.infoWindow.setTitle(graphic.getTitle());
-					map.infoWindow.setContent(graphic.getContent());
-					map.infoWindow.show(announcement_point);
+					//graphic.setGeometry(announcement_point);
+					//graphic.setInfoTemplate(announcement_infoTemplate);
+					//map.centerAndZoom(announcement_point,18); 
+					//map.infoWindow.setTitle(graphic.getTitle());
+					//map.infoWindow.setContent(graphic.getContent());
+					//map.infoWindow.show(announcement_point);
 					window.depUtlityController.minimizePopup();
+					
+					let vectorSource = new ol.source.Vector({
+						features: [new ol.Feature({
+				            geometry: new ol.geom.Point(ol.proj.transform([parseFloat(longitude), parseFloat(latitude)], 'EPSG:4326', 'EPSG:3857')),
+				        })]
+				    });
+					
+					var vectorLayer = new ol.layer.Vector({
+					    target: "points",
+					    source: vectorSource,
+					    style: new ol.style.Style({
+					      image: new ol.style.Icon({
+					        anchor: [0.5, 0.5],
+					        anchorXUnits: "fraction",
+					        anchorYUnits: "fraction",
+					        src: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg"
+					      })
+					    })
+					  });
+						
+					  map.getView().fit(vectorLayer.getSource().getExtent(), {
+						  size: map.getSize(),
+						  maxZoom: 15
+					  });	
+					  map.addLayer(vectorLayer);
+					  
 				},
 				creatBookmarkView : function creatBookmarkView(){
 					
@@ -7025,7 +7054,11 @@ require(
 							         });
 					          },
 					          getThanaNameByLatlong : function (longitude,latitude){
+					        	  
+					        	  
 					        	  let thana_point = new Point(longitude,latitude);
+					        	  
+					        	  /*
 					        	  queryTask = new QueryTask(window.POLICE_STATION_BOUNDARY);
 							         let query = new Query();
 							         query.returnGeometry = true;
@@ -7055,7 +7088,9 @@ require(
 								        policeThanaQuery.returnGeometry = true;
 								        policeThanaQuery.outFields = ["*"];
 								        policeThanaQuery.where = "name = '"+thanaName+"' ";
+								        */
 								        
+								        /*
 								        policeThanaQueryTask.execute(policeThanaQuery,function(response){
 								        	 if(response.features.length > 0 ){
 								        		 let feature = response.features[0];
@@ -7099,7 +7134,10 @@ require(
 								        	   console.log(error);
 								        	   $(".loader").fadeOut();
 								         });
+								        */
 								        
+								         
+								        let policeStationName = 'Malharganj';
 								        let requestData = {name: policeStationName};
 								        $.ajax({
 											url : window.iscdl.appData.baseURL + "citizen/getPoliceThanaInfo",
@@ -7133,11 +7171,11 @@ require(
 												console.log(err);
 											}
 										});
-								        
+								        /*
 							        },function(error){
 							        	   console.log(error);
 							        	   $(".loader").fadeOut();
-							         });
+							         });*/
 					          },
 					          checkSelectedDirectionLocationWithinBoundry : function (longitude,latitude,
 					        		  location_id,location_error,type){
@@ -7751,10 +7789,10 @@ require(
 		});
 		
 		
-// Thana info clear
+		// Thana info clear
 		$('#thana_xyLocationClr').click(function(){
-			map.graphics.clear();
-			map.setExtent(initialExtent);
+			//map.graphics.clear();
+			//map.setExtent(initialExtent);
 			
 			if (mapClickEvtHandler != undefined) {
 				mapClickEvtHandler.remove();
@@ -7817,6 +7855,17 @@ require(
 				$("#map_measurement").attr("data-attr", "#mesurment");
 			}
 		});
+		
+		$('.ol-gallery-thumbnail').on("click", function (){
+			$('.ol-gallery-thumbnail').removeClass('img-height-full');
+			$(this).addClass('img-height-full');
+			let layerType = $(this).data("value");
+			
+			alert(layerType);
+			
+			
+			
+		})
 		
 		/**
 		 * LOAD FUNCTION
