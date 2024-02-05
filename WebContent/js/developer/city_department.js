@@ -15,6 +15,7 @@
 	 var dashboardLayer = null;
 	 var opacity_layer;	
 	 var map_layers = [];
+	 var direction_arr = [];
 	 
 	let base = {
 		getMap : function getMap(){
@@ -173,16 +174,19 @@
 				/*
 				OPEN LAYER MAP START
 				*/
+				let start_latlong;
+				let end_latlong;
+				
+
 				
 				const osm = new ol.layer.Tile({
 				    source: new ol.source.OSM
 				});
 				
 				const view = new ol.View({
-				    center: ol.proj.fromLonLat([75.8577, 22.7196]),
-				    projection: 'EPSG:3857',
-				    zoom: 11,
-				    maxZoom: 20
+					projection: 'EPSG:4326',
+				    center: [75.8577, 22.7196],
+				    zoom: 12,
 				});
 				
 				const map = new ol.Map({
@@ -190,6 +194,9 @@
 				    target: 'map',
 				    view: view
 				});
+				
+				map_layers['OSM'] = osm;
+				
 				
 				const styles = {
 				        'Polygon': new ol.style.Style({
@@ -217,6 +224,187 @@
 				  });
 				
 				map.addLayer(ward_boundary);
+				
+				
+				
+			    const geolocation = new ol.Geolocation({
+			        trackingOptions: {
+			          enableHighAccuracy: true,
+			        },
+			        projection: view.getProjection(),
+			      });
+
+
+
+
+			      const positionFeature = new ol.Feature();
+			positionFeature.setStyle(
+			  new ol.style.Style({
+			    image: new ol.style.Circle({
+			      radius: 6,
+			      fill: new ol.style.Fill({
+			        color: '#3399CC',
+			      }),
+			      stroke: new ol.style.Stroke({
+			        color: '#fff',
+			        width: 2,
+			      }),
+			    }),
+			  })
+			);
+
+		      $("#dir_current_latitude").click(function(){
+			        geolocation.setTracking(true);
+			      });
+			      
+			const accuracyFeature = new ol.Feature();
+			geolocation.on('change:accuracyGeometry', function () {
+			  accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+			});
+
+
+			geolocation.on('change:position', function () {
+				start_latlong = geolocation.getPosition();
+				//start_latlong = new ol.proj.transform([coordinates[0], coordinates[1]], 'EPSG:4326', 'EPSG:3857');
+			    $("#from_loc").val(start_latlong);
+				
+			  });
+				
+			var clicked = 0;
+//			function get_lat_long_onClick(where){
+//				    
+//				    if(where == "from"){
+//				    	map.on('click', function(evt){
+//				    	console.info(evt.pixel);
+//					    console.info(map.getPixelFromCoordinate(evt.coordinate));
+//					    console.info(ol.proj.toLonLat(evt.coordinate));
+//					    start_latlong = ol.proj.toLonLat(evt.coordinate);					    
+//					    
+//				    	$("#from_loc").val(start_latlong);
+//				    	map.un('click');
+//				    	});
+//				    }
+//				    if(where == "to"){
+//				    	map.on('click', function(evt){
+//				    	console.info(evt.pixel);
+//					    console.info(map.getPixelFromCoordinate(evt.coordinate));
+//					    console.info(ol.proj.toLonLat(evt.coordinate));
+//					    end_latlong = ol.proj.toLonLat(evt.coordinate);
+//					    
+//					        	
+//				    	$("#to_loc").val(end_latlong);
+//				    	});
+//				    }
+//				
+//			}
+			
+			function get_lat_long_onClick(where) {
+			    var clickHandler;
+
+			    if (where == "from") {
+			        clickHandler = function (evt) {
+			            console.info(evt.pixel);
+			            console.info(map.getPixelFromCoordinate(evt.coordinate));
+			            console.info(ol.proj.toLonLat(evt.coordinate));		           
+
+			            
+			            start_latlong = ol.proj.transform(evt.coordinate, 'EPSG:4326', 'EPSG:3857');
+			            start_latlong = new ol.proj.transform([start_latlong[0], start_latlong[1]], 'EPSG:3857', 'EPSG:4326');
+			            
+			            
+			            $("#from_loc").val(start_latlong);
+			            map.un('click', clickHandler);
+			        };
+			    }
+
+			    if (where == "to") {
+			    	clickHandler = function (evt) {
+			    	 console.info(evt.pixel);
+			            console.info(map.getPixelFromCoordinate(evt.coordinate));
+			            console.info(ol.proj.toLonLat(evt.coordinate));		            
+
+						end_latlong = ol.proj.transform(evt.coordinate, 'EPSG:4326', 'EPSG:3857');
+						end_latlong = new ol.proj.transform([end_latlong[0], end_latlong[1]], 'EPSG:3857', 'EPSG:4326');		
+			            
+						$("#to_loc").val(end_latlong);
+			            map.un('click', clickHandler);
+			    	}
+			    }
+
+			    map.once('click', clickHandler);
+			}
+			
+				
+				$("#dir_selected_latitude").click(function(){
+					
+					get_lat_long_onClick("from");
+					
+				});
+				
+				$("#dir_selected_long").click(function(){
+					
+					get_lat_long_onClick("to");
+					
+				});
+				
+				
+				
+				$("#locationApply").click(function(){
+					
+					console.log(start_latlong);
+					console.log(end_latlong);
+					
+					
+				    $.ajax({
+				        method: 'GET',
+				        url: 'https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf624837d0d92fba7048cd85a8893a7148bfdb&start=' + start_latlong + '&end=' + end_latlong,
+				        contentType: 'application/json',
+				        async: false,
+				        // beforeSend: function (xhr) {
+				        //     xhr.setRequestHeader('Authorization', localStorage.getItem("token"));
+				        // },
+				        success: function (response) {
+
+				            const route = response.features[0];
+				            const routeCoordinates = route.geometry.coordinates;
+				    
+				            const routeFeature = new ol.Feature({
+				                type: 'route',
+				                geometry: new ol.geom.LineString(routeCoordinates),
+				            });
+				    
+				            const routeLayer = new ol.layer.Vector({
+				                source: new ol.source.Vector({
+				                	featureProjection: 'EPSG:4326',
+				                    features: [routeFeature],
+				                }),
+				                style: new ol.style.Style({
+				                    stroke: new ol.style.Stroke({
+				                        width: 6,
+				                        color: [40, 40, 40, 0.8],
+				                    }),
+				                }),
+				            });
+				    
+				            map.removeLayer(map_layers['OSM']);
+				            map.addLayer(routeLayer);
+				            direction_arr.push(routeLayer);
+				    
+				            // Fit the map view to the route
+				            const extent = routeFeature.getGeometry().getExtent();
+				            map.getView().fit(extent, map.getSize());
+				           
+
+				        },
+
+				        error: function (e) {
+				            console.log(e);
+				        }
+
+				    });
+					
+				});
+				
 				
 				/*
 				OPEN LAYER MAP END
@@ -3635,40 +3823,45 @@
 				 * clear direction
 				 */
 				$('#locationClr').click(function(){
-					if(gLayer){
-						map.removeLayer(gLayer);
-						map.graphics.clear();
-						map.setExtent(initialExtent);
-						window.department2dMap.removeDirectionGraphics();
-						if (mapClickEvtHandler != undefined) {
-							mapClickEvtHandler.remove();
-							map.setMapCursor("default");
-						}
-						//mapReady();
-						map_info_tool = false;
-						infoToolSetup();
-						
-						$('#from_loc').val("");
-						$('#to_loc').val("");
+//					if(gLayer){
+//						map.removeLayer(gLayer);
+//						map.graphics.clear();
+//						map.setExtent(initialExtent);
+//						window.department2dMap.removeDirectionGraphics();
+//						if (mapClickEvtHandler != undefined) {
+//							mapClickEvtHandler.remove();
+//							map.setMapCursor("default");
+//						}
+//						//mapReady();
+//						map_info_tool = false;
+//						infoToolSetup();
+//						
+//						$('#from_loc').val("");
+//						$('#to_loc').val("");
+//					}
+//					
+//					if(dirgdLayer){
+//						map.removeLayer(dirgdLayer);
+//						let graphics = dirgdLayer.graphics;
+//						for(let i in graphics){
+//							let g = graphics[i];
+//							dirgdLayer.graphics.pop();
+//						}
+//					}
+//					
+//					if(dirgsLayer){
+//						map.removeLayer(dirgsLayer);
+//						let graphics = dirgsLayer.graphics;
+//						for(let i in graphics){
+//							let g = graphics[i];
+//							dirgsLayer.graphics.pop();
+//						}
+//					}
+					
+					for(var i=0; i<direction_arr.length; i++){
+						map.removeLayer(direction_arr[i]);
 					}
 					
-					if(dirgdLayer){
-						map.removeLayer(dirgdLayer);
-						let graphics = dirgdLayer.graphics;
-						for(let i in graphics){
-							let g = graphics[i];
-							dirgdLayer.graphics.pop();
-						}
-					}
-					
-					if(dirgsLayer){
-						map.removeLayer(dirgsLayer);
-						let graphics = dirgsLayer.graphics;
-						for(let i in graphics){
-							let g = graphics[i];
-							dirgsLayer.graphics.pop();
-						}
-					}
 				});
 
 				
@@ -5028,7 +5221,7 @@
 			                            const geoJSONFormat = new ol.format.GeoJSON();
 			                            var vectorSource = new ol.source.Vector({
 			                                features: geoJSONFormat.readFeatures(result, {
-			                                    featureProjection: 'EPSG:3857',
+			                                    featureProjection: 'EPSG:4326',
 			                                }),
 			                                format: geoJSONFormat,
 			                            });
@@ -5199,7 +5392,7 @@
 					                            const geoJSONFormat = new ol.format.GeoJSON();
 					                            var vectorSource = new ol.source.Vector({
 					                                features: geoJSONFormat.readFeatures(result, {
-					                                    featureProjection: 'EPSG:3857',
+					                                    featureProjection: 'EPSG:4326',
 					                                }),
 					                                format: geoJSONFormat,
 					                            });
@@ -5321,7 +5514,7 @@
 					                            const geoJSONFormat = new ol.format.GeoJSON();
 					                            var vectorSource = new ol.source.Vector({
 					                                features: geoJSONFormat.readFeatures(result, {
-					                                    featureProjection: 'EPSG:3857',
+					                                    featureProjection: 'EPSG:4326',
 					                                }),
 					                                format: geoJSONFormat,
 					                            });
@@ -7360,21 +7553,29 @@
 								});
 							},
 							fillSelectedDirectionLatitude : function(type){
-								map.setMapCursor("crosshair");
-								if(map_selection){
-									map_selection.remove();
-									//map_hover.remove();
-								}
+//								map.setMapCursor("crosshair");
+//								if(map_selection){
+//									map_selection.remove();
+//									//map_hover.remove();
+//								}
+//								
+//								dirLatLong = map.on("click", function(evt) {
+//									if(type == "Source"){
+//										let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
+//										window.department2dMap.checkSelectedDirectionLocationWithinBoundry(mp.x,mp.y,'from_loc','from_loc-error',type);
+//									}else if(type == "Destination"){
+//										let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
+//										window.department2dMap.checkSelectedDirectionLocationWithinBoundry(mp.x,mp.y,'to_loc','to_loc-error',type);
+//									}
+//								});
 								
-								dirLatLong = map.on("click", function(evt) {
-									if(type == "Source"){
-										let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
-										window.department2dMap.checkSelectedDirectionLocationWithinBoundry(mp.x,mp.y,'from_loc','from_loc-error',type);
-									}else if(type == "Destination"){
-										let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
-										window.department2dMap.checkSelectedDirectionLocationWithinBoundry(mp.x,mp.y,'to_loc','to_loc-error',type);
-									}
-								});
+								map.on('singleclick', function(evt)
+										{
+									tip = 'hello';
+
+										});
+								
+
 							},
 							fillCurrentDirectionLatLong : function(type){
 								window.department2dMap.checkCurrentDirectionLocationWithinBoundry(_current_long,_current_lat,type);

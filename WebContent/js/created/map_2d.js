@@ -413,10 +413,9 @@ require(
 			});			
 			
 			const view = new ol.View({
-			    center: ol.proj.fromLonLat([75.8577, 22.7196]),
-			    projection: 'EPSG:3857',
-			    zoom: 11,
-			    maxZoom: 20
+				projection: 'EPSG:4326',
+			    center: [75.8577, 22.7196],
+			    zoom: 12,
 			});
 			
 			const map = new ol.Map({
@@ -463,12 +462,18 @@ require(
 //			    // coords is a div in HTML below the map to display
 //			    document.getElementById('coords').innerHTML = locTxt;
 //			});
-			
-			
-			
-			
 			const info = document.getElementById('info');
 
+
+			$(document).keyup(function(e) {
+				/*======================================== Handle escape key press event =======================================*/
+				if (e.key === "Escape" || e.keyCode == 27) { 
+					
+					evt.dragging = true;
+				}
+				/*======================================== Handle escape key press event =======================================*/
+			});
+			
 			let currentFeature;
 			const displayFeatureInfo = function (pixel, target) {
 			  const feature = target.closest('.ol-control')
@@ -514,6 +519,14 @@ require(
 					  displayFeatureInfo(pixel, evt.originalEvent.target);
 					});			
 				
+				$(document).keyup(function(e) {
+					if (e.key === "Escape" || e.keyCode == 27) { 
+						
+						e.dragging = true;
+					}
+					
+				});
+				
 				
 				map.on('click', function(evt){
 				map.removeLayer(vectorLayer);
@@ -526,6 +539,12 @@ require(
 			    
 				});
 
+			});
+			
+			$("#kyp_submit").click(function(){
+				
+				
+				
 			});
 			
 			
@@ -4141,6 +4160,58 @@ require(
 		});
 		 
 		// know your property form
+//		$('form[id="form_kyp"]')
+//		.validate(
+//				{
+//					rules : {
+//						/*
+//						 * kyp1_ward : { dropDownValidation : true, required :
+//						 * true },
+//						 */ 
+//					},
+//					messages : {
+//						/*
+//						 * kyp1_ward : { dropDownValidation : "Please Select
+//						 * Ward", required : "Please Select Ward" }
+//						 */
+//					},
+//					submitHandler : function(form, e) {
+//						e.preventDefault();
+//						try {
+//							kypResultArray = [];
+//							let query = window.base.createQueryByKYP();
+//							
+//							if(query == undefined){
+//								return;
+//							}
+//							
+//					        $(".loader").fadeIn();
+//					         queryTask.execute(query,function(result){
+//					        	 map.graphics.clear();
+//					        	 map.removeLayer(resultedFeaturesLayer);
+//
+//					        	 if(result.features.length == 0 ){
+//					        		 $u.notify("info", "Notification","No result found");
+//					        		 $(".loader").fadeOut();
+//						        	 return;
+//					        	 }
+//					        	 $('#kyp_ul_data a[href="#kyp_final_result"]').tab('show');
+//					        	 window.base.bindListOfFeatures(result);
+//					        	 $(".loader").fadeOut();
+//					         },function(error){
+//					        	   console.log(error);
+//					        	   $(".loader").fadeOut();
+//					         });
+//					        	
+//					        
+//						} catch (e) {
+//							 $(".loader").fadeOut();
+//							 $u.notify("error", "Error","Something Happend Wrong");
+//						}
+//					}
+//				});
+		
+		
 		$('form[id="form_kyp"]')
 		.validate(
 				{
@@ -4159,38 +4230,86 @@ require(
 					submitHandler : function(form, e) {
 						e.preventDefault();
 						try {
-							kypResultArray = [];
-							let query = window.base.createQueryByKYP();
-							
-							if(query == undefined){
-								return;
-							}
-							
-					        $(".loader").fadeIn();
-					         queryTask.execute(query,function(result){
-					        	 map.graphics.clear();
-					        	 map.removeLayer(resultedFeaturesLayer);
+							let locality_name = $('#kyl_locality').val();
+		                    let ward_no1 = $("#kyp1_ward").val();
+		                    let plot_no1 = $("#kyl_plot").val();
 
-					        	 if(result.features.length == 0 ){
-					        		 $u.notify("info", "Notification","No result found");
-					        		 $(".loader").fadeOut();
-						        	 return;
-					        	 }
-					        	 $('#kyp_ul_data a[href="#kyp_final_result"]').tab('show');
-					        	 window.base.bindListOfFeatures(result);
-					        	 $(".loader").fadeOut();
-					         },function(error){
-					        	   console.log(error);
-					        	   $(".loader").fadeOut();
-					         });
-					        	
-					        
-						} catch (e) {
-							 $(".loader").fadeOut();
-							 $u.notify("error", "Error","Something Happend Wrong");
-						}
-					}
-				});
+//		                    if ((locality_name != "") && (ward_no1 == "") && (plot_no1 == "")) {
+//		                        $u.notify("info", "Notification", "Please select value");
+//		                        return;
+//		                    }
+
+		                    var form_data = {
+		                    		locality: locality_name
+		                    };
+
+		                    $.ajax({
+		                        method: 'POST',
+		                        url: window.iscdl.appData.baseURL + "citizen/getknowyourpropertydata",
+		                        data: JSON.stringify(form_data),
+		                        contentType: 'application/json',
+		                        async: false,
+
+		                        success: function (response) {
+
+		                        	var result = JSON.parse(response);
+		                        	
+		                        	if(result.features.length > 0 ){
+		                     
+		                        	
+		                            const geoJSONFormat = new ol.format.GeoJSON();
+		                            var vectorSource = new ol.source.Vector({
+		                                features: geoJSONFormat.readFeatures(result, {
+		                                    featureProjection: 'EPSG:4326',
+		                                }),
+		                                format: geoJSONFormat,
+		                            });
+
+
+		                            vectorLayer = new ol.layer.Vector({
+		                                source: vectorSource
+		                               
+		                            });
+
+		                            vectorLayer.getSource().on('addfeature', function () {
+		                                map.setExtent(vectorLayer.getSource().getExtent());
+		                            });
+
+
+		                            const extent = vectorSource.getExtent();
+
+		                            map.getView().fit(extent);
+
+		                            //map1_layer.addLayer(layer_test1);
+		                            map.addLayer(vectorLayer);
+		                            basic_query_layer_arr.push(vectorLayer);
+		                            //window.depUtlityController.minimizePopup();
+
+		                            console.log(result);
+		                        	}
+		                        	else{
+		                        		$u.notify("error", "Error",
+				                        "No Data Found for selected fields");
+		                        	}
+		                        	
+		                        		
+
+		                        },
+		                        error: function (e) {
+		                            $(".loader").fadeOut();
+		                            console.log(e);
+		                        }
+		                    });
+
+
+
+		                } catch (e) {
+		                    $(".loader").fadeOut();
+		                    $u.notify("error", "Error",
+		                        "Something went Wrong");
+		                }
+		            }
+		        });
 		
 		// know your property by ward number
 		$('form[id="form1_kyp"]')
