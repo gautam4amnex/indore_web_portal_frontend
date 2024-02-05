@@ -188,9 +188,9 @@ $('#dir_current_longitude').click(function() {
 	window.department2dMap.fillCurrentDirectionLatLong("Destination");
 });
 
-$('#dir_current_latitude').click(function() {
-	window.department2dMap.fillCurrentDirectionLatLong("Source");
-});
+//$('#dir_current_latitude').click(function() {
+//	//window.department2dMap.fillCurrentDirectionLatLong("Source");
+//});
   
 $(document).ready(function(){	
 		
