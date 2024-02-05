@@ -236,7 +236,10 @@ $(function() {
 			 */
 
 			"_print_ptitle" : "Title Name",
+			"_print_pfilename" : "File Name",
 			"_print_etitle" : "Enter Title",
+			"_print_porientation" : "Orientation",
+			"_print_efilename" : "Enter File Name",
 			"_print_playout" : "Layout",
 			"_print_pformat" : "Format",
 			"_print_gprintout" : "Get Printout",
@@ -794,7 +797,10 @@ $(function() {
 			 */
 
 			"_print_ptitle" : "शीर्षक नाम",
+			"_print_pfilename" : "फ़ाइल का नाम",
 			"_print_etitle" : "शीर्षक नाम दर्ज करें",
+			"_print_porientation" : "अभिविन्यास",
+			"_print_efilename" : "फ़ाइल नाम दर्ज करें",
 			"_print_playout" : "ख़ाका",
 			"_print_pformat" : "स्वरूप",
 			"_print_gprintout" : "प्रिंटआउट लें",
