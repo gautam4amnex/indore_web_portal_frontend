@@ -2830,7 +2830,7 @@ Proximity Analysis
 				</ul>
 			</div>	
 			<div id="searchDiv"></div>
-				<div id="map" class="map h-100">
+				<div id="map" class="map h-100 printWholeMap">
 				<span id="coordinateDiv"></span>				
 				</div>
 			</div>
@@ -2908,14 +2908,25 @@ Proximity Analysis
 											<input type="text" class="form-control" id="title_name" name= "title_name" placeholder="Enter Title" data-translate = "_print_etitle">
 										</div>
 										<div class="form-group">
+											<label for="file_name" data-translate = "_print_pfilename">File Name</label>
+											<input type="text" class="form-control" id="file_name" name= "file_name" data-translate = "_print_efilename" placeholder="Enter File Name">
+										</div>
+										<div class="form-group">
 											<label for="print_format" data-translate = "_print_playout">Layout</label>
 											<select name="printLayout" id="print_layout_id" class="form-control pb-1">
-					                          <option value="A3 Landscape">A3 Landscape</option>
+											  <option value="a4" selected="selected">A4</option>
+					                          <option value="a0">A0 (slow)</option>
+					                          <option value="a1">A1</option>
+					                          <option value="a2">A2</option>
+					                          <option value="a3">A3</option>
+					                          <option value="a5">A5</option>
+					                          
+					                          <!-- <option value="A3 Landscape">A3 Landscape</option>
 					                          <option value="A3 Portrait">A3 Portrait</option>
 					                          <option value="A4 Landscape">A4 Landscape</option>
 					                          <option value="A4 Portrait">A4 Portrait</option>
 					                          <option value="MAP_ONLY">MAP ONLY</option>
-					                          <!-- <option value="Letter ANSI A Landscape" selected>Letter ANSI A Landscape</option>
+					                          <option value="Letter ANSI A Landscape" selected>Letter ANSI A Landscape</option>
 					                          <option value="Letter ANSI A Portrait">Letter ANSI A Portrait</option>
 					                          <option value="Tabloid ANSI B Landscape">Tabloid ANSI B Landscape</option>
 					                          <option value="Tabloid ANSI B Portrait">Tabloid ANSI B Portrait</option> -->
@@ -2925,10 +2936,16 @@ Proximity Analysis
 											<label for="print_format" data-translate = "_print_pformat">Format</label>
 											 <select name="printFormat" id="print_format_id" class="form-control pb-1">
 						                          <option value="pdf" selected>PDF</option>
-						                          <!-- <option value="png32">PNG32</option> -->
-						                          <option value="png8">PNG8</option>
-						                          <option value="jpg">JPG</option>
+						                          <option value="png">PNG</option>
+						                          <option value="jpeg">JPG</option>
 						                     </select>
+										</div>
+										<div class="form-group">
+											<label for="print_format" data-translate = "_print_porientation">Orientation</label>
+											 <select name="printOrientation" id="print_orientation_id" class="form-control pb-1">
+						                          <option value="p" selected="selected">Portrait</option>
+						                          <option value="l">Landscape</option>
+                                             </select>
 										</div>
 										<div class="text-center">
 											<!-- <button type="submit" class="btn btn-indore">Advance</button> -->
@@ -3854,6 +3871,11 @@ Proximity Analysis
 	<script type="text/javascript" src = "${context}/js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="${context}/js/popper.min.js"></script>
 	
+		<script type="text/javascript" src="${context}/js/html2canvas.min.js"></script>
+	<script type="text/javascript" src="${context}/js/jspdf.min.js"></script>
+	<script type="text/javascript" src="${context}/js/JSPDFCenterText.js"></script>
+	<script type="text/javascript" src="${context}/js/dashboard/Print.js"></script>
+	
 	<script type="text/javascript" src="${context}/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="${context}/js/bootstrap-select.js"></script>
 	<script type="text/javascript" src="${context}/js/moment.min.js"></script>
@@ -3864,6 +3886,7 @@ Proximity Analysis
 	<script type="text/javascript" src="${context}/js/slick.min.js"></script>
 	<script type="text/javascript" src="${context}/js/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="${context}/js/toastr.min.js"></script>
+	
 	
 	<script type="text/javascript" src="${context}/js/utils.js"></script>
 	<script type="text/javascript" src="${context}/js/esri/esri-api-3-30.js"></script>

@@ -4996,24 +4996,58 @@
 								title_name : {
 									required : true,
 								},
+								file_name : {
+									required : true,
+								}
 							},
 							messages : {
 								title_name : {
 									required : "Please Enter Title Name",
 								},
+								file_name : {
+									required : "Please Enter File Name",
+								}
 							},
 							submitHandler : function(form, e) {
 								e.preventDefault();
 								
 								try {
 										document.getElementById("print_submit").innerHTML = "Printing..."
-						                document.getElementById("print_submit").disabled = true; // Button
-																									// disable
-																									// while
-																									// printing
+										document.getElementById("print_submit").disabled = true; 
+										var canvas = document.getElementById("map");
+										
+										
+										var today = new Date();
+										var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+										var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+										var dateTime = date+' '+time;
+										
+										var exportObject = {
+												'id' : 'map',
+												'exportType' : $("#print_format_id").val(),
+												'title' : $("#title_name").val(),
+												'fileName' : $("#file_name").val(),
+												'pageSetup' : $("#print_layout_id").val(),
+												'canvas' : canvas,
+												'orientation' : $("#print_orientation_id").val(),
+												'includeLegend' : false,
+												'tooltipText' : 'NA',
+												'dateTime':dateTime
+										};
+										
+										window.printModule.printMap(exportObject, map,"main",canvas);
+										
+										document.getElementById("print_submit").style.display = 'none';
+					                    document.getElementById("printResult").style.display = 'block';
+					                    document.getElementById("print_submit").innerHTML = "Print";
+				                        document.getElementById("print_submit").style.display = 'block';
+				                        document.getElementById("printResult").style.display = 'none';
+				                        document.getElementById("print_submit").disabled = false;
+					                    document.getElementById("print_submit").innerHTML = "Print";
+					                    $('#form_print').trigger('reset');
+										
+										/*
 						                var printObj = createPrintTask(document.getElementById("title_name").value); // Gets
-																														// titles
-																														// displayed
 						                var printTask = printObj.printTask;
 						                printTask.execute(printObj.params, function (evt) {
 						                    document.getElementById("print_submit").style.display = 'none';
@@ -5035,6 +5069,7 @@
 						                    document.getElementById("print_submit").disabled = false;
 						                    document.getElementById("print_submit").innerHTML = "Print";
 						                });
+						                */
 								} catch (e) {
 									 $(".loader").fadeOut();
 									 document.getElementById("print_submit").disabled = false;
