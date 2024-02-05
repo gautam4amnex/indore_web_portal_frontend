@@ -1522,7 +1522,7 @@
 			if(length > 0){
 				for (let i in response){
 					let name = response[i].layer_name;
-					let id = response[i].layer_id;
+					let id = response[i].gis_id;
 					let swipe_layer = response[i].swipe_layer;
 					if(swipe_layer == true){
 						str += "<option value='" + id + "'>" + name + "</option>";

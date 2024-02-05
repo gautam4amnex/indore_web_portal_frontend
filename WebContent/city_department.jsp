@@ -2797,6 +2797,7 @@ Proximity Analysis
 							<label for="swipe_layer_select" data-translate= "_select_layer">Select Layer</label><span class="mandatory">*</span>
 							<select class="form-control pb-1" id="swipe_layer_select" name="swipe_layer_select"></select>
 						</div>
+						<div id="swipe_div"><input id="swipe" type="range" value="00" style="width: 280px;" class="form-range" /></div>
 						<div class="text-center">
 								<button type="submit" class="btn btn-indore" data-translate="_swipe">Swipe</button>
 								<button type="reset" class="btn btn-indore" id="clear_swipe_layer" data-translate="_clear">Clear</button>
@@ -2830,8 +2831,7 @@ Proximity Analysis
 			</div>	
 			<div id="searchDiv"></div>
 				<div id="map" class="map h-100">
-				<span id="coordinateDiv"></span>
-				<div id="swipeDiv"></div>
+				<span id="coordinateDiv"></span>				
 				</div>
 			</div>
 			

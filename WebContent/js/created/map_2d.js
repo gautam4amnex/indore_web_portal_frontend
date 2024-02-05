@@ -86,7 +86,7 @@ require(
 			var share_extent;
 			var app = {};
 			var layerSwipe,nearme_featureLayer,usa_circle;
-			var indore_map_layers;
+			var indore_map_layers;  
 			var onFlylayers = [];
 			var legendLayers = [];
 			var ontheFlyLayer = false;
@@ -542,7 +542,7 @@ require(
 				
 				map.on('click', function(evt){
 				map.removeLayer(vectorLayer);
-			    var coords = ol.proj.toLonLat(evt.coordinate);
+			    var coords = evt.coordinate;
 			    lat = coords[1];
 			    lon = coords[0];		
 			    
@@ -567,12 +567,12 @@ require(
 			
 			function createBufferForAroundMe(lat , lon){
 				var centerCoordinates = [lon , lat];  
-			      var radius = $("#area_range").text().split(" ")[0] * 1000; 	    
+			      var radius = $("#area_range").text().split(" ")[0] / 100; 	    
 			  
 			    
 			      
 			      var circle = new ol.Feature(new ol.geom.Circle(
-			        ol.proj.fromLonLat(centerCoordinates),
+			       centerCoordinates,
 			        radius
 			      ));
 			    
@@ -589,6 +589,7 @@ require(
 			    
 			      
 			      var vectorSource = new ol.source.Vector({
+			    	//featureProjection: 'EPSG:4326',
 			        features: [circle]
 			      });
 			    
@@ -825,11 +826,20 @@ require(
 				map.setExtent(initialExtent);
 			});
 			
+			
+			let basic_query_layer_arr = [];
+			
+			
 			$("#clear_predefineQuery").click(function(){
 				$("#form_query").trigger("reset");
 				$("#attribute_query_rslt").html("");
-				map.graphics.clear();
-				map.setExtent(initialExtent);
+//				map.graphics.clear();
+//				map.setExtent(initialExtent);
+				
+				for(var i=0; i<basic_query_layer_arr.length; i++){
+					map.removeLayer(basic_query_layer_arr[i]);
+				}
+				
 			});
 			
 			$("#clear_swipe_layer").click(function(){
@@ -4257,7 +4267,7 @@ require(
 		                        "Something went Wrong");
 		                }
 		            }
-		        });
+		        }); 
 		
 		// know your property by ward number
 		$('form[id="form1_kyp"]')
@@ -4368,6 +4378,97 @@ require(
 					}
 		}, 'Please select ward');
 		
+//		$('form[id="form_query"]')
+//		.validate(
+//				{
+//					rules : {
+//						poi_layer_select : {
+//							required : true,
+//							dropDownValidation : true
+//						}
+//					},
+//					messages : {
+//						poi_layer_select : {
+//							required : "Please Select Layer",
+//							dropDownValidation : "Please Select Layer",
+//						},
+//					},
+//					submitHandler : function(form, e) {
+//						e.preventDefault();
+//						try {
+//							/**
+//							 * for showing result tab
+//							 */
+//							$("#attribute_query_rslt").html("");
+//							let ward_id = $("#location_select").val();
+//							let l_id = $("#poi_layer_select").val();
+//							let locality = $("#poi_locality").val();
+//							try {
+//								
+//								
+//								// update checkbox status in layer panel
+//								$('#accordionExample .layers-toggle-body input').each(function() {
+//									let layer_id = $(this).data('layerid');
+//									let child_id  = $(this).attr('id');
+//									if(l_id == layer_id){
+//										$("#"+child_id).prop('checked', true);
+//									}
+//								});
+//								
+//								// enable layer query wise
+//								var visible = [];
+//								$('#accordionExample .layers-toggle-body input:checked').each(function() {
+//									let visible_id = $(this).data('layerid');
+//									if(visible_id){
+//										visible.push(visible_id);	
+//								    }
+//								});
+//								
+//								 if (visible.length === 0) {
+//							            visible.push(-1);
+//							     }
+//								 symbology_layers.setVisibleLayers(visible);
+//								
+//								let queryByAttributeCriteria = window.base.createQueryByAttributeCriteria(l_id,ward_id,locality);
+//								
+//								if(queryByAttributeCriteria == undefined){
+//									return;
+//								}
+//								
+//						        $(".loader").fadeIn();
+//						         
+//						        queryTask.execute(queryByAttributeCriteria,function(result){
+//						        	$(".loader").fadeOut();
+//						        	map.graphics.clear();
+//						        	map.removeLayer(resultedFeaturesLayer);
+//						        	 if(result.features.length == 0 ){
+//						        		 $u.notify("info", "Notification","No result found");
+//							        	 return;
+//						        	 }
+//						        	 $('#query_result_tab a[href="#query_result"]').tab('show');
+//						        	window.base.prepareAttributeQueryResult(result);
+//						         },function(error){
+//						        	   console.log(error);
+//						        	   $(".loader").fadeOut();
+//						         });
+//							} catch (e) {
+//								 $(".loader").fadeOut();
+//								 $u.notify("error", "Error","Something Happend Wrong");
+//							}
+//							
+//						} catch (e) {
+//							 $(".loader").fadeOut();
+//							 $u.notify("error", "Error","Something Happend Wrong");
+//						}
+//					}
+//				});
+		let location_mark = new ol.style.Style({
+            image: new ol.style.Icon({
+                anchor: [0.5, 1],
+                src: 'images/icons/svgviewer-output.svg',
+            })
+        });
+		
 		$('form[id="form_query"]')
 		.validate(
 				{
@@ -4395,52 +4496,74 @@ require(
 							let locality = $("#poi_locality").val();
 							try {
 								
-								
-								// update checkbox status in layer panel
-								$('#accordionExample .layers-toggle-body input').each(function() {
-									let layer_id = $(this).data('layerid');
-									let child_id  = $(this).attr('id');
-									if(l_id == layer_id){
-										$("#"+child_id).prop('checked', true);
-									}
-								});
-								
-								// enable layer query wise
-								var visible = [];
-								$('#accordionExample .layers-toggle-body input:checked').each(function() {
-									let visible_id = $(this).data('layerid');
-									if(visible_id){
-										visible.push(visible_id);	
-								    }
-								});
-								
-								 if (visible.length === 0) {
-							            visible.push(-1);
-							     }
-								 symbology_layers.setVisibleLayers(visible);
-								
-								let queryByAttributeCriteria = window.base.createQueryByAttributeCriteria(l_id,ward_id,locality);
-								
-								if(queryByAttributeCriteria == undefined){
-									return;
+								var form_data = {
+										tableName: l_id,
+										wardId: ward_id,
+										locality: locality
 								}
 								
-						        $(".loader").fadeIn();
-						         
-						        queryTask.execute(queryByAttributeCriteria,function(result){
-						        	$(".loader").fadeOut();
-						        	map.graphics.clear();
-						        	map.removeLayer(resultedFeaturesLayer);
-						        	 if(result.features.length == 0 ){
-						        		 $u.notify("info", "Notification","No result found");
-							        	 return;
-						        	 }
-						        	 $('#query_result_tab a[href="#query_result"]').tab('show');
-						        	window.base.prepareAttributeQueryResult(result);
-						         },function(error){
-						        	   console.log(error);
-						        	   $(".loader").fadeOut();
-						         });
+								
+								$.ajax({
+			                        method: 'POST',
+			                        url: window.iscdl.appData.baseURL + "citizen/getformdata",
+			                        data: JSON.stringify(form_data),
+			                        contentType: 'application/json',
+			                        async: false,
+
+			                        success: function (response) {
+
+			                        	var result = JSON.parse(response);
+			                        	
+			                        	if(result.features.length > 0 ){
+			                     
+			                        	
+			                            const geoJSONFormat = new ol.format.GeoJSON();
+			                            var vectorSource = new ol.source.Vector({
+			                                features: geoJSONFormat.readFeatures(result, {
+			                                    featureProjection: 'EPSG:4326',
+			                                }),
+			                                format: geoJSONFormat,
+			                            });
+
+
+			                            vectorLayer = new ol.layer.Vector({
+			                                source: vectorSource,
+			                                style: location_mark,
+			                            });
+
+			                            vectorLayer.getSource().on('addfeature', function () {
+			                                map.setExtent(vectorLayer.getSource().getExtent());
+			                            });
+
+
+			                            const extent = vectorSource.getExtent();
+
+			                            map.getView().fit(extent);
+
+			                            //map1_layer.addLayer(layer_test1);
+			                            map.addLayer(vectorLayer);
+			                            basic_query_layer_arr.push(vectorLayer);
+			                            //window.depUtlityController.minimizePopup();
+
+			                            console.log(result);
+			                        	}
+			                        	else{
+			                        		$u.notify("error", "Error",
+					                        "No Data Found for selected fields");
+			                        	}
+			                        	
+			                        		
+
+			                        },
+			                        error: function (e) {
+			                            $(".loader").fadeOut();
+			                            console.log(e);
+			                        }
+			                    });
+								
+								
+																
+								
 							} catch (e) {
 								 $(".loader").fadeOut();
 								 $u.notify("error", "Error","Something Happend Wrong");
