@@ -1520,7 +1520,30 @@ Proximity Analysis
 				<a class="layer-close side-layer-close" href="javascript:void(0);"><img class="map-side-icon-img" src="${context}/images/icons/Close-61.svg" alt=""></a> 	
 			</div>		
 			<div class="layer-content scrollar" >	
-				<div id="basemapGalleryDiv"></div>	
+				<div id="basemapGalleryDiv">
+					
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-12 ">
+								 <ul class="ol-gallery">
+								 	<li>
+								 	<a href="javascript:void(0);" id="SatelliteIMG"><img class="ol-gallery-thumbnail" src="${context}/images/Satellite_Image_2.png" alt="" data-value="satellite"></a>
+								 	<div class="ol-gallery-title">Satellite Image</div>
+								 	</li>
+								 	<li>
+			  						<a href="javascript:void(0);" id="droneIMG"><img class="ol-gallery-thumbnail" src="${context}/images/Satellite_Image_1.png" alt="" data-value="hybrid"></a>
+								 	<div class="ol-gallery-title">Hybrid</div>
+								 	</li>
+								 	<li>
+								 	<a href="javascript:void(0);" id="blankImage"><img class="ol-gallery-thumbnail" src="${context}/images/blank.jpg" alt="" data-value="blank"></a>	
+								 	<div class="ol-gallery-title">Blank</div>
+								 	</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+				</div>	
 			</div>	
 		</div>	
 	</div>	
