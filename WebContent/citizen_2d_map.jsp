@@ -3059,7 +3059,7 @@ Advance Tools
 	<script type="text/javascript" src="${context}/js/utils.js"></script>
 	<script type="text/javascript" src="${context}/js/esri/esri-api-3-30.js"></script>
 	
-	
+	<script type="text/javascript" src="${context}/js/dashboard/bookmark.js"></script>
 	
 	<%-- <script type="text/javascript" src="${context}/js/citizenmap.js"></script> --%>
 	<script type="text/javascript" src="${context}/js/created/appData.js"></script>

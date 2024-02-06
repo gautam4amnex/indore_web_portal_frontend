@@ -5798,13 +5798,14 @@ require(
 						return;
 					}
 					
-					let current_extent = map._getAvailExtent();
+					let current_extent = map.getView().calculateExtent(map.getSize());
 					
-					let xmin = current_extent.xmin;
-					let ymin = current_extent.ymin;
-					let xmax = current_extent.xmax;
-					let ymax = current_extent.ymax;
-					let srs = current_extent.spatialReference.wkid;
+					//let current_extent = map._getAvailExtent();
+					let xmin = current_extent[0];
+					let ymin = current_extent[1];
+					let xmax = current_extent[2];
+					let ymax = current_extent[3];
+					let srs = 'EPSG:3857';
 					
 					if(user_id != undefined && user_id != null && user_id != ""){
 						window.base.addBookmark(bookmark_name,user_id,xmin,ymin,xmax,ymax,srs);	
@@ -5820,6 +5821,8 @@ require(
 						}
 					}
 					$("#bookmark_name").val("");
+					
+					
 				},
 				addBookmark : function addBookmark(bookmark_name,user_id,xmin,ymin,xmax,ymax,srs){
 					let result;
@@ -6056,11 +6059,16 @@ require(
 					let ymax = $(data).data("ymax");
 					let wkid = $(data).data("srs");
 					
+					
+					var myExtent = [xmin,ymin,xmax,ymax];
+					map.getView().fit(myExtent , map.getSize());
+					/*
 					let bookmarkExtent = new Extent(xmin, ymin, xmax, ymax,
 							new SpatialReference({
 								wkid : wkid
 					}));
 					map.setExtent(bookmarkExtent);
+					*/
 				},
 				prepareAttributeQueryResult : function prepareAttributeQueryResult(result){
 					
