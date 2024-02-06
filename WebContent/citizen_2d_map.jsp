@@ -2663,6 +2663,7 @@ Advance Tools
 						<div class="form-group">
 							<label for="swipe_layer_select" data-translate= "_select_layer">Select Layer</label><span class="mandatory">*</span>
 							<select class="form-control pb-1" id="swipe_layer_select" name="swipe_layer_select"></select>
+							<div id="swipe_div"><input id="swipe" type="range" value="00" style="width: 280px;" class="form-range" /></div>
 						</div>
 						<div class="text-center">
 								<button type="submit" class="btn btn-indore" data-translate="_swipe">Swipe</button>
