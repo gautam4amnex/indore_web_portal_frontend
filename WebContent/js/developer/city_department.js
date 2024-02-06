@@ -174,6 +174,204 @@
 				/*
 				OPEN LAYER MAP START
 				*/
+				$("#search_layer").empty().append(
+				'<option value="">Select Layer</option>');
+				
+				$.ajax({
+					method : 'GET',
+					url : window.iscdl.appData.baseURL + "citizen/layer/getLayerCategoryList",
+					contentType : 'application/json',
+					async : false,				
+					success : function(result) {
+						if (!$.isEmptyObject(result) && result != null) {
+							try {
+								result = JSON.parse(result);
+								let str = "";
+								if (result.responseCode == '200') {
+									let response = result.data;
+									if(global.layers == undefined){
+										global.layers = response;	
+									}
+									
+									let length = response.length;
+									if(length > 0){
+										for (let i in response){
+											let name = response[i].layer_name;
+											let id = response[i].layer_id;
+											let swipe_layer = response[i].swipe_layer;
+											
+											
+												str += "<option value='" + id + "'>" + name + "</option>";
+											
+										}
+										$("#search_layer").append(str);
+									}
+								} else {
+									$u.notify('error', 'Notification',
+											result.responseMessage, '');
+								}
+							
+							} catch (err) {
+								console.log(err);
+							}
+						} else {
+							$u.notify('info', 'Notification',
+											'No Data Found', '');
+						}
+					},
+					error : function(e) {
+						console.log(e);
+					}
+				});
+				
+				
+				
+				$("#search_layer").change(function(){
+					
+					$("#layer_value").empty().append(
+					'<option value="">Select Value</option>');
+					
+					var form_data = {
+							tableName: $("#search_layer").val()
+					}
+					
+					$.ajax({
+						method : 'POST',
+						url : window.iscdl.appData.baseURL + "citizen/query/getvaluebylayer",
+						contentType : 'application/json',
+						data: JSON.stringify(form_data),
+						async : false,					
+						beforeSend : function(request) {
+							request.setRequestHeader('Authorization', 'Bearer '
+									+ localStorage.getItem('token'));
+						},
+						success : function(result) {
+							if (!$.isEmptyObject(result) && result != null) {
+								try {
+									//result = JSON.parse(result);
+									let str = "";
+									if (result.responseCode == '200') {
+										let response = result.data;
+										if(global.layers == undefined){
+											global.layers = response;	
+										}
+										
+										let length = response.length;
+										if(length > 0){
+											for (let i in response){
+												let name = response[i].name;												
+												let id = response[i].gid;
+						
+													str += "<option value='" + id + "'>" + name + "</option>";
+
+											}
+											$("#layer_value").append(str);
+										}
+									} else {
+										$u.notify('error', 'Notification',
+												result.responseMessage, '');
+									}
+								
+								} catch (err) {
+									console.log(err);
+								}
+							} else {
+								$u.notify('info', 'Notification',
+												'No Data Found', '');
+							}
+						},
+						error : function(e) {
+							console.log(e);
+						}
+					});
+					
+					
+					
+					
+				});
+				
+				
+				$("#layer_value").change(function(){			
+				
+					
+					var form_data = {
+							tableName: $("#search_layer").val(),
+							gid: $("#layer_value").val()
+					}
+					
+					$.ajax({
+						method : 'POST',
+						url : window.iscdl.appData.baseURL + "citizen/query/getsearchdata",
+						contentType : 'application/json',
+						data: JSON.stringify(form_data),
+						async : false,					
+						beforeSend : function(request) {
+							request.setRequestHeader('Authorization', 'Bearer '
+									+ localStorage.getItem('token'));
+						},
+						success : function(result) {
+							if (!$.isEmptyObject(result) && result != null) {
+								try {
+									if(result.features.length > 0 ){
+			                     
+			                        	
+			                            const geoJSONFormat = new ol.format.GeoJSON();
+			                            var vectorSource = new ol.source.Vector({
+			                                features: geoJSONFormat.readFeatures(result, {
+			                                    featureProjection: 'EPSG:4326',
+			                                }),
+			                                format: geoJSONFormat,
+			                            });
+
+
+			                            vectorLayer = new ol.layer.Vector({
+			                                source: vectorSource,
+			                                style: location_mark,
+			                            });
+
+			                            
+			                            
+			                            vectorLayer.getSource().on('addfeature', function () {
+			                                map.setExtent(vectorLayer.getSource().getExtent());			                            
+			                            });
+
+
+			                            const extent = vectorSource.getExtent();
+
+			                            map.getView().fit(extent);
+
+
+			                            map.addLayer(vectorLayer);
+			                            
+			                            
+
+			                            console.log(result);
+			                        	}
+			                        	else{
+			                        		$u.notify("error", "Error",
+					                        "No Data Found for selected fields");
+			                        	}
+								
+								} catch (err) {
+									console.log(err);
+								}
+							} else {
+								$u.notify('info', 'Notification',
+												'No Data Found', '');
+							}
+						},
+						error : function(e) {
+							console.log(e);
+						}
+					});
+					
+					
+					
+					
+				});
+				
+				
+				
 				let start_latlong;
 				let end_latlong;
 				
@@ -196,7 +394,7 @@
 				});
 				
 				map_layers['OSM'] = osm;
-				
+				//console.log(ol.Map.getView().calculateExtent(map.getSize()));
 				
 				const styles = {
 				        'Polygon': new ol.style.Style({

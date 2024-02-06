@@ -2827,7 +2827,19 @@ Proximity Analysis
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" id="pills-3D-tab" data-toggle="pill" href="javascript:void(0);pills-3D" role="tab" aria-controls="pills-3D" aria-selected="false" data-translate="_3d">3D</a></li>
+					
+					<li class="nav-item">
+						<select class="form-control nav-link pb-1" id="search_layer" name = "search_layer">	
+										<option value="" >Select Layer</option>	
+									</select></li>
+						
+					<li class="nav-item">
+						<select class="form-control pb-1 nav-link" id="layer_value" name = "layer_value">	
+										<option value="" >Select Value</option>	
+									</select></li>
+					
 				</ul>
+			
 			</div>	
 			<div id="searchDiv"></div>
 				<div id="map" class="map h-100 printWholeMap">
