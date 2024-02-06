@@ -2734,30 +2734,36 @@
 
 							$('#sharelinktxt').val("");
 
-							let current_extent = map._getAvailExtent();
+							let current_extent = map.getView().calculateExtent(map.getSize());
 
-							let pmin = new Point([ current_extent.xmin,
-									current_extent.ymin ]);
-							let pmax = new Point([ current_extent.xmax,
-									current_extent.ymax ]);
+							let xmin = current_extent[0];
+							let ymin = current_extent[1];
+							let xmax = current_extent[2];
+							let ymax = current_extent[3];
+							
+							
+							let pmin = new Point([ current_extent[0],current_extent[1]]);
+							let pmax = new Point([ current_extent[2],current_extent[3]]);
 
-							let mpmin = webMercatorUtils
-									.webMercatorToGeographic(pmin);
-							let mpmax = webMercatorUtils
-									.webMercatorToGeographic(pmax);
+							/*
+							let mpmin = webMercatorUtils.webMercatorToGeographic(pmin);
+							let mpmax = webMercatorUtils.webMercatorToGeographic(pmax);
 
 							localStorage.setItem("xmin", mpmin.x);
 							localStorage.setItem("ymin", mpmin.y);
 							localStorage.setItem("xmax", mpmax.x);
 							localStorage.setItem("ymax", mpmax.y);
-							localStorage.setItem("spatialReference",
-									mpmin.spatialReference.wkid);
-
+							localStorage.setItem("spatialReference",mpmin.spatialReference.wkid);
+							*/
+							
 							let browserUrl = document.location.href;
+							/*
 							let xmin = current_extent.xmin;
 							let ymin = current_extent.ymin;
 							let xmax = current_extent.xmax;
 							let ymax = current_extent.ymax;
+							*/
+							
 							let finalurl = browserUrl
 							$('#sharelinktxt').val(finalurl);
 						});
@@ -5652,7 +5658,7 @@
 					
 					// for draw deactive
 					if(toolbar){
-						toolbar.deactivate();
+						//toolbar.deactivate();
 					}
 					
 					//removeOnFlyLayer();
@@ -6523,13 +6529,22 @@
 									return;
 								}
 								
+								/*
 								let current_extent = map._getAvailExtent();
-								
 								let xmin = current_extent.xmin;
 								let ymin = current_extent.ymin;
 								let xmax = current_extent.xmax;
 								let ymax = current_extent.ymax;
 								let srs = current_extent.spatialReference.wkid;
+								*/
+								
+								let current_extent = map.getView().calculateExtent(map.getSize());
+							
+								let xmin = current_extent[0];
+								let ymin = current_extent[1];
+								let xmax = current_extent[2];
+								let ymax = current_extent[3];
+								let srs = 3857;
 								
 								if(user_id != undefined && user_id != null && user_id != ""){
 									window.department2dMap.addBookmark(bookmark_name,user_id,xmin,ymin,xmax,ymax,srs);	
@@ -6841,11 +6856,15 @@
 								let ymax = $(data).data("ymax");
 								let wkid = $(data).data("srs");
 								
+								/*
 								let bookmarkExtent = new Extent(xmin, ymin, xmax, ymax,
 										new SpatialReference({
 											wkid : wkid
 								}));
-								map.setExtent(bookmarkExtent);
+								map.setExtent(bookmarkExtent);*/
+								
+								var myExtent = [xmin,ymin,xmax,ymax];
+								map.getView().fit(myExtent , map.getSize());
 							},
 							createBasicQuery : function createBasicQuery(ward_id,layer_url,field_name,field_value){
 								queryTask = new QueryTask(layer_url);
