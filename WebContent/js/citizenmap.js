@@ -428,21 +428,21 @@ $('#add_current_long').click(function() {
 });
 
 //DIRECTION SELECTED LATLONG
-$("#dir_selected_latitude").click(function() {
-	window.base.fillSelectedDirectionLatitude("Source");
-});
-
-$("#dir_selected_long").click(function() {
-	window.base.fillSelectedDirectionLatitude("Destination");
-});
-
-$('#dir_current_longitude').click(function() {
-	window.base.fillCurrentDirectionLatLong("Destination");
-});
-
-$('#dir_current_latitude').click(function() {
-	window.base.fillCurrentDirectionLatLong("Source");
-});
+//$("#dir_selected_latitude").click(function() {
+//	window.base.fillSelectedDirectionLatitude("Source");
+//});
+//
+//$("#dir_selected_long").click(function() {
+//	window.base.fillSelectedDirectionLatitude("Destination");
+//});
+//
+//$('#dir_current_longitude').click(function() {
+//	window.base.fillCurrentDirectionLatLong("Destination");
+//});
+//
+//$('#dir_current_latitude').click(function() {
+//	window.base.fillCurrentDirectionLatLong("Source");
+//});
 
 
 $('#thana_xy_current_lat').click(function() {

@@ -423,7 +423,7 @@ require(
 			    source: new ol.source.OSM
 			});			
 			
-			const view = new ol.View({
+			const view = new ol.View({  
 				projection: 'EPSG:4326',
 			    center: [75.8577, 22.7196],
 			    zoom: 12,
@@ -519,6 +519,8 @@ require(
 			var lat;
 		    var lon;
 		    var vectorLayer;
+		    let start_latlong;
+			let end_latlong;
 			$("#around_layer").change(function(){				
 				
 				map.on('pointermove', function (evt) {
@@ -607,6 +609,114 @@ require(
 				map.removeLayer(vectorLayer);
 				createBufferForAroundMe(lat , lon);
 			});
+			
+			
+			
+			$("#dir_selected_latitude").click(function(){
+				
+				get_lat_long_onClick("from");
+				
+			});
+
+			$("#dir_selected_long").click(function(){
+				
+				get_lat_long_onClick("to");
+				
+			});
+
+
+
+
+			const geolocation = new ol.Geolocation({
+				trackingOptions: {
+				  enableHighAccuracy: true,
+				},
+				projection: view.getProjection(),
+			  });
+			const accuracyFeature = new ol.Feature();
+
+
+			function get_lat_long_onClick(where) {
+				var clickHandler;
+
+				if (where == "from") {
+					clickHandler = function (evt) {
+						console.info(evt.pixel);
+						console.info(map.getPixelFromCoordinate(evt.coordinate));
+						console.info(ol.proj.toLonLat(evt.coordinate));		           
+
+						
+						start_latlong = ol.proj.transform(evt.coordinate, 'EPSG:4326', 'EPSG:3857');
+						start_latlong = new ol.proj.transform([start_latlong[0], start_latlong[1]], 'EPSG:3857', 'EPSG:4326');
+						
+						
+						$("#from_loc").val(start_latlong);
+						map.un('click', clickHandler);
+					};
+				}
+
+				if (where == "to") {
+					clickHandler = function (evt) {
+					 console.info(evt.pixel);
+						console.info(map.getPixelFromCoordinate(evt.coordinate));
+						console.info(ol.proj.toLonLat(evt.coordinate));		            
+
+						end_latlong = ol.proj.transform(evt.coordinate, 'EPSG:4326', 'EPSG:3857');
+						end_latlong = new ol.proj.transform([end_latlong[0], end_latlong[1]], 'EPSG:3857', 'EPSG:4326');		
+						
+						$("#to_loc").val(end_latlong);
+						map.un('click', clickHandler);
+					}
+				}
+
+				map.once('click', clickHandler);
+			}
+
+
+
+
+			$("#dir_current_latitude").click(function(){
+				geolocation.setTracking(true);
+				
+				
+				get_current_lat_long("source_location");
+				
+			  });
+			  
+			$("#dir_current_longitude").click(function(){
+
+				 geolocation.setTracking(true);
+				
+				
+				get_current_lat_long("destination_location");
+
+			});
+
+			function get_current_lat_long(selected){
+
+			geolocation.on('change:accuracyGeometry', function () {
+				  accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+				});
+
+
+				geolocation.on('change:position', function () {
+					//start_latlong = geolocation.getPosition();
+					//start_latlong = new ol.proj.transform([coordinates[0], coordinates[1]], 'EPSG:4326', 'EPSG:3857');
+					
+					if(selected == "source_location"){										
+						start_latlong = geolocation.getPosition();
+						$("#from_loc").val(start_latlong);
+					}
+					else{
+						end_latlong = geolocation.getPosition();
+						$("#to_loc").val(end_latlong);
+					}
+					
+				  });
+
+			}
+			
+			
 			
 			
 			/*
@@ -842,9 +952,11 @@ require(
 				
 			});
 			
-			$("#clear_swipe_layer").click(function(){
-				removeSwipeLayer();
-			});
+				$("#clear_swipe_layer").click(function(){
+					//removeSwipeLayer();
+					map.removeLayer(swipe_layer);
+				});
+
 			
 			/**
 			 * FUNCTIONS
@@ -3517,6 +3629,51 @@ require(
 		var queryGraphicLayer = new GraphicsLayer();
 		
 		// form swipe layer
+//		$('form[id="form_swipe_layer"]')
+//		.validate(
+//				{
+//					rules : {
+//						swipe_layer_select : {
+//							required : true,
+//						}
+//					},
+//					messages : {
+//						swipe_layer_select : {
+//							required : "Please Select Layer",
+//						}
+//					},
+//					submitHandler : function(form, e) {
+//						e.preventDefault();
+//						try {
+//							removeSwipeLayer();
+//							let layer_id = $("#swipe_layer_select").val();
+//							if(layer_id){
+//								$(".loader").fadeIn();
+//								let url = window.layerDataController.getCitizenPortalLayerById(layer_id);
+//								swipe_layer_obj = new FeatureLayer(url);
+//								layerSwipe.layers = [swipe_layer_obj];
+//								map.addLayer(swipe_layer_obj);
+//								layerSwipe.startup();
+//								layerSwipe.enable();
+//								
+//								layerSwipe.on("load",function(){
+//									$(".loader").fadeOut();	
+//									window.depUtlityController.minimizePopup();
+//								});
+//							}
+//						} catch (e) {
+//							console.log(e);
+//							$(".loader").fadeOut();
+//							$u.notify("error", "Error","Something Happend Wrong");
+//						}
+//					}
+//		});
+		
+		
+		
+		let swipe_layer = null;
+		const swipe = document.getElementById('swipe');
+		
 		$('form[id="form_swipe_layer"]')
 		.validate(
 				{
@@ -3533,29 +3690,55 @@ require(
 					submitHandler : function(form, e) {
 						e.preventDefault();
 						try {
-							removeSwipeLayer();
-							let layer_id = $("#swipe_layer_select").val();
-							if(layer_id){
-								$(".loader").fadeIn();
-								let url = window.layerDataController.getCitizenPortalLayerById(layer_id);
-								swipe_layer_obj = new FeatureLayer(url);
-								layerSwipe.layers = [swipe_layer_obj];
-								map.addLayer(swipe_layer_obj);
-								layerSwipe.startup();
-								layerSwipe.enable();
-								
-								layerSwipe.on("load",function(){
-									$(".loader").fadeOut();	
-									window.depUtlityController.minimizePopup();
+							$("#swipeDiv").css("display", "block");
+							const swipe = document.getElementById('swipe');
+							swipe.addEventListener('input', function () {
+								  map.render();
 								});
+							map.removeLayer(swipe_layer);
+							swipe_layer = new ol.layer.Tile({					 
+							      source: new ol.source.TileWMS({
+							    	  opacity: 0.5,
+					                 url: "https://apagri.infinium.management/geoserver/iscdl/wms?",
+					                 params: { 'LAYERS': $("#swipe_layer_select").val(), 'TILED': true},
+					                 serverType: 'geoserver',		                 
+					                 transition: 0,
+					                 style: styles,
+					              })
+							  });
+																
+							map.addLayer(swipe_layer);								
+							
+							
+
+							swipe_layer.on('prerender', function (event) {
+								 const ctx = event.context;
+					                const mapSize = map.getSize();
+					                const width = mapSize[0] * (swipe.value / 100);
+					                ctx.save();
+					                ctx.beginPath();
+					                ctx.rect(width, 0, ctx.canvas.width - width, ctx.canvas.height);
+					                ctx.clip();
+							});
+
+							swipe_layer.on('postrender', function (event) {
+							  const ctx = event.context;
+							  ctx.restore();
+							});
+
+
+							
+							
 							}
-						} catch (e) {
+						
+					catch (e) {
 							console.log(e);
 							$(".loader").fadeOut();
 							$u.notify("error", "Error","Something Happend Wrong");
 						}
 					}
 		});
+		
 		
 		// Around me form
 		
@@ -3899,6 +4082,7 @@ require(
 		
 
 // From To Location form
+		let direction_arr = [];
 		$('form[id="form_direction"]')
 		.validate(
 				{
@@ -3921,36 +4105,90 @@ require(
 					submitHandler : function(form, e) {
 						e.preventDefault();
 						try {
-							$("#total_distance").text("");
-							window.base.removeDirectionGraphics();
+//							$("#total_distance").text("");
+//							window.base.removeDirectionGraphics();
+//							
+//							let source_latlong = $("#from_loc").val();
+//							let destination_latlong = $("#to_loc").val();
+//							
+//							if(source_latlong == destination_latlong){
+//								 $u.notify("info", "Notification","Source location and destination location can not be same");
+//								return;
+//							}
+//							
+//							let s0 = source_latlong.split(",");
+//							let s2 = destination_latlong.split(",");
+//							
+//							let n_y1 = s0[0];
+//							let n_x1 = s0[1];
+//							
+//							let y = Number(n_y1);
+//							let x = Number(n_x1);
+//							
+//							let n_y2 = s2[0];
+//							let n_x2 = s2[1];
+//							
+//							
+//							let y1 = Number(n_y2);
+//							let x1 = Number(n_x2);
+//							
+//							let source_p = [x,y];
+//							let dest_p = [x1,y1];
+//							window.base.getDirection(source_p,dest_p);
 							
-							let source_latlong = $("#from_loc").val();
-							let destination_latlong = $("#to_loc").val();
-							
-							if(source_latlong == destination_latlong){
-								 $u.notify("info", "Notification","Source location and destination location can not be same");
-								return;
-							}
-							
-							let s0 = source_latlong.split(",");
-							let s2 = destination_latlong.split(",");
-							
-							let n_y1 = s0[0];
-							let n_x1 = s0[1];
-							
-							let y = Number(n_y1);
-							let x = Number(n_x1);
-							
-							let n_y2 = s2[0];
-							let n_x2 = s2[1];
+							console.log(start_latlong);
+							console.log(end_latlong);
 							
 							
-							let y1 = Number(n_y2);
-							let x1 = Number(n_x2);
+						    $.ajax({
+						        method: 'GET',
+						        url: 'https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf624837d0d92fba7048cd85a8893a7148bfdb&start=' + start_latlong + '&end=' + end_latlong,
+						        contentType: 'application/json',
+						        async: false,
+						        // beforeSend: function (xhr) {
+						        //     xhr.setRequestHeader('Authorization', localStorage.getItem("token"));
+						        // },
+						        success: function (response) {
+
+						            const route = response.features[0];
+						            const routeCoordinates = route.geometry.coordinates;
+						    
+						            const routeFeature = new ol.Feature({
+						                type: 'route',
+						                geometry: new ol.geom.LineString(routeCoordinates),
+						            });
+						    
+						            const routeLayer = new ol.layer.Vector({
+						                source: new ol.source.Vector({
+						                	featureProjection: 'EPSG:4326',
+						                    features: [routeFeature],
+						                }),
+						                style: new ol.style.Style({
+						                    stroke: new ol.style.Stroke({
+						                        width: 6,
+						                        color: [40, 40, 40, 0.8],
+						                    }),
+						                }),
+						            });
+						    
+						            
+						            map.addLayer(routeLayer);
+						            direction_arr.push(routeLayer);
+						    
+						            // Fit the map view to the route
+						            const extent = routeFeature.getGeometry().getExtent();
+						            map.getView().fit(extent, map.getSize());
+						           
+
+						        },
+
+						        error: function (e) {
+						            console.log(e);
+						        }
+
+						    });
 							
-							let source_p = [x,y];
-							let dest_p = [x1,y1];
-							window.base.getDirection(source_p,dest_p);
+							
 						} catch (e) {
 							 $(".loader").fadeOut();
 							 window.base.removeDirectionGraphics();
@@ -4061,31 +4299,36 @@ require(
 		 * clear direction
 		 */
 		$('#locationClr').click(function(){
-			if(gLayer){
-				map.removeLayer(gLayer);
-				map.graphics.clear();
-				map.setExtent(initialExtent);
-				map.setMapCursor("default");
-				window.depUtlityController.removeError('form_direction');
-				window.base.removeDirectionGraphics();
-				if(dirgdLayer){
-					map.removeLayer(dirgdLayer);
-					let graphics = dirgdLayer.graphics;
-					for(let i in graphics){
-						let g = graphics[i];
-						dirgdLayer.graphics.pop();
-					}
-				}
-				
-				if(dirgsLayer){
-					map.removeLayer(dirgsLayer);
-					let graphics = dirgsLayer.graphics;
-					for(let i in graphics){
-						let g = graphics[i];
-						dirgsLayer.graphics.pop();
-					}
-				}
+//			if(gLayer){
+//				map.removeLayer(gLayer);
+//				map.graphics.clear();
+//				map.setExtent(initialExtent);
+//				map.setMapCursor("default");
+//				window.depUtlityController.removeError('form_direction');
+//				window.base.removeDirectionGraphics();
+//				if(dirgdLayer){
+//					map.removeLayer(dirgdLayer);
+//					let graphics = dirgdLayer.graphics;
+//					for(let i in graphics){
+//						let g = graphics[i];
+//						dirgdLayer.graphics.pop();
+//					}
+//				}
+//				
+//				if(dirgsLayer){
+//					map.removeLayer(dirgsLayer);
+//					let graphics = dirgsLayer.graphics;
+//					for(let i in graphics){
+//						let g = graphics[i];
+//						dirgsLayer.graphics.pop();
+//					}
+//				}
+//			}
+			
+			for(var i=0; i<direction_arr.length; i++){
+				map.removeLayer(direction_arr[i]);
 			}
+			
 		});
 		
 		$('#locationClrByName').click(function(){
