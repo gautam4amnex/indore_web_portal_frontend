@@ -141,7 +141,7 @@
 				
 				
 				
-				
+				let vectorLayer;
 				
 				$('form[id="form_report_data"]')
 				.validate(
@@ -175,7 +175,7 @@
 
 				                        	if(result.features.length > 0 ){
 				                     
-				                        	
+				                        	map.removeLayer(vectorLayer);
 				                            const geoJSONFormat = new ol.format.GeoJSON();
 				                            var vectorSource = new ol.source.Vector({
 				                                features: geoJSONFormat.readFeatures(result, {
@@ -226,6 +226,11 @@
 								}
 							}
 						});
+				
+				$("#clear_report_form").click(function(){
+					map.removeLayer(vectorLayer);					
+					
+				});
 				
 				
 				

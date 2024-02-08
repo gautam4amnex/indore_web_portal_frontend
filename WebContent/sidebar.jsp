@@ -455,7 +455,7 @@ Dashboard
 				
 				<div class="text-center">
 					<button type="submit" class="btn btn-indore" id="report_data_submit" data-translate = "report_greport">Get Report</button>
-					<button type="reset" class="btn btn-indore" data-translate="_clear">Clear</button>
+					<button type="reset" id="clear_report_form" class="btn btn-indore" data-translate="_clear">Clear</button>
 				</div>
 			</form>
 				
