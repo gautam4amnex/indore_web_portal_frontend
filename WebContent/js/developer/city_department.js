@@ -293,7 +293,7 @@
 				
 				$("#layer_value").change(function(){			
 				
-					
+					map.removeLayer(vectorLayer);
 					var form_data = {
 							tableName: $("#search_layer").val(),
 							gid: $("#layer_value").val()
@@ -338,8 +338,9 @@
 
 			                            const extent = vectorSource.getExtent();
 
-			                            map.getView().fit(extent);
-
+			                            //map.getView().fit(extent);
+			                            map.getView().fit(extent, {"maxZoom":20} );
+			                            //map.getView().setZoom(map.getView().getZoom()+1);   
 
 			                            map.addLayer(vectorLayer);
 			                            
@@ -374,7 +375,7 @@
 				
 				let start_latlong;
 				let end_latlong;
-				
+				let know_your_coordinate;
 
 				
 				const osm = new ol.layer.Tile({
@@ -483,10 +484,16 @@
 							start_latlong = geolocation.getPosition();
 							$("#from_loc").val(start_latlong);
 						}
-						else{
+						else if(selected == "destination_location"){
 							end_latlong = geolocation.getPosition();
 							$("#to_loc").val(end_latlong);
 						}
+						else{
+							know_your_coordinate = geolocation.getPosition();
+							$("#xy_latitude").val(know_your_coordinate[1]);
+							$("#xy_longitude").val(know_your_coordinate[0]);
+						}
+						
 						
 					  });
 				
@@ -563,6 +570,21 @@
 			            map.un('click', clickHandler);
 			    	}
 			    }
+			    
+			    if(where == "goto_direction"){
+			    	clickHandler = function (evt) {
+				    	 console.info(evt.pixel);
+				            console.info(map.getPixelFromCoordinate(evt.coordinate));
+				            console.info(ol.proj.toLonLat(evt.coordinate));		            
+
+				            know_your_coordinate = ol.proj.transform(evt.coordinate, 'EPSG:4326', 'EPSG:3857');
+				            know_your_coordinate = new ol.proj.transform([know_your_coordinate[0], know_your_coordinate[1]], 'EPSG:3857', 'EPSG:4326');		
+				            
+							$("#xy_longitude").val(know_your_coordinate[0]);
+							$("#xy_latitude").val(know_your_coordinate[1]);
+				            map.un('click', clickHandler);
+				    	}
+			    }
 
 			    map.once('click', clickHandler);
 			}
@@ -637,6 +659,79 @@
 				    });
 					
 				});
+				
+				$("#xy_current_lat").click(function(){
+					
+					geolocation.setTracking(true);
+			        
+			        
+			        get_current_lat_long("know_your_location");
+					
+					
+				});
+				
+				$("#xy_selected_lat").click(function(){
+					
+					get_lat_long_onClick("goto_direction");
+					
+				});
+				
+				
+				$('form[id="frm_to_location"]').validate({
+					rules : {
+						xy_latitude : {
+							required : true,
+							numericVal : true,
+						},
+						xy_longitude :{ 
+						required : true,
+						numericVal : true,
+						},
+					},
+					messages : {
+						xy_latitude : {
+							required : "Please Enter Latitude",
+							numericVal : "Please Enter Numeric Value",
+						},
+						xy_longitude : {
+							required : "Please Enter Longitude",
+							numericVal : "Please Enter Numeric Value",
+						},
+					},
+					submitHandler : function(form, e) {
+						e.preventDefault();
+						try {
+							
+							  const iconFeature = new ol.Feature({
+								  geometry: new ol.geom.Point(know_your_coordinate)								  
+								});
+
+
+								const vectorSource = new ol.source.Vector({
+								  features: [iconFeature],
+								});
+
+								const vectorLayer = new ol.layer.Vector({
+								  source: vectorSource,
+								  style: location_mark,
+								});
+
+							map.addLayer(vectorLayer);
+							
+							
+							map.setView(
+							        new ol.View({
+							        projection: 'EPSG:4326',									  
+							        center: know_your_coordinate,
+							        zoom: 18
+							    }));
+							
+						} catch (e) {
+							$u.notify("error", "Error",
+									"Something went Wrong");
+						}
+					}
+		});
 				
 				
 				/*
@@ -3503,31 +3598,31 @@
 										'xy_longitude','xy_longitude-error');
 							});
 				});
-				$("#xy_selected_lat").click(function() {
-							map.setMapCursor("crosshair");
-							if(map_selection){
-								map_selection.remove();	
-								//map_hover.remove();
-							}
-							mapClickEvtHandler = map.on("click", function(evt) {
-								let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
-								window.department2dMap.checkSelectedlocationWithinBoundry(mp.x,mp.y,
-										'xy_latitude','xy_latitude-error',
-										'xy_longitude','xy_longitude-error');
-							});
-				});
+//				$("#xy_selected_lat").click(function() {
+//							map.setMapCursor("crosshair");
+//							if(map_selection){
+//								map_selection.remove();	
+//								//map_hover.remove();
+//							}
+//							mapClickEvtHandler = map.on("click", function(evt) {
+//								let mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
+//								window.department2dMap.checkSelectedlocationWithinBoundry(mp.x,mp.y,
+//										'xy_latitude','xy_latitude-error',
+//										'xy_longitude','xy_longitude-error');
+//							});
+//				});
 
-				$('#xy_current_lat').click(function() {
-							window.department2dMap.checkCurrentlocationWithinBoundry(_current_long,_current_lat,
-									'xy_latitude','xy_latitude-error',
-									'xy_longitude','xy_longitude-error');
-				});
-
-				$('#xy_current_longitude').click(function() {
-							window.department2dMap.checkCurrentlocationWithinBoundry(_current_long,_current_lat,
-									'xy_latitude','xy_latitude-error',
-									'xy_longitude','xy_longitude-error');
-				});
+//				$('#xy_current_lat').click(function() {
+//							window.department2dMap.checkCurrentlocationWithinBoundry(_current_long,_current_lat,
+//									'xy_latitude','xy_latitude-error',
+//									'xy_longitude','xy_longitude-error');
+//				});
+//
+//				$('#xy_current_longitude').click(function() {
+//							window.department2dMap.checkCurrentlocationWithinBoundry(_current_long,_current_lat,
+//									'xy_latitude','xy_latitude-error',
+//									'xy_longitude','xy_longitude-error');
+//				});
 				
 				//form swipe layer
 //				$('form[id="form_swipe_layer"]')
@@ -3732,69 +3827,69 @@
 				
 				
 				// go to X-Y coordinates
-				$('form[id="frm_to_location"]').validate({
-							rules : {
-								xy_latitude : {
-									required : true,
-									numericVal : true,
-								},
-								xy_longitude :{ 
-								required : true,
-								numericVal : true,
-								},
-							},
-							messages : {
-								xy_latitude : {
-									required : "Please Enter Latitude",
-									numericVal : "Please Enter Numeric Value",
-								},
-								xy_longitude : {
-									required : "Please Enter Longitude",
-									numericVal : "Please Enter Numeric Value",
-								},
-							},
-							submitHandler : function(form, e) {
-								e.preventDefault();
-								try {
-									let latitude = $('#xy_latitude').val();
-									let longitude = $('#xy_longitude').val();
-									let pt = new Point(longitude,latitude);
-									let pictureMarkerSymbol = new PictureMarkerSymbol('images/pin.png', 25, 25);
-									let graphic = new Graphic(pt, pictureMarkerSymbol);
-									map.graphics.add(graphic);
-									
-									let template_content = "";					
-									let table_content = '<table class="table table-bordered w-100 map-detail-custom">' +
-									  '<tbody>';
-									table_content += '<tr><td><b>Latitude</b></td><td>'+latitude+'</td></tr>' + 
-									'<tr><td><b>Longitude</b></td><td>'+longitude+'</td></tr>';
-									template_content += table_content + '</tbody></table>';
-									
-									let xy_infoTemplate = new InfoTemplate("Know Your Coordinates",template_content);
-									graphic.setGeometry(pt);
-									graphic.setInfoTemplate(xy_infoTemplate);
-									map.centerAndZoom(pt, 18);
-									removeCursor();
-									window.depUtlityController.minimizePopup();
-								} catch (e) {
-									$u.notify("error", "Error",
-											"Something went Wrong");
-								}
-							}
-				});
+//				$('form[id="frm_to_location"]').validate({
+//							rules : {
+//								xy_latitude : {
+//									required : true,
+//									numericVal : true,
+//								},
+//								xy_longitude :{ 
+//								required : true,
+//								numericVal : true,
+//								},
+//							},
+//							messages : {
+//								xy_latitude : {
+//									required : "Please Enter Latitude",
+//									numericVal : "Please Enter Numeric Value",
+//								},
+//								xy_longitude : {
+//									required : "Please Enter Longitude",
+//									numericVal : "Please Enter Numeric Value",
+//								},
+//							},
+//							submitHandler : function(form, e) {
+//								e.preventDefault();
+//								try {
+//									let latitude = $('#xy_latitude').val();
+//									let longitude = $('#xy_longitude').val();
+//									let pt = new Point(longitude,latitude);
+//									let pictureMarkerSymbol = new PictureMarkerSymbol('images/pin.png', 25, 25);
+//									let graphic = new Graphic(pt, pictureMarkerSymbol);
+//									map.graphics.add(graphic);
+//									
+//									let template_content = "";					
+//									let table_content = '<table class="table table-bordered w-100 map-detail-custom">' +
+//									  '<tbody>';
+//									table_content += '<tr><td><b>Latitude</b></td><td>'+latitude+'</td></tr>' + 
+//									'<tr><td><b>Longitude</b></td><td>'+longitude+'</td></tr>';
+//									template_content += table_content + '</tbody></table>';
+//									
+//									let xy_infoTemplate = new InfoTemplate("Know Your Coordinates",template_content);
+//									graphic.setGeometry(pt);
+//									graphic.setInfoTemplate(xy_infoTemplate);
+//									map.centerAndZoom(pt, 18);
+//									removeCursor();
+//									window.depUtlityController.minimizePopup();
+//								} catch (e) {
+//									$u.notify("error", "Error",
+//											"Something went Wrong");
+//								}
+//							}
+//				});
 				
 				// clear xy location event with default extent
 				$('#xyLocationClr').click(function(){
-					map.graphics.clear();
-					map.setExtent(initialExtent);
-					
-					if (mapClickEvtHandler != undefined) {
-						mapClickEvtHandler.remove();
-						map.setMapCursor("default");
-					}
-					//mapReady();
-					map_info_tool = false;
-					infoToolSetup();
+//					map.graphics.clear();
+//					map.setExtent(initialExtent);
+//					
+//					if (mapClickEvtHandler != undefined) {
+//						mapClickEvtHandler.remove();
+//						map.setMapCursor("default");
+//					}
+//					//mapReady();
+//					map_info_tool = false;
+//					infoToolSetup();
 				});
 
 				//clear incident issues
