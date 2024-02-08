@@ -5894,7 +5894,7 @@
 					removeAll();
 					// for draw deactive
 					if(toolbar){
-						toolbar.deactivate();
+						//toolbar.deactivate();
 					}
 					
 					$("#heatmap_legend").hide();
