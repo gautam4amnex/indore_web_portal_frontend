@@ -14,6 +14,8 @@
 <link rel="stylesheet" href="${context}/css/esri/api-3-30.css">
 <link type="text/css" rel="stylesheet"
 	href="${context}/css/healthcare_hospital.css">
+		    <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css">
 
 <!--Main sidebar content start-->
 

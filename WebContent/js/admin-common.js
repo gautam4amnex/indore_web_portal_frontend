@@ -53,38 +53,38 @@ var CITIMAP = {
 /**
  * click event of get report
  */
-$('form[id="form_report_data"]')
-.validate(
-		{
-			rules : {
-				
-			},
-			messages : {
-				
-			},
-			submitHandler : function(form, e) {
-				e.preventDefault();
-				try {
-					let cat_value = $("#report_data_category").val();
-					
-					if(cat_value == "" || cat_value == null || cat_value == undefined){
-						$u.notify("info", "Notification","Please select department");
-						return;
-					}
-
-					localStorage.setItem("report_id",cat_value);
-					
-					let jsp_page = "reports.jsp";
-					
-					window.location = window.location.origin
-                    + window.iscdl.appData.webURLPrefix +jsp_page; 
-					
-				} catch (e) {
-					 $(".loader").fadeOut();
-					 $u.notify("error", "Error","Something Happend Wrong");
-				}
-			}
-		});
+//$('form[id="form_report_data"]')
+//.validate(
+//		{
+//			rules : {
+//				
+//			},
+//			messages : {
+//				
+//			},
+//			submitHandler : function(form, e) {
+//				e.preventDefault();
+//				try {
+//					let cat_value = $("#report_data_category").val();
+//					
+//					if(cat_value == "" || cat_value == null || cat_value == undefined){
+//						$u.notify("info", "Notification","Please select department");
+//						return;
+//					}
+//
+//					localStorage.setItem("report_id",cat_value);
+//					
+//					let jsp_page = "reports.jsp";
+//					
+//					window.location = window.location.origin
+//                    + window.iscdl.appData.webURLPrefix +jsp_page; 
+//					
+//				} catch (e) {
+//					 $(".loader").fadeOut();
+//					 $u.notify("error", "Error","Something Happend Wrong");
+//				}
+//			}
+//		});
 
 $(document).ready(function(){	
 	 window.depUtlityController.getReportLayers("Report Layer","report_data_category");

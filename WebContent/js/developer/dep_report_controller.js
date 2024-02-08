@@ -67,23 +67,170 @@
 					container : "map"
 				};
 
-				map = new Map("map", {
-					zoom : window.MAP_INITIAL_ZOOM,
-					center : window.MAP_CENTER_POINT,
-					minZoom: window.MAP_MIN_ZOOM,
-			        maxZoom:window.MAP_MAX_ZOOM,
-					container : appConfig.container,
-					ui : {
-						components : [ "attribution" ]
-					},
-					basemap : "streets-navigation-vector"
+//				map = new Map("map", {
+//					zoom : window.MAP_INITIAL_ZOOM,
+//					center : window.MAP_CENTER_POINT,
+//					minZoom: window.MAP_MIN_ZOOM,
+//			        maxZoom:window.MAP_MAX_ZOOM,
+//					container : appConfig.container,
+//					ui : {
+//						components : [ "attribution" ]
+//					},
+//					basemap : "streets-navigation-vector"
+//				});
+				
+//				 var home = new HomeButton({
+//				        map: map
+//				      }, "HomeButton");
+//				      home.startup();
+				
+				
+				// OPEN LAYER START
+				
+				const osm = new ol.layer.Tile({
+				    source: new ol.source.OSM
 				});
 				
-				 var home = new HomeButton({
-				        map: map
-				      }, "HomeButton");
-				      home.startup();
+				const view = new ol.View({
+					projection: 'EPSG:4326',
+				    center: [75.8577, 22.7196],
+				    zoom: 11.5,
+				});
 				
+				const map = new ol.Map({
+				    layers: [osm],
+				    target: 'map',
+				    view: view
+				});
+				
+				$(".ol-attribution").remove();
+				
+				const styles = {
+				        'Polygon': new ol.style.Style({
+				            stroke: new ol.style.Stroke({
+				                color: 'rgba(0, 0, 0, 0.0)',
+				                width: 3,
+				            }),
+				            fill: new ol.style.Fill({
+				                color: 'rgba(255, 255, 255, 0.0)',
+				                opacity: -5
+
+				            }),
+				        }),
+				    }
+				
+				let location_mark = new ol.style.Style({
+                    image: new ol.style.Icon({
+                        anchor: [0.5, 1],
+                        src: 'images/icons/svgviewer-output.svg',
+                    })
+                });
+				
+				var ward_boundary = new ol.layer.Tile({					 
+				      source: new ol.source.TileWMS({
+				    	  opacity: 0.5,
+		                 url: "https://apagri.infinium.management/geoserver/iscdl/wms?",
+		                 params: { 'LAYERS': 'iscdl:shp_ward_boundary', 'TILED': true},
+		                 serverType: 'geoserver',		                 
+		                 transition: 0,
+		                 style: styles,
+		              })
+				  });
+				
+				map.addLayer(ward_boundary);
+				
+				
+				
+				
+				
+				$('form[id="form_report_data"]')
+				.validate(
+						{
+							rules : {
+								
+							},
+							messages : {
+								
+							},
+							submitHandler : function(form, e) {
+								e.preventDefault();
+								try {
+									
+									var form_data = {
+											tableName: $("#report_data_category").val()
+									}
+									
+									$.ajax({
+				                        method: 'POST',
+				                        url: window.iscdl.appData.baseURL + "citizen/query/getreportdata",
+				                        data: JSON.stringify(form_data),
+				                        contentType: 'application/json',
+				                        async: false,
+				                        beforeSend: function (request) {
+				                            request.setRequestHeader('Authorization', 'Bearer '
+				                                + localStorage.getItem('token'));
+				                        },
+
+				                        success: function (result) {
+
+				                        	if(result.features.length > 0 ){
+				                     
+				                        	
+				                            const geoJSONFormat = new ol.format.GeoJSON();
+				                            var vectorSource = new ol.source.Vector({
+				                                features: geoJSONFormat.readFeatures(result, {
+				                                    featureProjection: 'EPSG:4326',
+				                                }),
+				                                format: geoJSONFormat,
+				                            });
+
+
+				                            vectorLayer = new ol.layer.Vector({
+				                                source: vectorSource,
+				                                style: location_mark,
+				                            });
+
+				                            vectorLayer.getSource().on('addfeature', function () {
+				                                map.setExtent(vectorLayer.getSource().getExtent());
+				                            });
+
+
+				                            const extent = vectorSource.getExtent();
+
+				                            map.getView().fit(extent);
+
+				                            //map1_layer.addLayer(layer_test1);
+				                            map.addLayer(vectorLayer);
+				                            
+				                            //window.depUtlityController.minimizePopup();
+
+				                            console.log(result);
+				                        	}
+				                        	else{
+				                        		$u.notify("error", "Error",
+						                        "No Data Found for selected fields");
+				                        	}
+				                        	
+				                        		
+
+				                        },
+				                        error: function (e) {
+				                            $(".loader").fadeOut();
+				                            console.log(e);
+				                        }
+				                    });
+									
+								} catch (e) {
+									 $(".loader").fadeOut();
+									 $u.notify("error", "Error","Something Happend Wrong");
+								}
+							}
+						});
+				
+				
+				
+				
+				// OPEN LAYER END
 				/**
 				 * global functions start
 				 */
@@ -91,7 +238,7 @@
 				global.filterFeatureTable = function filterFeatureTable(){
 					
 					if(myFeatureLayer){
-						map.removeLayer(myFeatureLayer);
+						//map.removeLayer(myFeatureLayer);
 					}
 					
 					if (myFeatureTable) {
@@ -166,7 +313,7 @@
 							.getLayerByCategotyName(category_name);
 					selected_layer = layer_url;
 					getLayerAttributes(layer_url);
-					map.graphics.clear();
+					//map.graphics.clear();
 					window.reportController.loadTable(layer_url,"");
 				}
 
@@ -320,7 +467,7 @@
 					loadTable : function loadTable(layer_url, filter_query) {
 
 						if(myFeatureLayer){
-							map.removeLayer(myFeatureLayer);
+							//map.removeLayer(myFeatureLayer);
 						}
 						
 						if (myFeatureTable) {
@@ -336,7 +483,7 @@
 						
 
 						myFeatureLayer.on("click",function(evt) {
-											map.graphics.clear();
+											//map.graphics.clear();
 											var idProperty = myFeatureLayer.objectIdField, feature, featureId, query;
 
 											if (evt.graphic
@@ -367,12 +514,12 @@
 								   response.extent.ymin != "NaN")
 								{
 									var extent = response.extent;
-									map.setExtent(extent, true);
+									//map.setExtent(extent, true);
 								}
 							}
 						}
 						
-						map.addLayer(myFeatureLayer);
+						//map.addLayer(myFeatureLayer);
 
 						if(filter_query != ""){
 							myFeatureLayer.setDefinitionExpression(filter_query);
@@ -405,7 +552,7 @@
 							$(".loader").fadeOut();
 						});
 						myFeatureTable.on("row-select", function(evt){
-							map.graphics.clear();
+							//map.graphics.clear();
 							
 							let selectedRowLength = evt.rows.length;
 							
@@ -451,7 +598,7 @@
 											            		    SimpleMarkerSymbol.STYLE_CIRCLE).setColor(
 											            		    new Color([3, 28, 252,0.5]));
 											            	var pointGraphic = new esri.Graphic(c_query_point,sms);
-											            	map.graphics.add(pointGraphic);
+											            	//map.graphics.add(pointGraphic);
 											            }
 									 	        	 });
 								        		}
@@ -472,7 +619,7 @@
 										 	        	    "type":"esriSFS","style":"esriSFSSolid"}};
 										 	        	
 										 	        	let polygonGraphic = new esri.Graphic(polygon);
-										 	        	map.graphics.add(polygonGraphic);
+										 	        	//map.graphics.add(polygonGraphic);
 									 	        	});
 								        		}
 								        		
@@ -491,7 +638,7 @@
 										 	        	var line = {"geometry":cgeometry,"symbol":
 										 	        	{"color":[0,0,0,255],"width":1,"type":"esriSLS","style":"esriSLSSolid"}};
 										 	        	let lineGraphic = new esri.Graphic(line);
-										 	        	map.graphics.add(lineGraphic);
+										 	        	//map.graphics.add(lineGraphic);
 									 	        	});
 								        		}
 								        	}
@@ -499,12 +646,12 @@
 							         },function(error){
 							        	 $(".loader").fadeOut();
 							        	   console.log(error);
-							        	   map.graphics.clear();
+							        	   //map.graphics.clear();
 							         });
 					         }catch(e){
 					        	 $(".loader").fadeOut();
 					        	 console.log(e);
-					        	 map.graphics.clear();
+					        	 //map.graphics.clear();
 					         }
 				        });
 					},
@@ -543,12 +690,12 @@
 						return layer_url;
 					},
 					clearMapGraphics : function clearMapGraphics(){
-						if(map.graphics){
-							map.graphics.clear();
-						}
-						if(myFeatureTable){
-							myFeatureTable.clearSelection();
-						}
+//						if(map.graphics){
+//							map.graphics.clear();
+//						}
+//						if(myFeatureTable){
+//							myFeatureTable.clearSelection();
+//						}
 					},
 					customExportCSV : function customExportCSV(evt){
 					          var data = myFeatureTable.dataStore.data;

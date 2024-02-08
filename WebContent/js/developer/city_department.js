@@ -10083,7 +10083,15 @@
 					$(this).addClass('img-height-full');
 					let layerType = $(this).data("value");
 					
-					alert(layerType);
+					if(layerType == "satellite"){
+						map.getLayers().item(0).setSource(new ol.source.XYZ({
+				            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+				        }));
+					}
+					
+					if(layerType == "blank"){
+						map.getLayers().item(0).setSource(new ol.source.OSM);
+					}
 					
 				})
 				

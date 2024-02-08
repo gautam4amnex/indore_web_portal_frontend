@@ -436,6 +436,13 @@ require(
 			    view: view
 			});
 			
+	        var worldImagery = new ol.layer.Tile({
+	            source: new ol.source.XYZ({
+	            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+	            maxZoom: 19
+	          })
+	        });
+			
 			const styles = {
 			        'Polygon': new ol.style.Style({
 			            stroke: new ol.style.Stroke({
@@ -477,14 +484,14 @@ require(
 			const info = document.getElementById('info');
 
 
-			$(document).keyup(function(e) {
-				/*======================================== Handle escape key press event =======================================*/
-				if (e.key === "Escape" || e.keyCode == 27) { 
-					
-					evt.dragging = true;
-				}
-				/*======================================== Handle escape key press event =======================================*/
-			});
+//			$(document).keyup(function(e) {
+//				/*======================================== Handle escape key press event =======================================*/
+//				if (e.key === "Escape" || e.keyCode == 27) { 
+//					
+//					evt.dragging = true;
+//				}
+//				/*======================================== Handle escape key press event =======================================*/
+//			});
 			
 			let currentFeature;
 			const displayFeatureInfo = function (pixel, target) {
@@ -518,41 +525,105 @@ require(
 //				};
 			var lat;
 		    var lon;
-		    var vectorLayer;
+		    var bufferVectorLayer;
 		    let start_latlong;
 			let end_latlong;
-			$("#around_layer").change(function(){				
-				
-				map.on('pointermove', function (evt) {
-					  if (evt.dragging) {
-					    info.style.visibility = 'hidden';
-					    currentFeature = undefined;
-					    return;
-					  }
-					  const pixel = map.getEventPixel(evt.originalEvent);
-					  displayFeatureInfo(pixel, evt.originalEvent.target);
-					});			
-				
-				$(document).keyup(function(e) {
-					if (e.key === "Escape" || e.keyCode == 27) { 
-						
-						e.dragging = true;
-					}
-					
-				});
-				
-				
-				map.on('click', function(evt){
-				map.removeLayer(vectorLayer);
-			    var coords = evt.coordinate;
-			    lat = coords[1];
-			    lon = coords[0];		
+			let value;
+			var mapClickEnabled = true; // Flag to control map click functionality
+
+			$("#arround_selected_lat").click(function(){
+				enableMapClick();
+			    $("#info").show();
 			    
-			    createBufferForAroundMe(lat , lon);			    
+			    map.on('pointermove', function (evt) {
+			        if (evt.dragging) {
+			            info.style.visibility = 'hidden';
+			            currentFeature = undefined;
+			            return;
+			        }
+			        const pixel = map.getEventPixel(evt.originalEvent);
+			        displayFeatureInfo(pixel, evt.originalEvent.target);
+			    });
+
+			    
+			    if (mapClickEnabled) {
+			        map.on('click', mapClickHandler);
+			    }
+			});
+			
+			
+			function mapClickHandler(evt) {
+			    map.removeLayer(bufferVectorLayer);
 			   
 			    
-				});
+			    for(var i=0; i<around_me_layers_arr.length; i++){
+			    	 map.removeLayer(around_me_layers_arr[i]);
+			    }
+			    
+			    var coords = evt.coordinate;
+			    lat = coords[1];
+			    lon = coords[0];
+			    
+			    $("#arround_me_current_loc").val(coords);
+			    createBufferForAroundMe(lat, lon);
+			}
 
+			
+			function disableMapClick() {
+			    map.un('click', mapClickHandler); 
+			    mapClickEnabled = false; 
+			}
+
+		
+			function enableMapClick() {
+			    mapClickEnabled = true;
+			}
+
+			
+			$(document).keyup(function(e) {
+			    if (e.key === "Escape" || e.keyCode == 27) { 
+			    	$("#info").hide();
+			        disableMapClick();
+			    }
+			});
+
+			
+//			const geolocation = new ol.Geolocation({
+//				trackingOptions: {
+//				  enableHighAccuracy: true,
+//				},
+//				projection: view.getProjection(),
+//			  });
+//			const accuracyFeature = new ol.Feature();
+			
+			$(".side-layer-close").click(function(){
+
+				$("#info").hide();
+			})
+			
+			
+			$("#arround_current_lat").click(function(){
+				geolocation.setTracking(true);
+				
+				geolocation.on('change:accuracyGeometry', function () {
+					  accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+					});
+
+
+					geolocation.on('change:position', function () {
+						//start_latlong = geolocation.getPosition();
+						//start_latlong = new ol.proj.transform([coordinates[0], coordinates[1]], 'EPSG:4326', 'EPSG:3857');
+						
+							
+							var current_latlong = geolocation.getPosition();
+							lat = current_latlong[1];
+						    lon = current_latlong[0];
+							$("#arround_me_current_loc").val(current_latlong);
+						
+						
+						
+					  });
+				
 			});
 			
 			$("#kyp_submit").click(function(){
@@ -564,49 +635,93 @@ require(
 			
 			$("#clear_aroundme_rslt").click(function(){
 				info.style.visibility = 'hidden';
+				map.removeLayer(bufferVectorLayer);
+				for(var i=0; i<around_me_layers_arr.length; i++){
+			    	 map.removeLayer(around_me_layers_arr[i]);
+			    }
 			});
 			
 			
 			function createBufferForAroundMe(lat , lon){
-				var centerCoordinates = [lon , lat];  
-			      var radius = $("#area_range").text().split(" ")[0] / 100; 	    
+				var center = [lon , lat];  
+				var coordinates = [];
+				var sides = 19; 
+		       
+			      var radius = current_radius / 125; 	    
 			  
-			    
-			      
-			      var circle = new ol.Feature(new ol.geom.Circle(
-			       centerCoordinates,
-			        radius
-			      ));
-			    
-			      
-			      circle.setStyle(new ol.style.Style({
-			        fill: new ol.style.Fill({
-			          color: 'rgba(255, 0, 0, 0.2)'
-			        }),
-			        stroke: new ol.style.Stroke({
-			          color: 'red',
-			          width: 2
-			        })
-			      }));
-			    
-			      
-			      var vectorSource = new ol.source.Vector({
-			    	//featureProjection: 'EPSG:4326',
-			        features: [circle]
-			      });
-			    
-			      vectorLayer = new ol.layer.Vector({
-			        source: vectorSource
-			      });
-			    
-			      
-			      map.addLayer(vectorLayer);
+			      for (var i = 0; i < sides; i++) {
+			            var angle = (Math.PI / sides) * 2 * i;
+			            var x = center[0] + radius * Math.cos(angle);
+			            var y = center[1] + radius * Math.sin(angle);
+			            coordinates.push([x, y]);
+			            
+			        }
+			        coordinates.push(coordinates[0]);
+
+			        
+			        var polygon = new ol.Feature({
+			            geometry: new ol.geom.Polygon([coordinates])
+			        });
+
+
+			        let formate = new ol.format.WKT();
+					value = formate.writeGeometry(polygon.getGeometry());
+
+			        bufferVectorLayer = new ol.layer.Vector({
+			            source: new ol.source.Vector({
+			                featureProjection: 'EPSG:4326',
+			                features: [polygon]
+			            })
+			        });
+
+
+			        map.addLayer(bufferVectorLayer);
+			        
+			        var form_data = {
+			        		wkt: value,
+			        		layertype: $("#around_layer").val()
+			        }
+			        
+			        
+			        
+
+			        
+//			      var circle = new ol.Feature(new ol.geom.Circle(
+//			       centerCoordinates,
+//			        radius
+//			      ));
+//			    
+//			      
+//			      circle.setStyle(new ol.style.Style({
+//			        fill: new ol.style.Fill({
+//			          color: 'rgba(255, 0, 0, 0.2)'
+//			        }),
+//			        stroke: new ol.style.Stroke({
+//			          color: 'red',
+//			          width: 2
+//			        })
+//			      }));
+//			    
+//			      
+//			      var vectorSource = new ol.source.Vector({
+//			    	//featureProjection: 'EPSG:4326',
+//			        features: [circle]
+//			      });
+//			    
+//			      vectorLayer = new ol.layer.Vector({
+//			        source: vectorSource
+//			      });
+//			    
+//			      
+//			      map.addLayer(vectorLayer);
 			}
 			
 
-			$("#near_area").change(function(){
+			let current_radius = 1;
+			$("#near_area").on("input",function(){
 				
-				map.removeLayer(vectorLayer);
+				map.removeLayer(bufferVectorLayer);
+				current_radius = this.value;
 				createBufferForAroundMe(lat , lon);
 			});
 			
@@ -3563,31 +3678,31 @@ require(
 			$("#clearMap").trigger('click');
 		});
 		
-		$("#arround_current_lat").click(function(){
-			
-			if(map.graphics){
-				map.graphics.clear();	
-			}
-			
-			var current_point = new Point(_current_long,_current_lat);
-			
-			// check for current location within boundary
-			if(!initialExtent.contains(current_point)){
-				$u.notify('info', 'Notification',
-						'Current location is not within Indore boundary', '');
-				return;
-			}
-			
-			let c_point =   (_current_long).toFixed(6).toString() + ","  + (_current_lat).toFixed(6).toString();
-			$('#arround_me_current_loc').val(c_point);
-			map.centerAndZoom(current_point,18);
-			
-			map.graphics.clear();
-			let n_point = new Point(mp.x,mp.y);
-			let graphic = new Graphic(n_point, markerSymbol);
-			graphic.setGeometry(n_point);
-			map.graphics.add(graphic);
-		});
+//		$("#arround_current_lat").click(function(){
+//			
+//			if(map.graphics){
+//				map.graphics.clear();	
+//			}
+//			
+//			var current_point = new Point(_current_long,_current_lat);
+//			
+//			// check for current location within boundary
+//			if(!initialExtent.contains(current_point)){
+//				$u.notify('info', 'Notification',
+//						'Current location is not within Indore boundary', '');
+//				return;
+//			}
+//			
+//			let c_point =   (_current_long).toFixed(6).toString() + ","  + (_current_lat).toFixed(6).toString();
+//			$('#arround_me_current_loc').val(c_point);
+//			map.centerAndZoom(current_point,18);
+//			
+//			map.graphics.clear();
+//			let n_point = new Point(mp.x,mp.y);
+//			let graphic = new Graphic(n_point, markerSymbol);
+//			graphic.setGeometry(n_point);
+//			map.graphics.add(graphic);
+//		});
 		
 		$("#arround_selected_lat").click(function(){
 			
@@ -3742,6 +3857,46 @@ require(
 		
 		// Around me form
 		
+//		$('form[id="form_nearme"]')
+//		.validate(
+//				{
+//					rules : {
+//						around_layer : {
+//							required : true,
+//							
+//						},
+//						arround_me_current_loc : {
+//							required : true,
+//						}
+//					},
+//					messages : {
+//						around_layer : {
+//							required : "Please Select Layer",
+//						},
+//						arround_me_current_loc : {
+//							required : "Please Select Location",
+//							
+//						}
+//					},
+//					submitHandler : function(form, e) {
+//						e.preventDefault();
+//						try {
+//							navigationNearmeRsltArr = [];
+//		        			navigationNoRouteRsltArr = [];
+//							let layer_id = $("#around_layer").val();
+//							let around_me_location = $("#arround_me_current_loc").val();
+//							let range_value = $("#near_area").val();
+//							document.getElementById("area_range").innerHTML = range_value + " KM";
+//							window.base.getNearmeResult(layer_id,around_me_location,range_value);
+//						} catch (e) {
+//							 $u.notify("error", "Error","Something Happend Wrong");
+//						}
+//					}
+//		});
+		
+		let around_me_layers_arr = [];
+		let around_me_layer;
+		
 		$('form[id="form_nearme"]')
 		.validate(
 				{
@@ -3765,14 +3920,71 @@ require(
 					},
 					submitHandler : function(form, e) {
 						e.preventDefault();
-						try {
-							navigationNearmeRsltArr = [];
-		        			navigationNoRouteRsltArr = [];
-							let layer_id = $("#around_layer").val();
-							let around_me_location = $("#arround_me_current_loc").val();
-							let range_value = $("#near_area").val();
-							document.getElementById("area_range").innerHTML = range_value + " KM";
-							window.base.getNearmeResult(layer_id,around_me_location,range_value);
+						try {		
+							
+							var form_data = {
+									wkt: value,
+									layertype: $("#around_layer").val()
+										
+							}
+							
+							 $.ajax({
+			                        method: 'POST',
+			                        url: window.iscdl.appData.baseURL + "citizen/getaroundmedata",
+			                        data: JSON.stringify(form_data),
+			                        contentType: 'application/json',
+			                        async: false,		                        
+
+			                        success: function (response) {
+
+			                        	var result = JSON.parse(response);
+			                        	
+			                        	if(result.features.length > 0 ){
+			                     
+			                        	
+			                            const geoJSONFormat = new ol.format.GeoJSON();
+			                            var vectorSource = new ol.source.Vector({
+			                                features: geoJSONFormat.readFeatures(result, {
+			                                    featureProjection: 'EPSG:4326',
+			                                }),
+			                                format: geoJSONFormat,
+			                            });
+
+
+			                            around_me_layer = new ol.layer.Vector({
+			                                source: vectorSource,
+			                                style: location_mark,
+			                            });
+
+			                            around_me_layer.getSource().on('addfeature', function () {
+			                                map.setExtent(vectorLayer.getSource().getExtent());
+			                            });
+
+
+			                            const extent = vectorSource.getExtent();
+
+			                            map.getView().fit(extent);
+
+			                            //map1_layer.addLayer(layer_test1);
+			                            map.addLayer(around_me_layer);
+			                            around_me_layers_arr.push(around_me_layer);
+			                            //window.depUtlityController.minimizePopup();
+
+			                            console.log(result);
+			                        	}
+			                        	else{
+			                        		$u.notify("error", "Error",
+					                        "No Data Found for selected fields");
+			                        	}
+			                        	
+			                        		
+
+			                        },
+			                        error: function (e) {
+			                            $(".loader").fadeOut();
+			                            console.log(e);
+			                        }
+			                    });
 						} catch (e) {
 							 $u.notify("error", "Error","Something Happend Wrong");
 						}
@@ -8397,7 +8609,15 @@ require(
 			$(this).addClass('img-height-full');
 			let layerType = $(this).data("value");
 			
-			alert(layerType);
+			if(layerType == "satellite"){
+				map.getLayers().item(0).setSource(new ol.source.XYZ({
+		            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+		        }));
+			}
+			
+			if(layerType == "blank"){
+				map.getLayers().item(0).setSource(new ol.source.OSM);
+			}
 			
 			
 			

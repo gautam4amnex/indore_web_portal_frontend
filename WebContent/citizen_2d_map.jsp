@@ -1024,8 +1024,8 @@ Advance Tools
 								 	<div class="ol-gallery-title">Satellite Image</div>
 								 	</li>
 								 	<li>
-			  						<a href="javascript:void(0);" id="droneIMG"><img class="ol-gallery-thumbnail" src="${context}/images/Satellite_Image_1.png" alt="" data-value="hybrid"></a>
-								 	<div class="ol-gallery-title">Hybrid</div>
+			  						<a href="javascript:void(0);" id="droneIMG"><img class="ol-gallery-thumbnail" src="${context}/images/Satellite_Image_1.png" alt="" data-value="drone"></a>
+								 	<div class="ol-gallery-title">Drone</div>
 								 	</li>
 								 	<li>
 								 	<a href="javascript:void(0);" id="blankImage"><img class="ol-gallery-thumbnail" src="${context}/images/blank.jpg" alt="" data-value="blank"></a>	

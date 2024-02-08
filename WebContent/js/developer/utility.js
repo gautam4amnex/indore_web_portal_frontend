@@ -1199,8 +1199,8 @@
 			let length = response.length;
 			if(length > 0){
 				for (let i in response){
-					let name = response[i].department_name;
-					let id = response[i].department_id;
+					let name = response[i].layer_name;
+					let id = response[i].tbl_name;
 						str += "<option value='" + id + "'>" + name + "</option>";
 				}
 				$('#' + layer_id).append(str);
