@@ -15,6 +15,8 @@
 <%-- <link rel="stylesheet" type="text/css" href="${context}/css/daterangepicker.css" /> --%>
 <link rel="stylesheet" type="text/css"
 	href="${context}/css/DashboardAdmin.css" />
+	<script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css">
 <title>Central Dashboard</title>
 <!-- Page Content -->
 <div class="page-content-wrapper">
@@ -25,7 +27,7 @@
 			<div
 				class="col-lg-3 col-md-6 col-sm-12 card-main-rmc central-dashboard" data-dashboardid="8">
 				<a href="javascript:void(0);">
-					<div class="info-box box-color1">
+					<div class="info-box box-color1">       
 						<h5>AICTSL</h5>
 						<span class="info-box-icon">
 							<div class="info-chart">
@@ -56,6 +58,7 @@
 					</div>
 				</a>
 			</div>
+
 			<div
 				class="col-lg-3 col-md-6 col-sm-12 card-main-rmc central-dashboard" data-dashboardid="4">
 				<a href="javascript:void(0);">
@@ -332,6 +335,7 @@
 <script type="text/javascript" src="${context}/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${context}/js/bootstrap-select.js"></script>
 <script type="text/javascript" src="${context}/js/datatables.min.js"></script>
+<script type="text/javascript" src="${context}/js/developer/dep_report_controller.js"></script>
 <script type="text/javascript"
 	src="${context}/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript"

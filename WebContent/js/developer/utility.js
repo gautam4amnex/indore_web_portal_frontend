@@ -1362,9 +1362,19 @@
 					}else if(val == "Report"){
 						let department_id = localStorage.getItem('department_id');
 						if(department_id != "1"){
-							let jsp_page = "reports.jsp";
-							window.location = window.location.origin
-					        + window.iscdl.appData.webURLPrefix +jsp_page;
+							
+							
+							 if(window.location.pathname == window.iscdl.appData.webURLPrefix + "reports.jsp"){							       
+								 window.depUtlityController.accessModule("report_data_attribute","dep_report_data"); 
+							    }
+							 else{
+								 let jsp_page = "reports.jsp";
+									window.location = window.location.origin
+							        + window.iscdl.appData.webURLPrefix +jsp_page;
+									window.depUtlityController.accessModule("report_data_attribute","dep_report_data"); 
+							 }
+							 
+							
 						}else{
 							window.depUtlityController.accessModule("report_data_attribute","dep_report_data");
 						}

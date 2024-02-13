@@ -429,6 +429,9 @@ require(
 			    zoom: 12,
 			});
 			
+			let indore_latLong =  ol.proj.fromLonLat([75.8577, 22.7196]);
+			indore_latLong = new ol.proj.transform([indore_latLong[0], indore_latLong[1]], 'EPSG:3857', 'EPSG:4326');
+			
 			const map = new ol.Map({
 			    layers: [osm],
 			    target: 'map',
@@ -534,7 +537,8 @@ require(
 			$("#arround_selected_lat").click(function(){
 				enableMapClick();
 			    $("#info").show();
-			    
+			   
+			    $u.notify("info", "Info", "Press ESC to remove click from map");
 			    map.on('pointermove', function (evt) {
 			        if (evt.dragging) {
 			            info.style.visibility = 'hidden';
@@ -978,9 +982,17 @@ require(
 			 */
 
 			$('#myHomeDiv').click(function() {
-				if (map != null || map != undefined) {
-					map.setExtent(initialExtent);
-				}
+//				if (map != null || map != undefined) {
+//					map.setExtent(initialExtent);
+//				}
+				
+				view.animate({
+					  projection: 'EPSG: 4326',
+			          center: indore_latLong,
+			          duration: 2000,
+			          zoom: 12
+			        });
+				
 			});
 
 			/**
@@ -3927,6 +3939,7 @@ require(
 									layertype: $("#around_layer").val()
 										
 							}
+							map.removeLayer(around_me_layer);
 							
 							 $.ajax({
 			                        method: 'POST',
@@ -3963,7 +3976,7 @@ require(
 
 			                            const extent = vectorSource.getExtent();
 
-			                            map.getView().fit(extent);
+			                            map.getView().fit(extent, {"maxZoom":20} );
 
 			                            //map1_layer.addLayer(layer_test1);
 			                            map.addLayer(around_me_layer);

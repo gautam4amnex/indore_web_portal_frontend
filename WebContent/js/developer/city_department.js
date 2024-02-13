@@ -376,6 +376,8 @@
 				let start_latlong;
 				let end_latlong;
 				let know_your_coordinate;
+				let locationFromPointLayer;
+				let locationToPointLayer;
 
 				
 				const osm = new ol.layer.Tile({
@@ -395,8 +397,13 @@
 				});
 				
 				map_layers['OSM'] = osm;
-				//console.log(ol.Map.getView().calculateExtent(map.getSize()));
+			
+					
 				
+				let indore_latLong =  ol.proj.fromLonLat([75.8577, 22.7196]);
+				indore_latLong = new ol.proj.transform([indore_latLong[0], indore_latLong[1]], 'EPSG:3857', 'EPSG:4326');
+				//console.log(ol.Map.getView().calculateExtent(map.getSize()));
+				console.log(indore_latLong);
 				const styles = {
 				        'Polygon': new ol.style.Style({
 				            stroke: new ol.style.Stroke({
@@ -551,6 +558,27 @@
 			            start_latlong = ol.proj.transform(evt.coordinate, 'EPSG:4326', 'EPSG:3857');
 			            start_latlong = new ol.proj.transform([start_latlong[0], start_latlong[1]], 'EPSG:3857', 'EPSG:4326');
 			            
+	                    var point = new ol.Feature({
+	                    	geometry: new ol.geom.Point(ol.proj.fromLonLat(start_latlong)),
+	                    });
+
+	                    let from_location_mark = new ol.style.Style({
+	                        image: new ol.style.Icon({
+	                            anchor: [0.5, 1],
+	                            src: 'images/icons/from_location_direction.svg',
+	                        })
+	                    });    				
+	    				
+	                    
+	                    locationFromPointLayer = new ol.layer.Vector({
+	                        source: new ol.source.Vector({
+	                            features: [point],
+	                        }),
+	                        style: from_location_mark,
+	                    });
+
+	                    map.addLayer(locationFromPointLayer);
+			            
 			            
 			            $("#from_loc").val(start_latlong);
 			            map.un('click', clickHandler);
@@ -566,6 +594,30 @@
 						end_latlong = ol.proj.transform(evt.coordinate, 'EPSG:4326', 'EPSG:3857');
 						end_latlong = new ol.proj.transform([end_latlong[0], end_latlong[1]], 'EPSG:3857', 'EPSG:4326');		
 			            
+						
+						
+						
+						var point = new ol.Feature({
+	                    	geometry: new ol.geom.Point(ol.proj.fromLonLat(end_latlong)),
+	                    });
+						
+						let to_location_mark = new ol.style.Style({
+	                        image: new ol.style.Icon({
+	                            anchor: [0.5, 1],
+	                            src: 'images/icons/to_location.svg',
+	                        })
+	                    });
+						
+
+	                    locationToPointLayer = new ol.layer.Vector({
+	                        source: new ol.source.Vector({
+	                            features: [point],
+	                        }),
+	                        style: to_location_mark,
+	                    });
+
+	                    map.addLayer(locationToPointLayer);
+						
 						$("#to_loc").val(end_latlong);
 			            map.un('click', clickHandler);
 			    	}
@@ -3008,9 +3060,17 @@
 
 				 // home button click event
 				$('#myHomeDiv').click(function() {
-					if (map != null || map != undefined) {
-						map.setExtent(initialExtent);
-					}
+//					if (map != null || map != undefined) {
+//						map.setExtent(initialExtent);
+//					}
+					
+					view.animate({
+						  projection: 'EPSG: 4326',
+				          center: indore_latLong,
+				          duration: 2000,
+				          zoom: 12
+				        });
+					
 				});
 				
 				// Find my location
@@ -5542,6 +5602,7 @@
                         src: 'images/icons/svgviewer-output.svg',
                     })
                 });
+			
 				
 				$(".add_field_button").click(function(){
 					add_field_button = true;						
@@ -5863,7 +5924,7 @@
 							submitHandler : function(form, e) {
 								e.preventDefault();
 								try {
-									
+									$(".loader").fadeIn();
 									let wardId = $("#sp_ward").val();
 									let sourceLayer = $("#sp_source_layer").val();
 									let queryType = $("#sp_type").val();
@@ -5924,6 +5985,7 @@
 					                            console.log(result);
 					                        	}
 					                        	else{
+					                        		$(".loader").fadeOut();
 					                        		$u.notify("error", "Error",
 							                        "No Data Found for selected fields");
 					                        	}
@@ -5938,6 +6000,7 @@
 									
 									
 								} catch (e) {
+									$(".loader").fadeOut();
 									$u.notify("error", "Error",
 											"Something went Wrong");
 								}
@@ -7990,81 +8053,81 @@
 								let result;
 								var directionObj
 								
-								directionObj = {
-										"source" : source_array,
-										"destination" : destination_array
-								}	
-								
-								let postData = JSON.stringify(directionObj);
-								$(".loader").fadeIn();
-								$.ajax({
-									method : 'POST',
-									url : window.iscdl.appData.baseURL + "citizen/ward/getdirections",
-									data : postData,
-									contentType : 'application/json',
-									async : false,
-									success : function(result) {
-										$(".loader").fadeOut();
-										if (!$.isEmptyObject(result) && result != null) {
-											if(result.code == "400"){
-												$u.notify('info', 'Notification',
-														'No Route Found', '');
-												$("#total_distance").text("");
-												map.removeLayer(gLayer);
-												return;
-											}else{
-												var sym = new CartographicLineSymbol(
-												          CartographicLineSymbol.STYLE_SOLID,
-												          new Color([0,255,0]), 10, 
-												          CartographicLineSymbol.CAP_ROUND,
-												          CartographicLineSymbol.JOIN_MITER, 5
-												        );
-										         
-												map.removeLayer(gLayer);
-												
-												let coordinates = result.features[0].geometry.coordinates;
-												let line_length = result.features[0].properties.shape_leng;
-												let total_distance = (line_length * 111).toFixed(3); // distance in kms
-												$("#total_distance").text("Total Distance : " + total_distance + " kms");
-												var line = new esri.geometry.Polyline();
-												line.addPath(coordinates);
-										         var graphic = new esri.Graphic(line, sym);
-										        gLayer.add(graphic);
-										        map.addLayer(gLayer);
-										        window.depUtlityController.minimizePopup();
-										        //var extGraphics = esri.graphicsExtent(gLayer.graphics);
-										       // map.setExtent(extGraphics);
-											}
-										} else {
-											$(".loader").fadeOut();
-											map.removeLayer(gLayer);
-											$("#total_distance").text("");
-											window.department2dMap.removeDirectionGraphics();
-											$u.notify('info', 'Notification',
-													'No Route Found', '');
-											return;
-										}
-									},
-									error : function(e) {
-										$(".loader").fadeOut();
-										$("#total_distance").text("");
-										map.removeLayer(gLayer);
-										window.department2dMap.removeDirectionGraphics();
-									}
-								});
+//								directionObj = {
+//										"source" : source_array,
+//										"destination" : destination_array
+//								}	
+//								
+//								let postData = JSON.stringify(directionObj);
+//								$(".loader").fadeIn();
+//								$.ajax({
+//									method : 'POST',
+//									url : window.iscdl.appData.baseURL + "citizen/ward/getdirections",
+//									data : postData,
+//									contentType : 'application/json',
+//									async : false,
+//									success : function(result) {
+//										$(".loader").fadeOut();
+//										if (!$.isEmptyObject(result) && result != null) {
+//											if(result.code == "400"){
+//												$u.notify('info', 'Notification',
+//														'No Route Found', '');
+//												$("#total_distance").text("");
+//												map.removeLayer(gLayer);
+//												return;
+//											}else{
+//												var sym = new CartographicLineSymbol(
+//												          CartographicLineSymbol.STYLE_SOLID,
+//												          new Color([0,255,0]), 10, 
+//												          CartographicLineSymbol.CAP_ROUND,
+//												          CartographicLineSymbol.JOIN_MITER, 5
+//												        );
+//										         
+//												map.removeLayer(gLayer);
+//												
+//												let coordinates = result.features[0].geometry.coordinates;
+//												let line_length = result.features[0].properties.shape_leng;
+//												let total_distance = (line_length * 111).toFixed(3); // distance in kms
+//												$("#total_distance").text("Total Distance : " + total_distance + " kms");
+//												var line = new esri.geometry.Polyline();
+//												line.addPath(coordinates);
+//										         var graphic = new esri.Graphic(line, sym);
+//										        gLayer.add(graphic);
+//										        map.addLayer(gLayer);
+//										        window.depUtlityController.minimizePopup();
+//										        //var extGraphics = esri.graphicsExtent(gLayer.graphics);
+//										       // map.setExtent(extGraphics);
+//											}
+//										} else {
+//											$(".loader").fadeOut();
+//											map.removeLayer(gLayer);
+//											$("#total_distance").text("");
+//											window.department2dMap.removeDirectionGraphics();
+//											$u.notify('info', 'Notification',
+//													'No Route Found', '');
+//											return;
+//										}
+//									},
+//									error : function(e) {
+//										$(".loader").fadeOut();
+//										$("#total_distance").text("");
+//										map.removeLayer(gLayer);
+//										window.department2dMap.removeDirectionGraphics();
+//									}
+//								});
 							
 							},
 							removeDirectionGraphics : function(){
-								$("#total_distance").text("");
-								if(gLayer){
-									map.removeLayer(gLayer);
-									map.graphics.clear();
-									let graphics = gLayer.graphics;
-									for(let i in graphics){
-										let g = graphics[i];
-										gLayer.graphics.pop();
-									}
-								}
+//								$("#total_distance").text("");
+//								if(gLayer){
+//									map.removeLayer(gLayer);
+//									map.graphics.clear();
+//									let graphics = gLayer.graphics;
+//									for(let i in graphics){
+//										let g = graphics[i];
+//										gLayer.graphics.pop();
+//									}
+//								}
 							},
 							getAttributeValueByAttributeField : function(field_value,layer_name){
 								let layer_url = window.layerDataController.getLayerById(layer_name);

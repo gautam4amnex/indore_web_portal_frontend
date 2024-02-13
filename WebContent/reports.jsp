@@ -77,7 +77,11 @@
 			</div>
 
 			<div class="col-12 col-md-12 col-lg-12 col-sm-12 col-xl-12 hospitolR-h35 pl-1 pr-1 mt-2" id="feature_table">	
-				<div class="tbl_dep hospitolR-h100" id="myTableNode"></div>	
+				<!--  <div class="tbl_dep hospitolR-h100" id="myTableNode"></div>-->	
+				
+				<table id="report_table" class="table table-striped table-bordered" style="width: 100%">
+				</table>
+				
 			</div>
 
 

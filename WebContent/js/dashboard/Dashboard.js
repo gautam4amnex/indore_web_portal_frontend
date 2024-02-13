@@ -134,6 +134,8 @@
 				localStorage.setItem("mapPage",true);
 			});
 			
+			
+	
 			$("#sidebar_dashboard").on("click", function(){
 				localStorage.removeItem("mapPage");
 				localStorage.setItem("dashPage",true);
@@ -142,13 +144,13 @@
 			/**
 			 * 
 			 */
-			$(window).on('resize', function () {
-				try {
-					global.dashboardChartsModule.resizeChart();
-				} catch (e) {
-					console.error(e);
-				}
-			});	
+//			$(window).on('resize', function () {
+//				try {
+//					global.dashboardChartsModule.resizeChart();
+//				} catch (e) {
+//					console.error(e);
+//				}
+//			});	
 			
 			try {
 				if(global.dashboardChartsModule){
