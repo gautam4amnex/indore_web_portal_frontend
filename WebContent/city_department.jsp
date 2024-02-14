@@ -2826,22 +2826,20 @@ Proximity Analysis
 						<a class="nav-link active" id="pills-2D-tab" data-toggle="pill" href="javascript:void(0);pills-2D" aria-controls="pills-2D" aria-selected="true" data-translate="_2d">2D</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" id="pills-3D-tab" data-toggle="pill" href="javascript:void(0);pills-3D" role="tab" aria-controls="pills-3D" aria-selected="false" data-translate="_3d">3D</a></li>
-					
-					<li class="nav-item">
-						<select class="form-control nav-link pb-1" id="search_layer" name = "search_layer">	
-										<option value="" >Select Layer</option>	
-									</select></li>
-						
-					<li class="nav-item">
-						<select class="form-control pb-1 nav-link" id="layer_value" name = "layer_value">	
-										<option value="" >Select Value</option>	
-									</select></li>
+						<a class="nav-link" id="pills-3D-tab" data-toggle="pill" href="javascript:void(0);pills-3D" role="tab" aria-controls="pills-3D" aria-selected="false" data-translate="_3d">3D</a></li>					
 					
 				</ul>
 			
 			</div>	
-			<div id="searchDiv"></div>
+			<div class="d-flex align-items-center filter-layerposition">
+			<select class="form-control nav-link pb-1" id="search_layer" name = "search_layer">	
+										<option value="" >Select Layer</option>	
+									</select>
+						<select class="form-control pb-1 nav-link" id="layer_value" name = "layer_value">	
+										<option value="" >Select Value</option>	
+									</select>
+			</div>
+			<!-- <div id="searchDiv"></div> -->
 				<div id="map" class="map h-100 printWholeMap">
 				<span id="coordinateDiv"></span>				
 				</div>
@@ -2991,6 +2989,7 @@ Proximity Analysis
 										      <option value="LineString">Length (LineString)</option>
 										      <option value="Polygon">Area (Polygon)</option>
 										    </select>
+										    <br>
 										    <label for="segments">Show segment lengths:&nbsp;</label>
 										    <input type="checkbox" id="segments" checked />
 										    <label for="clear">Clear previous measure:&nbsp;</label>

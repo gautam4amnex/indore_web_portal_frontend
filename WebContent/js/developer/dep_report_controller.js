@@ -320,8 +320,9 @@ function showTableData(data) {
 									
 						});
 		
-		$(".got_to").click(function(){
+	$('#report_table').on('click','.got_to',function () {
 			
+			map.removeLayer(selected_report_vector_layer);
 			goToSelectedData($(this).attr("gid"));
 			
 		});

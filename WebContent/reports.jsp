@@ -16,6 +16,21 @@
 	href="${context}/css/healthcare_hospital.css">
 		    <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css">
+<style>
+.hospitolR-h65{
+height:60%;}
+.dataTables_scrollBody{
+max-height: calc(50vh - 255px) !important;
+min-height:unset;
+}
+.dataTables_length{margin:0;}
+.table td, .table th{padding:0.5rem;font-size:0.82rem;}
+.layer-popup{
+    right: 0px;
+    height: 200px !important;
+
+    }
+</style>
 
 <!--Main sidebar content start-->
 

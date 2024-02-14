@@ -1135,6 +1135,15 @@ input:checked + .slider:before {
     transition: 0.8s all;
 }
 
+.filter-layerposition{
+	position: absolute;
+    right: 10px;
+    max-width: 300px;
+    gap: 10px;
+    z-index: 10;
+    margin-top:8px;
+}
+
 .map-func.three-d {
     left: 301px;
 }

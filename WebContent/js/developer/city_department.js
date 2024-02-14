@@ -290,7 +290,7 @@
 					
 				});
 				
-				
+				let SearchVectorLayer;
 				$("#layer_value").change(function(){			
 				
 					map.removeLayer(vectorLayer);
@@ -324,15 +324,15 @@
 			                            });
 
 
-			                            vectorLayer = new ol.layer.Vector({
+			                            SearchVectorLayer = new ol.layer.Vector({
 			                                source: vectorSource,
 			                                style: location_mark,
 			                            });
 
 			                            
 			                            
-			                            vectorLayer.getSource().on('addfeature', function () {
-			                                map.setExtent(vectorLayer.getSource().getExtent());			                            
+			                            SearchVectorLayer.getSource().on('addfeature', function () {
+			                                map.setExtent(SearchVectorLayer.getSource().getExtent());			                            
 			                            });
 
 
@@ -342,7 +342,7 @@
 			                            map.getView().fit(extent, {"maxZoom":20} );
 			                            //map.getView().setZoom(map.getView().getZoom()+1);   
 
-			                            map.addLayer(vectorLayer);
+			                            map.addLayer(SearchVectorLayer);
 			                            
 			                            
 
@@ -378,7 +378,8 @@
 				let know_your_coordinate;
 				let locationFromPointLayer;
 				let locationToPointLayer;
-
+				let GoToVectorLayer;
+				
 				
 				const osm = new ol.layer.Tile({
 				    source: new ol.source.OSM
@@ -557,27 +558,42 @@
 			            
 			            start_latlong = ol.proj.transform(evt.coordinate, 'EPSG:4326', 'EPSG:3857');
 			            start_latlong = new ol.proj.transform([start_latlong[0], start_latlong[1]], 'EPSG:3857', 'EPSG:4326');
-			            
-	                    var point = new ol.Feature({
-	                    	geometry: new ol.geom.Point(ol.proj.fromLonLat(start_latlong)),
-	                    });
-
-	                    let from_location_mark = new ol.style.Style({
+			            console.log(start_latlong);
+//			            
+//			            var vectorSource = new ol.source.Vector({
+//                            features: geoJSONFormat.readFeatures(result, {
+//                                featureProjection: 'EPSG:4326',
+//                            }),
+//                            format: geoJSONFormat,
+//                        });
+//
+//
+//                        vectorLayer = new ol.layer.Vector({
+//                            source: vectorSource,
+//                            style: location_mark,
+//                        });
+			            let from_location_mark = new ol.style.Style({
 	                        image: new ol.style.Icon({
 	                            anchor: [0.5, 1],
-	                            src: 'images/icons/from_location_direction.svg',
+	                            src: 'images/icons/fromLocationIcon.svg',
 	                        })
-	                    });    				
+	                    });   
+			            
+	                    var point = new ol.Feature({
+	                    	geometry: new ol.geom.Point(ol.proj.fromLonLat([75.83951945462603, 22.74085475046573])),
+	                    });
+
+	                     				
 	    				
 	                    
-	                    locationFromPointLayer = new ol.layer.Vector({
+	                    const locationFromPointLayer2 = new ol.layer.Vector({
 	                        source: new ol.source.Vector({
 	                            features: [point],
 	                        }),
 	                        style: from_location_mark,
 	                    });
 
-	                    map.addLayer(locationFromPointLayer);
+	                    map.addLayer(locationFromPointLayer2);
 			            
 			            
 			            $("#from_loc").val(start_latlong);
@@ -763,12 +779,12 @@
 								  features: [iconFeature],
 								});
 
-								const vectorLayer = new ol.layer.Vector({
+								GoToVectorLayer = new ol.layer.Vector({
 								  source: vectorSource,
 								  style: location_mark,
 								});
 
-							map.addLayer(vectorLayer);
+							map.addLayer(GoToVectorLayer);
 							
 							
 							map.setView(
@@ -3950,6 +3966,7 @@
 //					//mapReady();
 //					map_info_tool = false;
 //					infoToolSetup();
+					map.removeLayer(GoToVectorLayer);
 				});
 
 				//clear incident issues
@@ -5040,36 +5057,50 @@
 				
 				// clear all graphic on map
 				$("#clearMap").click(function() {
-					map.graphics.clear();
-					
-					$("#heatmap_legend").hide();
-					
-					// for draw deactive
-					if(toolbar){
-						toolbar.deactivate();
+//					map.graphics.clear();
+//					
+//					$("#heatmap_legend").hide();
+//					
+//					// for draw deactive
+//					if(toolbar){
+//						toolbar.deactivate();
+//					}
+//					
+//					if(gLayer){
+//						map.removeLayer(gLayer);
+//					}
+//					
+//					if(dirgsLayer){
+//						map.removeLayer(dirgsLayer);
+//					}
+//					
+//					if(dirgdLayer){
+//						map.removeLayer(dirgdLayer);
+//					}
+//					
+//					if(opacity_layer){
+//						map.removeLayer(opacity_layer);	
+//					}
+//					
+//					removeOnFlyLayer();
+//					removeKMLLayer();
+//					removeSwipeLayer();
+//					window.department2dMap.removeHeatmapLayer();
+//					removeMeasurementGraphics();
+					source.clear();
+					map.removeLayer(GoToVectorLayer);
+					map.removeLayer(locationFromPointLayer);
+					map.removeLayer(locationToPointLayer);
+					map.removeLayer(swipe_layer);
+					map.removeLayer(SearchVectorLayer);
+					for(var i=0; i<direction_arr.length; i++){
+						map.removeLayer(direction_arr[i]);
 					}
 					
-					if(gLayer){
-						map.removeLayer(gLayer);
+					for(var j=0; j<map_layers.length; j++){
+					    map.removeLayer(map_layers[j]);
 					}
 					
-					if(dirgsLayer){
-						map.removeLayer(dirgsLayer);
-					}
-					
-					if(dirgdLayer){
-						map.removeLayer(dirgdLayer);
-					}
-					
-					if(opacity_layer){
-						map.removeLayer(opacity_layer);	
-					}
-					
-					removeOnFlyLayer();
-					removeKMLLayer();
-					removeSwipeLayer();
-					window.department2dMap.removeHeatmapLayer();
-					removeMeasurementGraphics();
 				});
 				
 				/**
