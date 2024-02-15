@@ -1102,3 +1102,10 @@ function showTableData(data) {
 //			});
 	global.commonReportController = base;
 })(window, jQuery)
+
+$(document).ready(function(){
+	
+	$('.layer-popup').css('right','-300px');
+	$("#dep_report_data").css('right','0px');
+	
+});

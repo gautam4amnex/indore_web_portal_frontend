@@ -1827,10 +1827,11 @@ Proximity Analysis
 								<label for="sp_type" data-translate = "squery_qtype">Query Type</label>	<span class="mandatory">*</span>
 								<select class="form-control pb-1" id="sp_type" name="sp_type">	
 									<option value="">Select Type</option>	
-									<option value="Intersect">Intersect</option>	
-									<option value="Contains">Contains</option>	
-									<option value="Within">Within</option>	
-								</select>	
+									<option value="intersect">Intersect</option>	
+									<option value="contains">Contains</option>	
+									<option value="within">Within</option>	
+								</select>
+									
 							</div>	
 							<div class="form-group">	
 								<label for="sp_mask_layer"  data-translate = "squery_mlayer">Mask Layer</label>	<span class="mandatory">*</span>
@@ -2993,7 +2994,10 @@ Proximity Analysis
 										    <label for="segments">Show segment lengths:&nbsp;</label>
 										    <input type="checkbox" id="segments" checked />
 										    <label for="clear">Clear previous measure:&nbsp;</label>
-										    <input type="checkbox" id="clear" checked />									  
+										    <input type="checkbox" id="clear" checked />	
+										    <br>
+										    <br>
+										    <button type="button" class="btn btn-indore" id="clear_measurment" data-translate="clear">Clear</button>								  
 									  </div>
 								</div>
 							</div>

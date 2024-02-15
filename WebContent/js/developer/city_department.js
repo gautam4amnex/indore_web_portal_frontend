@@ -16,6 +16,9 @@
 	 var opacity_layer;	
 	 var map_layers = [];
 	 var direction_arr = [];
+	 let SpatialvectorLayer;
+	 let AdvancevectorLayer;
+	 let Measuredraw;
 	 
 	let base = {
 		getMap : function getMap(){
@@ -293,7 +296,7 @@
 				let SearchVectorLayer;
 				$("#layer_value").change(function(){			
 				
-					map.removeLayer(vectorLayer);
+					map.removeLayer(SearchVectorLayer);
 					var form_data = {
 							tableName: $("#search_layer").val(),
 							gid: $("#layer_value").val()
@@ -3738,28 +3741,28 @@
 				map.addLayer(vector);
 				map.addInteraction(modify);					
 
-				function addInteraction() {
-				  const drawType = typeSelect.value;;
+				function addInteraction(value) {
+				  const drawType = value;
 				  const activeTip =
 				    'Click to continue drawing the ' +
 				    (drawType === 'Polygon' ? 'polygon' : 'line');
 				  const idleTip = 'Click to start measuring';
 				  let tip = idleTip;
-				  draw = new ol.interaction.Draw({
+				  Measuredraw = new ol.interaction.Draw({
 				    source: source,
 				    type: drawType,
 				    style: function (feature) {
 				      return styleFunction(feature, showSegments.checked, drawType, tip);
 				    },
 				  });
-				  draw.on('drawstart', function () {
+				  Measuredraw.on('drawstart', function () {
 				    if (clearPrevious.checked) {
 				      source.clear();
 				    }
 				    modify.setActive(false);
 				    tip = activeTip;
 				  });
-				  draw.on('drawend', function () {
+				  Measuredraw.on('drawend', function () {
 				    modifyStyle.setGeometry(tipPoint);
 				    modify.setActive(true);
 				    map.once('pointermove', function () {
@@ -3768,19 +3771,24 @@
 				    tip = idleTip;
 				  });
 				  modify.setActive(true);
-				  map.addInteraction(draw);
+				  map.addInteraction(Measuredraw);
 				}
 
 				typeSelect.onchange = function () {
-				  map.removeInteraction(draw);
-				  addInteraction();
+				  map.removeInteraction(Measuredraw);
+				  addInteraction($("#type").val());
 				};
 
 				showSegments.onchange = function () {
 				  vector.changed();
-				  draw.getOverlay().changed();
+				  Measuredraw.getOverlay().changed();
 				};
 
+				$("#clear_measurment").click(function(){
+					
+					source.clear();
+					
+				});
 				
 				function createToolbar(themap) {
 					toolbar = new Draw(map);
@@ -4954,17 +4962,20 @@
 				$('#reset_advanced_query').click(function(){
 					$("#department_queries_rslt").html("");
 					window.department2dMap.resetQueryFilter();
-					map.graphics.clear();
-					map.setExtent(initialExtent);
+//					map.graphics.clear();
+//					map.setExtent(initialExtent);
+					map.removeLayer(AdvancevectorLayer);
 				});
 				
 				/**
 				 * spatial-query clear event
 				 */
+				
 				$("#reset_spatial_query").click(function(){
 					$("#department_queries_rslt").html("");
-					map.graphics.clear();
-					map.setExtent(initialExtent);
+//					map.graphics.clear();
+//					map.setExtent(initialExtent);
+					map.removeLayer(SpatialvectorLayer);
 				})
 				
 				/**
@@ -5327,11 +5338,16 @@
 //					window.department2dMap.removeHeatmapLayer();
 //					removeMeasurementGraphics();
 					source.clear();
+					for(var i=0; i<basic_query_layer_arr.length; i++){
+						map.removeLayer(basic_query_layer_arr[i]);
+					}
 					map.removeLayer(GoToVectorLayer);
 					map.removeLayer(locationFromPointLayer);
 					map.removeLayer(locationToPointLayer);
 					map.removeLayer(swipe_layer);
 					map.removeLayer(SearchVectorLayer);
+					map.removeLayer(SpatialvectorLayer);
+					map.removeLayer(AdvancevectorLayer);
 					for(var i=0; i<direction_arr.length; i++){
 						map.removeLayer(direction_arr[i]);
 					}
@@ -5866,6 +5882,7 @@
 				
 				let vectorLayer = "";
 				let add_field_button = false;
+				
 				let location_mark = new ol.style.Style({
                     image: new ol.style.Icon({
                         anchor: [0.5, 1],
@@ -6112,13 +6129,13 @@
 					                            });
 
 
-					                            const vectorLayer = new ol.layer.Vector({
+					                            AdvancevectorLayer = new ol.layer.Vector({
 					                                source: vectorSource,
 					                                style: location_mark,
 					                            });
 
-					                            vectorLayer.getSource().on('addfeature', function () {
-					                                map.setExtent(vectorLayer.getSource().getExtent());
+					                            AdvancevectorLayer.getSource().on('addfeature', function () {
+					                                map.setExtent(AdvancevectorLayer.getSource().getExtent());
 					                            });
 
 
@@ -6127,10 +6144,7 @@
 					                            map.getView().fit(extent);
 
 					                            //map1_layer.addLayer(layer_test1);
-					                            map.addLayer(vectorLayer);
-
-
-					                            console.log(result);
+					                            map.addLayer(AdvancevectorLayer);
 					                        	}
 					                        	else{
 					                        		$u.notify("error", "Error",
@@ -6193,6 +6207,7 @@
 							},
 							submitHandler : function(form, e) {
 								e.preventDefault();
+								$(".loader").fadeIn();
 								try {
 									$(".loader").fadeIn();
 									let wardId = $("#sp_ward").val();
@@ -6224,7 +6239,7 @@
 											
 											if(result.features.length > 0 ){
 							                     
-					                        	
+												$(".loader").fadeOut();
 					                            const geoJSONFormat = new ol.format.GeoJSON();
 					                            var vectorSource = new ol.source.Vector({
 					                                features: geoJSONFormat.readFeatures(result, {
@@ -6234,13 +6249,13 @@
 					                            });
 
 
-					                            const vectorLayer = new ol.layer.Vector({
+					                            SpatialvectorLayer = new ol.layer.Vector({
 					                                source: vectorSource,
-
+					                                style: location_mark,
 					                            });
 
-					                            vectorLayer.getSource().on('addfeature', function () {
-					                                map.setExtent(vectorLayer.getSource().getExtent());
+					                            SpatialvectorLayer.getSource().on('addfeature', function () {
+					                                map.setExtent(SpatialvectorLayer.getSource().getExtent());
 					                            });
 
 
@@ -6249,7 +6264,7 @@
 					                            map.getView().fit(extent);
 
 					                            //map1_layer.addLayer(layer_test1);
-					                            map.addLayer(vectorLayer);
+					                            map.addLayer(SpatialvectorLayer);
 
 
 					                            console.log(result);
