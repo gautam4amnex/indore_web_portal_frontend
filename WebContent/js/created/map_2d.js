@@ -14,8 +14,11 @@ var source_latlong_by_name ="",destination_latlong_by_name = "",thana_locality_n
 var sourceGeocoder,destGeocoder,localityThana,ward_opacity;
 let map_point_click = [];
 var vectorSource = null;
+let announcementLayer;
 var layer_names = [];
 var map_layers = [];
+let curr_layer_source = null;
+let curr_layer_name = null;
 var initial_visible_layers = [1, 34, 66, 67, 68, 69, 84, 85];// NEED TO
 																// CHANGE WHERE
 																// LAYER
@@ -24,6 +27,9 @@ var initial_visible_layers = [1, 34, 66, 67, 68, 69, 84, 85];// NEED TO
 																// LAYER ID
 																// CHANGE
 
+var commonModalPopup = new bootstrap.Modal(document.getElementById('commonModalPopup'), {
+    keyboard: false
+});
 
 require(
 		[   "esri/map", "esri/dijit/HomeButton", "esri/dijit/LocateButton","esri/dijit/Search", "esri/dijit/BasemapGallery",
@@ -460,7 +466,7 @@ require(
 			        }),
 			    }
 			
-			var ward_boundary = new ol.layer.Tile({					 
+			/*var ward_boundary = new ol.layer.Tile({					 
 			      source: new ol.source.TileWMS({
 			    	  opacity: 0.5,
 	                 url: "https://apagri.infinium.management/geoserver/iscdl/wms?",
@@ -469,7 +475,20 @@ require(
 	                 transition: 0,
 	                 style: styles,
 	              })
-			  });
+			});*/
+			
+			curr_layer_source = new ol.source.TileWMS({
+				opacity: 0.5,
+                url: "https://apagri.infinium.management/geoserver/iscdl/wms?",
+                params: { 'LAYERS': 'iscdl:shp_ward_boundary', 'TILED': true},
+                serverType: 'geoserver',		                 
+                transition: 0,
+                style: styles,
+            })
+			
+			var ward_boundary = new ol.layer.Tile({					 
+				source: curr_layer_source
+			});
 			
 			map.addLayer(ward_boundary);
 			
@@ -1384,6 +1403,19 @@ require(
 			        var wms_service_url = $(this).attr("data-wmsurl");
 			        
 			        if (checkbox.is(":checked")) {
+			        	
+			        	curr_layer_source = new ol.source.TileWMS({
+			        		url: wms_service_url,
+                            params: { 'LAYERS': gis_id, 'CRS': 'EPSG:4326' },
+                            transition: 0,
+                            crossOrigin: 'anonymous'
+			            })
+			        	
+			        	let current_layer = new ol.layer.Tile({
+			        		source: curr_layer_source
+			        	})
+			        	
+			        	/*
 			        	let current_layer = new ol.layer.Tile({
 	                        source: new ol.source.TileWMS({
 	                            url: wms_service_url,
@@ -1391,7 +1423,7 @@ require(
 	                            transition: 0,
 	                            crossOrigin: 'anonymous'
 	                        })
-	                    });
+	                    });*/
 
 	                    map.addLayer(current_layer);
 	                    map_layers.push(current_layer);
@@ -1466,6 +1498,8 @@ require(
 				        }else{
 				        	map.removeLayer(map_layers[table_name]);
 				        }
+				        
+				        //curr_layer_name = checkboxValue;
 					});
 					
 					
@@ -5897,7 +5931,7 @@ require(
 					'<tr><td><b>Longitude</b></td><td>'+longitude+'</td></tr>';
 					
 					template_content += table_content + '</tbody></table>';
-					let announcement_infoTemplate = new InfoTemplate("Announcement",template_content);
+					//let announcement_infoTemplate = new InfoTemplate("Announcement",template_content);
 					//graphic.setGeometry(announcement_point);
 					//graphic.setInfoTemplate(announcement_infoTemplate);
 					//map.centerAndZoom(announcement_point,18); 
@@ -5906,30 +5940,25 @@ require(
 					//map.infoWindow.show(announcement_point);
 					window.depUtlityController.minimizePopup();
 					
-					let vectorSource = new ol.source.Vector({
-						features: [new ol.Feature({
-				            geometry: new ol.geom.Point(ol.proj.transform([parseFloat(longitude), parseFloat(latitude)], 'EPSG:4326', 'EPSG:3857')),
-				        })]
-				    });
 					
-					var vectorLayer = new ol.layer.Vector({
-					    target: "points",
-					    source: vectorSource,
-					    style: new ol.style.Style({
-					      image: new ol.style.Icon({
-					        anchor: [0.5, 0.5],
-					        anchorXUnits: "fraction",
-					        anchorYUnits: "fraction",
-					        src: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg"
-					      })
-					    })
-					  });
-						
-					  map.getView().fit(vectorLayer.getSource().getExtent(), {
-						  size: map.getSize(),
-						  maxZoom: 15
-					  });	
-					  map.addLayer(vectorLayer);
+					map.removeLayer(announcementLayer);
+					const iconFeature = new ol.Feature({
+						geometry: new ol.geom.Point([longitude , latitude])								  
+					});
+
+					const vectorSource = new ol.source.Vector({
+						features: [iconFeature],
+					});
+
+					announcementLayer = new ol.layer.Vector({
+					  source: vectorSource,
+					  style: location_mark,
+					});
+					
+					//announcementLayer.push(layer);
+					map.addLayer(announcementLayer);
+					
+					map.setView(new ol.View({projection: 'EPSG:4326',center: [longitude , latitude],zoom: 18}));
 					  
 				},
 				creatBookmarkView : function creatBookmarkView(){
@@ -7383,7 +7412,7 @@ require(
 			                                const geoJSONFormat = new ol.format.GeoJSON();
 			                                vectorSource = new ol.source.Vector({
 			                                    features: geoJSONFormat.readFeatures(geoJsonData),
-			                                    featureProjection: 'EPSG:3857',
+			                                    featureProjection: 'EPSG:4326',
 			                                    format: geoJSONFormat,
 			                                });
 			                                const vectorLayer = new ol.layer.Vector({
@@ -8635,6 +8664,41 @@ require(
 			
 			
 		})
+		
+		$("#btn_info_popup").click(function () {
+	        $("#commonModalPopup").hide();
+	    });
+		
+		
+		map.on('singleclick', (event) => {
+			let infoClick = true;
+			if (infoClick) {
+                const viewResolution = /** @type {number} */ (view.getResolution());
+                const url = curr_layer_source.getFeatureInfoUrl(event.coordinate, viewResolution, 'EPSG:4326', { 'INFO_FORMAT': 'application/json' });
+                if (url) {
+                    fetch(url).then((response) => response.text()).then((result) => {
+                        //console.log(result);
+                        let response = JSON.parse(result);
+                        var content = "";
+                        if (response.features.length > 0) {
+                        	let properties = response.features[0].properties;
+                            for (let i in properties) {
+                                var value = properties[i];
+                                content += "<table class='table mb-0' style='font-size:0.8rem'><tbody><tr><td style='padding:0.25rem;;width:230px'><label class='mb-0'><strong> " + i.toUpperCase() + "</strong>: </label></td> <td style='padding:0.25rem'>" + value + "</td></tr></tbody></table>";
+                            }
+                            
+                            $("#modelContentValue").html(content);
+                            $("#commonModalPopup").show();
+                            
+                        } else {
+                            //$.notify("info not found..", "error");
+                        }
+
+                    });
+                }
+            }
+		})
+		
 		
 		/**
 		 * LOAD FUNCTION

@@ -64,6 +64,24 @@
 
 <body>	
 <div class="loader"></div>
+
+<!-- Popup Modal -->
+<div class="modal np-modal show" id="commonModalPopup" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="model-heading">Info</h4>
+                <button type="button" class="close" id="btn_info_popup" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body" id="modelContentValue">
+                <div class="view-detail-pop-up-main"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Popup Modal End -->
+
 <!-- wrapper -->
 <div class="d-flex col-12 p-0 wrapper"> 
 	
