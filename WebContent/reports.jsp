@@ -16,6 +16,7 @@
 	href="${context}/css/healthcare_hospital.css">
 		    <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css">
+	<link rel="stylesheet" href="${context}/css/citizen-map-dept.css">
 <style>
 .hospitolR-h65{
 height:60%;}
@@ -53,7 +54,29 @@ min-height:unset;
 <!-- Page Content -->
 <div class="page-content-wrapper">
 
+	<div class="action-start-top" style="z-index: 5;">
+			
+				<ul class="action-ul-top bottom-action" id="downPanel">
+					<li title="Info"><a id="info_layer" href="javascript:void(0);"><img src="${context}/images/Info_tool_26.svg"></a></li>
+				</ul>
+			</div>
 
+<!-- Popup Modal -->
+<div class="modal np-modal show" id="commonModalPopup" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="model-heading"></h4>
+                <button type="button" class="close" id="btn_info_popup" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body" id="modelContentValue">
+                <div class="view-detail-pop-up-main"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Popup Modal End -->
 	<div class="container-fluid h-100 p-0">
 		<jsp:include page="/common/header.jsp" />
 
@@ -106,7 +129,6 @@ min-height:unset;
 </div>
 <!-- /#page-content-wrapper -->
 
-</div>
 <!-- /#wrapper -->
 
 <!-- 3.4.1 -->

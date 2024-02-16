@@ -19,6 +19,8 @@
 	 let SpatialvectorLayer;
 	 let AdvancevectorLayer;
 	 let Measuredraw;
+	 let curr_layer_source = null;
+	 let curr_layer_source_arr = [];
 	 
 	let base = {
 		getMap : function getMap(){
@@ -359,7 +361,7 @@
 
 			                            const extent = vectorSource.getExtent();
 
-			                            //map.getView().fit(extent);
+			                            //map.getView().fit(extent, {"maxZoom":20} );
 			                            map.getView().fit(extent, {"maxZoom":20} );
 			                            //map.getView().setZoom(map.getView().getZoom()+1);   
 
@@ -440,16 +442,20 @@
 				        }),
 				    }
 				
+				curr_layer_source = new ol.source.TileWMS({
+					opacity: 0.5,
+	                url: "https://apagri.infinium.management/geoserver/iscdl/wms?",
+	                params: { 'LAYERS': 'iscdl:shp_ward_boundary', 'TILED': true},
+	                serverType: 'geoserver',		                 
+	                transition: 0,
+	                style: styles,
+	            })
+				
+				curr_layer_source_arr.push(curr_layer_source);
+				
 				var ward_boundary = new ol.layer.Tile({					 
-				      source: new ol.source.TileWMS({
-				    	  opacity: 0.5,
-		                 url: "https://apagri.infinium.management/geoserver/iscdl/wms?",
-		                 params: { 'LAYERS': 'iscdl:shp_ward_boundary', 'TILED': true},
-		                 serverType: 'geoserver',		                 
-		                 transition: 0,
-		                 style: styles,
-		              })
-				  });
+					source: curr_layer_source
+				});
 				
 				map.addLayer(ward_boundary);
 				
@@ -598,11 +604,7 @@
 	                            anchor: [0.5, 1],
 	                            src: 'images/icons/fromLocationIcon.svg',
 	                        })
-	                    });   
-			            
-	                    var point = new ol.Feature({
-	                    	geometry: new ol.geom.Point(ol.proj.fromLonLat([75.83951945462603, 22.74085475046573])),
-	                    });
+	                    });   			            
 
 	                     				
 	    				
@@ -3112,7 +3114,44 @@
 				
 				// Find my location
 				$('#locateDiv').click(function() {
-							window.department2dMap.checkForLocate(_current_long,_current_lat);
+					
+					geolocation.setTracking(true);
+			        
+			        
+					geolocation.on('change:accuracyGeometry', function () {
+						  accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+						});
+
+
+						geolocation.on('change:position', function () {
+						
+								know_your_coordinate = geolocation.getPosition();
+						  });
+					
+					const iconFeature = new ol.Feature({
+						  geometry: new ol.geom.Point(know_your_coordinate)								  
+						});
+
+
+						const vectorSource = new ol.source.Vector({
+						  features: [iconFeature],
+						});
+
+						GoToVectorLayer = new ol.layer.Vector({
+						  source: vectorSource,
+						  style: location_mark,
+						});
+
+					map.addLayer(GoToVectorLayer);
+					
+					
+					map.setView(
+					        new ol.View({
+					        projection: 'EPSG:4326',									  
+					        center: know_your_coordinate,
+					        zoom: 18
+					    }));
+					
 				});
 				
 				/**
@@ -5970,7 +6009,7 @@
 
 			                            const extent = vectorSource.getExtent();
 
-			                            map.getView().fit(extent);
+			                            map.getView().fit(extent, {"maxZoom":20} );
 
 			                            //map1_layer.addLayer(layer_test1);
 			                            map.addLayer(vectorLayer);
@@ -6141,7 +6180,7 @@
 
 					                            const extent = vectorSource.getExtent();
 
-					                            map.getView().fit(extent);
+					                            map.getView().fit(extent, {"maxZoom":20} );
 
 					                            //map1_layer.addLayer(layer_test1);
 					                            map.addLayer(AdvancevectorLayer);
@@ -6261,7 +6300,7 @@
 
 					                            const extent = vectorSource.getExtent();
 
-					                            map.getView().fit(extent);
+					                            map.getView().fit(extent, {"maxZoom":20} );
 
 					                            //map1_layer.addLayer(layer_test1);
 					                            map.addLayer(SpatialvectorLayer);
@@ -6851,15 +6890,27 @@
 					        var wms_service_url = $(this).attr("data-wmsurl");
 					        
 					        if (checkbox.is(":checked")) {
-					        	let current_layer = new ol.layer.Tile({
-			                        source: new ol.source.TileWMS({
-			                            url: wms_service_url,
-			                            params: { 'LAYERS': gis_id, 'CRS': 'EPSG:4326' },
-			                            transition: 0,
-			                            crossOrigin: 'anonymous'
-			                        })
-			                    });
+//					        	let current_layer = new ol.layer.Tile({
+//			                        source: new ol.source.TileWMS({
+//			                            url: wms_service_url,
+//			                            params: { 'LAYERS': gis_id, 'CRS': 'EPSG:4326' },
+//			                            transition: 0,
+//			                            crossOrigin: 'anonymous'
+//			                        })
+//			                    });
 
+					        	curr_layer_source = new ol.source.TileWMS({
+					        		url: wms_service_url,
+		                            params: { 'LAYERS': gis_id, 'CRS': 'EPSG:4326' },
+		                            transition: 0,
+		                            crossOrigin: 'anonymous'
+					            })
+					        	
+					        	curr_layer_source_arr.push(curr_layer_source);
+					        	
+					        	let current_layer = new ol.layer.Tile({
+					        		source: curr_layer_source
+					        	})
 			                    map.addLayer(current_layer);
 			                    map_layers.push(current_layer);
 			                    map_layers[table_name] = current_layer;
@@ -6869,6 +6920,132 @@
 					        }
 					        	
 							
+						});
+						
+						let infoClick = false;
+						
+						$("#info_layer").click(function(){
+							if(infoClick == true){
+								infoClick = false;
+							}else{
+								infoClick = true;
+							}
+							
+							
+						});
+						
+//						map.on('singleclick', (event) => {
+//							
+//							if (infoClick) {
+//
+//								for(var i=0; i<curr_layer_source_arr.length; i++){
+//				                const viewResolution = /** @type {number} */ (view.getResolution());
+//				                const url = curr_layer_source_arr[i].getFeatureInfoUrl(event.coordinate, viewResolution, 'EPSG:4326', { 'INFO_FORMAT': 'application/json' });
+//				                if (url) {
+//				                    fetch(url).then((response) => response.text()).then((result) => {
+//				                        //console.log(result);
+//				                        let response = JSON.parse(result);
+//				                        var content = "";
+//				                        if (response.features.length > 0) {
+//				                        	let properties = response.features[0].properties;
+//				                            for (let i in properties) {
+//				                                var value = properties[i];
+//				                                content += "<table class='table mb-0' style='font-size:0.8rem'><tbody><tr><td style='padding:0.25rem;;width:230px'><label class='mb-0'><strong> " + i.toUpperCase() + "</strong>: </label></td> <td style='padding:0.25rem'>" + value + "</td></tr></tbody></table>";
+//				                            }
+//				                            console.log(curr_layer_source_arr[i]);
+////				                            var name = curr_layer_source_arr[i].params_.LAYERS.replace("iscdl:" , "").replace("shp_" , "").replace("_" , " ").toUpperCase();
+////					                        $("#model-heading").html(name);				
+//				                            $("#modelContentValue").html(content);
+//				                            $("#commonModalPopup").show();
+//				                            
+//				                        } else {
+//				                            //$.notify("info not found..", "error");
+//				                        }
+//
+//				                    });
+//				                    var name = curr_layer_source_arr[i].params_.LAYERS.replace("iscdl:" , "").replace("shp_" , "").replace("_" , " ").toUpperCase();
+//			                        $("#model-heading").html(name);
+//				                }
+//								}
+//				            }
+//						})
+						
+						map.on('singleclick', (event) => {					
+						   
+
+						
+						if (infoClick) {
+							
+							var clickedFeatures = [];
+						    map.forEachFeatureAtPixel(event.pixel, function(feature) {
+						        clickedFeatures.push(feature);
+						    });
+
+						    if (clickedFeatures.length > 0) {
+						       
+						        var selectedFeature = clickedFeatures[0];
+						        var properties = selectedFeature.getProperties();
+
+						        var content = "";
+						        
+						        for (let i in properties) {
+			                        var value = properties[i];
+			                        content += "<table class='table mb-0' style='font-size:0.8rem'><tbody><tr><td style='padding:0.25rem;;width:230px'><label class='mb-0'><strong> " + i.toUpperCase() + "</strong>: </label></td> <td style='padding:0.25rem'>" + value + "</td></tr></tbody></table>";
+			                    }
+						        
+						        var name = properties['name'];
+			                    $("#model-heading").html(name);
+			                    
+			                    $("#modelContentValue").html(content);
+			                    $("#commonModalPopup").show();
+						    }
+
+							for(let k=0; k<curr_layer_source_arr.length; k++){
+			                const viewResolution = /** @type {number} */ (view.getResolution());
+			                const url = curr_layer_source_arr[k].getFeatureInfoUrl(event.coordinate, viewResolution, 'EPSG:4326', { 'INFO_FORMAT': 'application/json' });
+			                if (url) {
+			                	$.ajax({
+			                		method: "GET",
+			                		url: url,
+			                		async: false,
+			                		content: "application/json",
+			                		 success: function (response) {
+			                			 
+			                			 //let response = JSON.parse(result);
+					                        var content = "";
+					                        if (response.features.length > 0) {
+					                        	let properties = response.features[0].properties;
+					                            for (let i in properties) {
+					                                var value = properties[i];
+					                                content += "<table class='table mb-0' style='font-size:0.8rem'><tbody><tr><td style='padding:0.25rem;;width:230px'><label class='mb-0'><strong> " + i.toUpperCase() + "</strong>: </label></td> <td style='padding:0.25rem'>" + value + "</td></tr></tbody></table>";
+					                            }
+					                            console.log(curr_layer_source_arr[k]);
+					                            var name = curr_layer_source_arr[k].params_.LAYERS.replace("iscdl:" , "").replace("shp_" , "").replace("_" , " ").toUpperCase();
+						                        $("#model-heading").html(name);
+					                            
+					                            $("#modelContentValue").html(content);
+					                            $("#commonModalPopup").show();
+					                            
+					                        } else {
+					                            //$.notify("info not found..", "error");
+					                        }
+			                			 
+			                		 }, error: function(e){
+			                			 console.log(e);
+			                		 }
+			                		
+			                	});
+
+			                       
+			                }
+							}
+			            }
+					});
+						$("#btn_info_popup").click(function(){
+
+							$("#modelContentValue").html("");
+                            $("#commonModalPopup").hide();
+    
 						});
 						
 						$(".multiselectde").click(function () {

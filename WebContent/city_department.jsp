@@ -42,6 +42,25 @@
 </head>
 <body>	
 	<div class="loader"></div>
+	
+	<!-- Popup Modal -->
+<div class="modal np-modal show" id="commonModalPopup" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="model-heading" style= "background-color: #865439"></h4>
+                <button type="button" class="close" id="btn_info_popup" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body" id="modelContentValue">
+                <div class="view-detail-pop-up-main"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Popup Modal End -->
+	
+	
 <!-- wrapper -->
 <div class="d-flex  col-12 p-0 wrapper"> 
 	
@@ -2885,6 +2904,7 @@ Proximity Analysis
 							<span></span>
 						</div>
 					</li>
+					<li title="Info"><a id="info_layer" href="javascript:void(0);"><img src="${context}/images/Info_tool_26.svg"></a></li>
 				</ul>
 			</div>
 			<!--Tools action list -top-->

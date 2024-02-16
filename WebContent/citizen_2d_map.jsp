@@ -71,7 +71,7 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="model-heading">Info</h4>
+                <h4 class="modal-title" id="model-heading"></h4>
                 <button type="button" class="close" id="btn_info_popup" data-dismiss="modal">×</button>
             </div>
             <div class="modal-body" id="modelContentValue">
@@ -2780,7 +2780,7 @@ Advance Tools
 							<span></span>
 						</div>
 					</li>
-					
+					<li title="Info"><a id="info_layer" href="javascript:void(0);"><img src="${context}/images/Info_tool_26.svg"></a></li>
 				</ul>
 			</div>
 			<!--Tools action list -top-->

@@ -1,5 +1,8 @@
 (function(global, $) {
 	"use stricts;"
+	
+	let curr_layer_source = null;
+	let curr_layer_source_arr = [];
 
 	const osm = new ol.layer.Tile({
 	    source: new ol.source.OSM
@@ -47,16 +50,20 @@
         })
     });
 	
+	curr_layer_source = new ol.source.TileWMS({
+		opacity: 0.5,
+        url: "https://apagri.infinium.management/geoserver/iscdl/wms?",
+        params: { 'LAYERS': 'iscdl:shp_ward_boundary', 'TILED': true},
+        serverType: 'geoserver',		                 
+        transition: 0,
+        style: styles,
+    })
+	
+	curr_layer_source_arr.push(curr_layer_source);
+	
 	var ward_boundary = new ol.layer.Tile({					 
-	      source: new ol.source.TileWMS({
-	    	  opacity: 0.5,
-             url: "https://apagri.infinium.management/geoserver/iscdl/wms?",
-             params: { 'LAYERS': 'iscdl:shp_ward_boundary', 'TILED': true},
-             serverType: 'geoserver',		                 
-             transition: 0,
-             style: styles,
-          })
-	  });
+		source: curr_layer_source
+	});
 	
 	map.addLayer(ward_boundary);
 	
@@ -66,6 +73,7 @@
 	var reportCount = [];
 	var reportLayerWithId = [];
 	var report_dep_id;
+	
 	
 	let selected_layer_ ;
 	
@@ -112,6 +120,18 @@
 	let selected_report_vector_layer;
 	let report_table;
 	
+	let infoClick = false;
+	
+	$("#info_layer").click(function(){
+		if(infoClick == true){
+			infoClick = false;
+		}else{
+			infoClick = true;
+		}
+		
+		
+	});
+	
 	$('form[id="form_report_data"]')
 	.validate(
 			{
@@ -149,7 +169,7 @@
 	                        	map.removeLayer(vectorLayer);
 	                        	map.removeLayer(selected_report_vector_layer);
 	                            const geoJSONFormat = new ol.format.GeoJSON();
-	                            var vectorSource = new ol.source.Vector({
+	                            curr_layer_source = new ol.source.Vector({
 	                                features: geoJSONFormat.readFeatures(result, {
 	                                    featureProjection: 'EPSG:4326',
 	                                }),
@@ -158,7 +178,7 @@
 
 
 	                            vectorLayer = new ol.layer.Vector({
-	                                source: vectorSource,
+	                                source: curr_layer_source,
 	                                style: location_mark,
 	                            });
 
@@ -167,13 +187,13 @@
 	                            });
 
 
-	                            const extent = vectorSource.getExtent();
+	                            const extent = curr_layer_source.getExtent();
 
 	                            map.getView().fit(extent);
 
 	                            //map1_layer.addLayer(layer_test1);
 	                            map.addLayer(vectorLayer);
-	                            
+	                            curr_layer_source_arr.push(curr_layer_source);
 	                            //window.depUtlityController.minimizePopup();
 
 	                            
@@ -201,6 +221,44 @@
 					}
 				}
 			});
+	
+	map.on('singleclick', (event) => {
+
+			if (infoClick) {
+				
+				var clickedFeatures = [];
+			    map.forEachFeatureAtPixel(event.pixel, function(feature) {
+			        clickedFeatures.push(feature);
+			    });
+
+			    if (clickedFeatures.length > 0) {
+			       
+			        var selectedFeature = clickedFeatures[0];
+			        var properties = selectedFeature.getProperties();
+
+			        var content = "";
+			        
+			        for (let i in properties) {
+                        var value = properties[i];
+                        content += "<table class='table mb-0' style='font-size:0.8rem'><tbody><tr><td style='padding:0.25rem;;width:230px'><label class='mb-0'><strong> " + i.toUpperCase() + "</strong>: </label></td> <td style='padding:0.25rem'>" + value + "</td></tr></tbody></table>";
+                    }
+			        
+			        var name = properties['name'];
+                    $("#model-heading").html(name);
+                    
+                    $("#modelContentValue").html(content);
+                    $("#commonModalPopup").show();
+                    return;
+			    }
+			}
+			
+	});
+	$("#btn_info_popup").click(function(){
+
+		$("#modelContentValue").html("");
+        $("#commonModalPopup").hide();
+
+	});
 	
 function get_report_table_data(){
 	

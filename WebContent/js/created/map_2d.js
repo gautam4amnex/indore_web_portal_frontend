@@ -19,6 +19,13 @@ var layer_names = [];
 var map_layers = [];
 let curr_layer_source = null;
 let curr_layer_name = null;
+let curr_layer_source_arr = [];
+let curr_vector_source_arr = [];
+let curr_vector_source;
+let QueryVectorLayer;
+let GoToVectorLayer;
+let know_your_coordinate;
+
 var initial_visible_layers = [1, 34, 66, 67, 68, 69, 84, 85];// NEED TO
 																// CHANGE WHERE
 																// LAYER
@@ -486,6 +493,8 @@ require(
                 style: styles,
             })
 			
+			curr_layer_source_arr.push(curr_layer_source);
+			
 			var ward_boundary = new ol.layer.Tile({					 
 				source: curr_layer_source
 			});
@@ -762,7 +771,11 @@ require(
 				
 			});
 
-
+			$("#xy_selected_lat").click(function(){
+				
+				get_lat_long_onClick("goto_direction");
+				
+			});
 
 
 			const geolocation = new ol.Geolocation({
@@ -806,8 +819,27 @@ require(
 						map.un('click', clickHandler);
 					}
 				}
+				
+				if(where == "goto_direction"){
+			    	clickHandler = function (evt) {
+				    	 console.info(evt.pixel);
+				            console.info(map.getPixelFromCoordinate(evt.coordinate));
+				            console.info(ol.proj.toLonLat(evt.coordinate));		            
+
+				            know_your_coordinate = ol.proj.transform(evt.coordinate, 'EPSG:4326', 'EPSG:3857');
+				            know_your_coordinate = new ol.proj.transform([know_your_coordinate[0], know_your_coordinate[1]], 'EPSG:3857', 'EPSG:4326');		
+				            
+							$("#xy_longitude").val(know_your_coordinate[0]);
+							$("#xy_latitude").val(know_your_coordinate[1]);
+				            map.un('click', clickHandler);
+				    	}
+			    }
+
+			    map.once('click', clickHandler);
 
 				map.once('click', clickHandler);
+				
+				
 			}
 
 
@@ -830,6 +862,16 @@ require(
 
 			});
 
+			$("#xy_current_lat").click(function(){
+				
+				geolocation.setTracking(true);
+		        
+		        
+		        get_current_lat_long("know_your_location");
+				
+				
+			});
+			
 			function get_current_lat_long(selected){
 
 			geolocation.on('change:accuracyGeometry', function () {
@@ -845,10 +887,15 @@ require(
 						start_latlong = geolocation.getPosition();
 						$("#from_loc").val(start_latlong);
 					}
-					else{
+					else if(selected == "destination_location"){
 						end_latlong = geolocation.getPosition();
 						$("#to_loc").val(end_latlong);
+					}else{
+						know_your_coordinate = geolocation.getPosition();
+						$("#xy_latitude").val(know_your_coordinate[1]);
+						$("#xy_longitude").val(know_your_coordinate[0]);
 					}
+					
 					
 				  });
 
@@ -934,7 +981,8 @@ require(
 			// $("#tool_text").val("");
 			// $('.draw-tools-select li a').removeClass('active');
 			// $("#lblDrawTxt").text("");
-				
+				map.removeInteraction(draw);
+		        map.removeInteraction(draw_rectangle_layer);
 				for(var i=0; i<vector_arr.length; i++){
 					map.removeLayer(vector_arr[i]);
 				}
@@ -1019,7 +1067,43 @@ require(
 			 */
 
 			$('#locateDiv').click(function() {
-						window.base.checkForLocate(_current_long,_current_lat);
+				
+				geolocation.setTracking(true);
+		        
+		        
+				geolocation.on('change:accuracyGeometry', function () {
+					  accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+					});
+
+
+					geolocation.on('change:position', function () {
+					
+							know_your_coordinate = geolocation.getPosition();
+					  });
+				
+				const iconFeature = new ol.Feature({
+					  geometry: new ol.geom.Point(know_your_coordinate)								  
+					});
+
+
+					const vectorSource = new ol.source.Vector({
+					  features: [iconFeature],
+					});
+
+					GoToVectorLayer = new ol.layer.Vector({
+					  source: vectorSource,
+					  style: location_mark,
+					});
+
+				map.addLayer(GoToVectorLayer);
+
+
+                
+				
+				const extent = vectorSource.getExtent();
+
+				map.getView().fit(extent, {"maxZoom":20} );
+				
 			});
 			
 			// left panel click event
@@ -1043,37 +1127,51 @@ require(
 			
 			// clear all graphic on map
 			$("#clearMap").click(function() {
-				map.graphics.clear();
-				// for draw deactive
-				if(toolbar){
-					toolbar.deactivate();
+//				map.graphics.clear();
+//				// for draw deactive
+//				if(toolbar){
+//					toolbar.deactivate();
+//				}
+//				
+//				if(gLayer){
+//					map.removeLayer(gLayer);
+//				}
+//				
+//				if(dirgsLayer){
+//					map.removeLayer(dirgsLayer);
+//				}
+//				
+//				if(dirgdLayer){
+//					map.removeLayer(dirgdLayer);
+//				}
+//				
+//				if(resultedFeaturesLayer){
+//					map.removeLayer(resultedFeaturesLayer);	
+//				}
+//				
+//				if(nearmeEvtHandler){
+//					nearmeEvtHandler.remove();
+//				}
+//				
+//				removeMeasurementGraphics();
+//				
+//				removeOnFlyLayer();
+//				removeKMLLayer();
+//				removeSwipeLayer();
+				
+				for(var i=0; i<basic_query_layer_arr.length; i++){
+					map.removeLayer(basic_query_layer_arr[i]);
+				}
+				map.removeLayer(GoToVectorLayer);
+				map.removeLayer(swipe_layer);
+				map.removeLayer(QueryVectorLayer);
+				for(var i=0; i<direction_arr.length; i++){
+					map.removeLayer(direction_arr[i]);
 				}
 				
-				if(gLayer){
-					map.removeLayer(gLayer);
+				for(var j=0; j<map_layers.length; j++){
+				    map.removeLayer(map_layers[j]);
 				}
-				
-				if(dirgsLayer){
-					map.removeLayer(dirgsLayer);
-				}
-				
-				if(dirgdLayer){
-					map.removeLayer(dirgdLayer);
-				}
-				
-				if(resultedFeaturesLayer){
-					map.removeLayer(resultedFeaturesLayer);	
-				}
-				
-				if(nearmeEvtHandler){
-					nearmeEvtHandler.remove();
-				}
-				
-				removeMeasurementGraphics();
-				
-				removeOnFlyLayer();
-				removeKMLLayer();
-				removeSwipeLayer();
 			});
 			
 			$("#kyp_clear").click(function(){
@@ -1410,6 +1508,8 @@ require(
                             transition: 0,
                             crossOrigin: 'anonymous'
 			            })
+			        	
+			        	curr_layer_source_arr.push(curr_layer_source);
 			        	
 			        	let current_layer = new ol.layer.Tile({
 			        		source: curr_layer_source
@@ -4295,30 +4395,29 @@ require(
 					submitHandler : function(form, e) {
 						e.preventDefault();
 						try {
-							let latitude = $('#xy_latitude').val();
-							let longitude = $('#xy_longitude').val();
-							let pt = new Point(longitude,latitude);
-							let pictureMarkerSymbol = new PictureMarkerSymbol('images/pin.png', 25, 25);
-							let graphic = new Graphic(pt, pictureMarkerSymbol);
-							map.graphics.add(graphic);
+							const iconFeature = new ol.Feature({
+								  geometry: new ol.geom.Point(know_your_coordinate)								  
+								});
+
+
+								const vectorSource = new ol.source.Vector({
+								  features: [iconFeature],
+								});
+
+								GoToVectorLayer = new ol.layer.Vector({
+								  source: vectorSource,
+								  style: location_mark,
+								});
+
+							map.addLayer(GoToVectorLayer);
 							
-							let template_content = "";					
-							let table_content = '<table class="table table-bordered w-100 map-detail-custom">' +
-							  '<tbody>';
-							table_content += '<tr><td><b>Latitude</b></td><td>'+latitude+'</td></tr>' + 
-							'<tr><td><b>Longitude</b></td><td>'+longitude+'</td></tr>';
-							template_content += table_content + '</tbody></table>';
 							
-							let xy_infoTemplate = new InfoTemplate("Know Your Coordinates",template_content);
-							
-							graphic.setGeometry(pt);
-							graphic.setInfoTemplate(xy_infoTemplate);
-							map.centerAndZoom(pt, 18);
-							window.base.removeCursor();
-							/**
-							 * minimize popup
-							 */
-							window.depUtlityController.minimizePopup();
+							map.setView(
+							        new ol.View({
+							        projection: 'EPSG:4326',									  
+							        center: know_your_coordinate,
+							        zoom: 18
+							    }));
 						} catch (e) {
 							$u.notify("error", "Error",
 									"Something went Wrong");
@@ -4328,15 +4427,17 @@ require(
 		
 		// clear xy location event with default extent
 		$('#xyLocationClr').click(function(){
-			map.graphics.clear();
-			map.setExtent(initialExtent);
-			
-			if (mapClickEvtHandler != undefined) {
-				mapClickEvtHandler.remove();
-				map.setMapCursor("default");
-			}
-			map_info_tool = false;
-			$("#toggle_map_info").trigger("click");
+//			map.graphics.clear();
+//			map.setExtent(initialExtent);
+//			
+//			if (mapClickEvtHandler != undefined) {
+//				mapClickEvtHandler.remove();
+//				map.setMapCursor("default");
+//			}
+//			map_info_tool = false;
+//			$("#toggle_map_info").trigger("click");
+			map.removeLayer(GoToVectorLayer);
+			know_your_coordinate = null;
 		});
 		
 
@@ -4738,7 +4839,7 @@ require(
 
 		                            const extent = vectorSource.getExtent();
 
-		                            map.getView().fit(extent);
+		                            map.getView().fit(extent, {"maxZoom":20} );
 
 		                            //map1_layer.addLayer(layer_test1);
 		                            map.addLayer(vectorLayer);
@@ -5063,6 +5164,7 @@ require(
 			                     
 			                        	
 			                            const geoJSONFormat = new ol.format.GeoJSON();
+			                            
 			                            var vectorSource = new ol.source.Vector({
 			                                features: geoJSONFormat.readFeatures(result, {
 			                                    featureProjection: 'EPSG:4326',
@@ -5070,8 +5172,13 @@ require(
 			                                format: geoJSONFormat,
 			                            });
 
+//			                            vectorSource.getFeatures().forEach(function(feature) {			                               
+//			                                feature.set('propertyName', propertyValue);
+//			                            });
+			                            
+			                            curr_vector_source = vectorSource;
 
-			                            vectorLayer = new ol.layer.Vector({
+			                            QueryVectorLayer = new ol.layer.Vector({
 			                                source: vectorSource,
 			                                style: location_mark,
 			                            });
@@ -5083,7 +5190,7 @@ require(
 
 			                            const extent = vectorSource.getExtent();
 
-			                            map.getView().fit(extent);
+			                            map.getView().fit(extent, {"maxZoom":20} );
 
 			                            //map1_layer.addLayer(layer_test1);
 			                            map.addLayer(vectorLayer);
@@ -8665,41 +8772,99 @@ require(
 			
 		})
 		
-		$("#btn_info_popup").click(function () {
-	        $("#commonModalPopup").hide();
-	    });
+		let infoClick = false;
+						
+						$("#info_layer").click(function(){
+							if(infoClick == true){
+								infoClick = false;
+							}else{
+								infoClick = true;
+							}
+							
+							
+						});
 		
 		
-		map.on('singleclick', (event) => {
-			let infoClick = true;
-			if (infoClick) {
-                const viewResolution = /** @type {number} */ (view.getResolution());
-                const url = curr_layer_source.getFeatureInfoUrl(event.coordinate, viewResolution, 'EPSG:4326', { 'INFO_FORMAT': 'application/json' });
-                if (url) {
-                    fetch(url).then((response) => response.text()).then((result) => {
-                        //console.log(result);
-                        let response = JSON.parse(result);
-                        var content = "";
-                        if (response.features.length > 0) {
-                        	let properties = response.features[0].properties;
-                            for (let i in properties) {
-                                var value = properties[i];
-                                content += "<table class='table mb-0' style='font-size:0.8rem'><tbody><tr><td style='padding:0.25rem;;width:230px'><label class='mb-0'><strong> " + i.toUpperCase() + "</strong>: </label></td> <td style='padding:0.25rem'>" + value + "</td></tr></tbody></table>";
-                            }
-                            
-                            $("#modelContentValue").html(content);
-                            $("#commonModalPopup").show();
-                            
-                        } else {
-                            //$.notify("info not found..", "error");
-                        }
+		
+						map.on('singleclick', (event) => {					
+							   
 
-                    });
-                }
-            }
-		})
+							
+							if (infoClick) {
+								
+								var clickedFeatures = [];
+							    map.forEachFeatureAtPixel(event.pixel, function(feature) {
+							        clickedFeatures.push(feature);
+							    });
+
+							    if (clickedFeatures.length > 0) {
+							       
+							        var selectedFeature = clickedFeatures[0];
+							        var properties = selectedFeature.getProperties();
+
+							        var content = "";
+							        
+							        for (let i in properties) {
+				                        var value = properties[i];
+				                        content += "<table class='table mb-0' style='font-size:0.8rem'><tbody><tr><td style='padding:0.25rem;;width:230px'><label class='mb-0'><strong> " + i.toUpperCase() + "</strong>: </label></td> <td style='padding:0.25rem'>" + value + "</td></tr></tbody></table>";
+				                    }
+							        
+							        var name = properties['name'];
+				                    $("#model-heading").html(name);
+				                    
+				                    $("#modelContentValue").html(content);
+				                    $("#commonModalPopup").show();
+				                    return;
+							    }
+							    
+								for(let k=0; k<curr_layer_source_arr.length; k++){
+				                const viewResolution = /** @type {number} */ (view.getResolution());
+				                const url = curr_layer_source_arr[k].getFeatureInfoUrl(event.coordinate, viewResolution, 'EPSG:4326', { 'INFO_FORMAT': 'application/json' });
+				                if (url) {
+				                	$.ajax({
+				                		method: "GET",
+				                		url: url,
+				                		async: false,
+				                		content: "application/json",
+				                		 success: function (response) {
+				                			 
+				                			 //let response = JSON.parse(result);
+						                        var content = "";
+						                        if (response.features.length > 0) {
+						                        	let properties = response.features[0].properties;
+						                            for (let i in properties) {
+						                                var value = properties[i];
+						                                content += "<table class='table mb-0' style='font-size:0.8rem'><tbody><tr><td style='padding:0.25rem;;width:230px'><label class='mb-0'><strong> " + i.toUpperCase() + "</strong>: </label></td> <td style='padding:0.25rem'>" + value + "</td></tr></tbody></table>";
+						                            }
+						                            console.log(curr_layer_source_arr[k]);
+						                            var name = curr_layer_source_arr[k].params_.LAYERS.replace("iscdl:" , "").replace("shp_" , "").replace("_" , " ").toUpperCase();
+							                        $("#model-heading").html(name);
+						                            
+						                            $("#modelContentValue").html(content);
+						                            $("#commonModalPopup").show();
+						                            
+						                        } else {
+						                            //$.notify("info not found..", "error");
+						                        }
+				                			 
+				                		 }, error: function(e){
+				                			 console.log(e);
+				                		 }
+				                		
+				                	});
+
+				                       
+				                }
+								}
+				            }
+						});
 		
-		
+		$("#btn_info_popup").click(function(){
+
+			$("#modelContentValue").html("");
+            $("#commonModalPopup").hide();
+
+		});
 		/**
 		 * LOAD FUNCTION
 		 */
