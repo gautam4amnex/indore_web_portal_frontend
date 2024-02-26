@@ -195,6 +195,7 @@ require(
 		var draw;
 		var draw_rectangle_layer;
 		let geojson_of_feature;
+		let flag;
 		$('.draw-tools-select li a').on('click',function() {
 			var tool = this.title;
 			
@@ -272,11 +273,12 @@ require(
 	                if(type_ == "feature"){
 	                	var writer = new ol.format.GeoJSON();
 
-	                    geojson_of_feature = writer.writeFeatures([e.feature]);
-	                    geojson_of_feature = JSON.parse(geojson_of_feature);
-	                    geojson_of_feature = geojson_of_feature.features[0].geometry
-	                    console.log(geojson_of_feature);
+	                	geojson_of_feature_management = writer.writeFeatures([e.feature]);
+	                	geojson_of_feature_management = JSON.parse(geojson_of_feature_management);
+	                	geojson_of_feature_management = geojson_of_feature_management.features[0].geometry
+	                    console.log(geojson_of_feature_management);
 
+	                	flag = "create";
 	                    $('#myModal').modal('toggle');
 	                }
 	                
@@ -9054,7 +9056,6 @@ require(
 		var vector;
 		let geojson_of_feature_management;
 		let id;
-		let flag;
 		let drawn_polygon_arr = [];
 		let clickedMergerFeatures = [];
 		var geojson_of_cut_feature_arr = [];
@@ -9145,13 +9146,9 @@ require(
 			   $("#tehsil").val(clickedFeatures[0].values_.tehsil);
 		       $("#city").val(clickedFeatures[0].values_.city);
 			   $("#pin_code").val(clickedFeatures[0].values_.pin_code);
-
-		       if(selected_cut_feature_id != undefined){
-		           flag = "cut";
-		          }
-		          else{     
+ 
 		          flag = 'update';
-		          }
+
 		            $("#myModal").modal('show');
 		            
 		        });
@@ -9215,13 +9212,9 @@ require(
 		        geojson_of_feature_management = geojson_of_feature_management.geometry;
 		        console.log(geojson_of_feature_management);
 		      
-		          
-		        if(selected_cut_feature_id != undefined){
-		            flag = "cut" ;
-		           }
-		           else{     
+		        
 		           flag = 'update';
-		           }
+
 
 		          $("#myModal").modal('show');
 
