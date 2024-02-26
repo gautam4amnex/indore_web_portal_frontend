@@ -2873,7 +2873,7 @@ Proximity Analysis
 					
 					<li title="Home"><a id="myHomeDiv" href="javascript:void(0);"><img src="${context}/images/icons/Home.svg"></a></li>
 					<li title="Find My Location"><a id="locateDiv" href="javascript:void(0);"><img src="${context}/images/icons/Location.svg"></a></li>
-					<li title="Map Info" id ="toggle_map_info"><a id="mapInfoTool" title="Enable Map Info" href="javascript:void(0);"><img src="${context}/images/Info_tool_26.svg"></a></li>
+					<li title="Map Info" id ="toggle_map_info"><a id="mapInfoTool" title="Enable Map Info" href="javascript:void(0);"><img src="${context}/images/info_tool.svg"></a></li>
 					<li title="Clear Map"><a id="clearMap" href="javascript:void(0);"><img src="${context}/images/Clear-Map-68.svg"></a></li>
 					<li title="Map Tools">
 						<a id="" data-attr="#map_tools" href="javascript:void(0);"><img  src="${context}/images/icons/Map-Tool-19.svg">

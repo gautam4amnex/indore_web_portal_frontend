@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="${context}/css/esri/claro.css">
 <link rel="stylesheet" href="${context}/css/esri/nihilo.css">
 <link rel="stylesheet" href="${context}/css/esri/api-3-30.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
 <title>Project Monitoring</title>
 
@@ -1239,7 +1240,8 @@
 
 <script type="text/javascript" src="${context}/js/jquery.min.js"></script>
 <script type="text/javascript" src="${context}/js/popper.min.js"></script>
-<script type="text/javascript" src="${context}/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!--  <script type="text/javascript" src="${context}/js/bootstrap.min.js"></script>-->
 <script type="text/javascript" src="${context}/js/bootstrap-select.js"></script>
 <script type="text/javascript" src="${context}/js/datatables.min.js"></script>
 <script type="text/javascript"

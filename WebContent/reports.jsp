@@ -57,7 +57,7 @@ min-height:unset;
 	<div class="action-start-top" style="z-index: 5;">
 			
 				<ul class="action-ul-top bottom-action" id="downPanel">
-					<li title="Info"><a id="info_layer" href="javascript:void(0);"><img src="${context}/images/Info_tool_26.svg"></a></li>
+					<li title="Info"><a id="info_layer" href="javascript:void(0);"><img src="${context}/images/info_tool.svg"></a></li>
 				</ul>
 			</div>
 
