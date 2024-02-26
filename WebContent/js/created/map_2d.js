@@ -9057,6 +9057,7 @@ require(
 		let flag;
 		let drawn_polygon_arr = [];
 		let clickedMergerFeatures = [];
+		var geojson_of_cut_feature_arr = [];
 		let merge_click = false;
 		let id_feature_1;
 		let id_feature_2;
@@ -9348,82 +9349,95 @@ require(
 		        
 		        draw.on("drawend", function (e) {
 
-		                let parser = new jsts.io.OL3Parser();
-		            
-		            //Creating line geometry from draw intraction
-		            let linestring = new ol.Feature({    
-		                geometry: new ol.geom.LineString(e.feature.getGeometry().getCoordinates())
-		            });        
-		            
-		            //Parse Polygon and Line geomtry to jsts type
-		            let a = parser.read(polygon.getGeometry())
-		            let b = parser.read(linestring.getGeometry())               
-		            
-		            //Perform union of Polygon and Line and use Polygonizer to split the polygon by line
-		            let union = a.getExteriorRing().union(b);
-		            let polygonizer = new jsts.operation.polygonize.Polygonizer();
-		            
-		            //Splitting polygon in two part
-		            polygonizer.add(union);
-		            
-		            //Get splitted polygons
-		            let polygons = polygonizer.getPolygons();
-		            
-		            //This will execute only if polygon is successfully splitted into two parts
-		            if(polygons.array_.length == 2) {       
+	                let parser = new jsts.io.OL3Parser();
+	            
+	            //Creating line geometry from draw intraction
+	            let linestring = new ol.Feature({    
+	                geometry: new ol.geom.LineString(e.feature.getGeometry().getCoordinates())
+	            });        
+	            
+	            //Parse Polygon and Line geomtry to jsts type
+	            let a = parser.read(polygon.getGeometry())
+	            let b = parser.read(linestring.getGeometry())               
+	            
+	            //Perform union of Polygon and Line and use Polygonizer to split the polygon by line
+	            let union = a.getExteriorRing().union(b);
+	            let polygonizer = new jsts.operation.polygonize.Polygonizer();
+	            
+	            //Splitting polygon in two part
+	            polygonizer.add(union);
+	            
+	            //Get splitted polygons
+	            let polygons = polygonizer.getPolygons();
+	            
+	            //This will execute only if polygon is successfully splitted into two parts
+	            if(polygons.array_.length == 2) {       
 
-		                map.getLayers().forEach(function(layer) {
-		                    if (layer instanceof ol.layer.Vector) {
-		                    var source = layer.getSource();
-		                    source.forEachFeature(function(feature) {
-		                        // Do something with each feature
-		                        // For example, logging feature properties
-		                        if(polygon == feature){
-		                            vector_cut_layer = vectorLayer;
-		                        }
-		                    });
-		                    //vector_cut_layer.getFeatures().clear();
+	                map.getLayers().forEach(function(layer) {
+	                    if (layer instanceof ol.layer.Vector) {
+	                    var source = layer.getSource();
+	                    source.forEachFeature(function(feature) {
+	                        // Do something with each feature
+	                        // For example, logging feature properties
+	                        if(polygon == feature){
+	                            vector_cut_layer = vectorLayer;
+	                        }
+	                    });
+	                    //vector_cut_layer.getFeatures().clear();
 
-		                    removeFeaturesFromMap(cut_feature_clicked);
+	                    removeFeaturesFromMap(cut_feature_clicked);
 
-		                    // cut_feature_clicked[0].clear();
-		                    // cut_feature_clicked[1].clear();
-		                    }
-		                });
+	                    // cut_feature_clicked[0].clear();
+	                    // cut_feature_clicked[1].clear();
+	                    }
+	                });
 
-		                polygons.array_.forEach((geom) => {                                                
-		                    let splitted_polygon = new ol.Feature({    
-		                        geometry: new ol.geom.Polygon(parser.write(geom).getCoordinates())
-		                    });                
-		                    
-		                    //Add splitted polygon to vector layer    
-		                    vector_cut_layer.getSource().addFeature(splitted_polygon);
+	                geojson_of_cut_feature_arr = [];
 
-		                });
-		            
-		            
-		            source.clear();
-		            
-		            // Remove the draw interaction
+	                polygons.array_.forEach((geom) => {                                                
+	                    let splitted_polygon = new ol.Feature({    
+	                        geometry: new ol.geom.Polygon(parser.write(geom).getCoordinates())
+	                    });                
+	                    
+	                    
 
-		            
+	                    var geoJSONFormat = new ol.format.GeoJSON();
+	                    geojson_of_feature = geoJSONFormat.writeFeature(splitted_polygon);
+	                    geojson_of_feature = JSON.parse(geojson_of_feature);
+	                    geojson_of_feature = geojson_of_feature.geometry;
+	                    
+	                    geojson_of_cut_feature_arr.push(geojson_of_feature);
 
-		            
-		            }
-		            else {
-		                //Change style to normal if polgon is not splitted            
-		                
-		                //Add original polygon to vector layer if no intersection is there between line and polygon
-		                //this.vector_layer.getSource().addFeature(polygon)
-		            }
+	                    //Add splitted polygon to vector layer    
+	                    vector_cut_layer.getSource().addFeature(splitted_polygon);
 
-		            map.getOverlays().clear();
-		            map.removeInteraction(draw);
-		            cut_polygon_click = false;
-		            draw_ploygons("None");
-		            //map.removeLayer(vector_cut_layer);
+	                });
+	            
+	            
+	            source.clear();
+	            
+	            // Remove the draw interaction
 
-		        });
+	            
+
+	            
+	            }
+	            else {
+	                //Change style to normal if polgon is not splitted            
+	                
+	                //Add original polygon to vector layer if no intersection is there between line and polygon
+	                //this.vector_layer.getSource().addFeature(polygon)
+	            }
+
+	            map.getOverlays().clear();
+	            map.removeInteraction(draw);
+	            map.addInteraction(translate);
+	            cut_polygon_click = false;
+	            draw_ploygons("None");
+	            //map.removeLayer(vector_cut_layer);
+
+
+	        });
 		        
 		        
 
@@ -9523,6 +9537,25 @@ require(
 		        clickedMergerFeatures = [];
 
 		    }
+		    
+		    if(flag == "cut"){
+
+		        var form_data ={
+		            geom_update: geojson_of_cut_feature_arr[0],
+		            geom: geojson_of_feature,
+		            properties: {
+		                name: $("#name").val(),
+		                ward_no: $("#ward").val(),
+		                layer: $("#layer").val()
+		    
+		            },
+		            flag: flag,
+		            id_geom_update: selected_cut_feature_id
+		            
+		        }
+
+		    }
+		    
 
 
 		    $.ajax({
@@ -9563,7 +9596,7 @@ require(
 	
 		$.ajax({
 		    method: 'GET',
-		    url: window.iscdl.appData.baseURL + "citizen/getDrawnFeature",
+		    url: window.iscdl.appData.baseURL + "citizen/external/getDrawnFeature",
 		    contentType: 'application/json',
 		    async: false,
 		    success: function (response) {
