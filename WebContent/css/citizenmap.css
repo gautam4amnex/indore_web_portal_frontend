@@ -462,6 +462,21 @@ a.layer-close img {
     overflow: hidden;
 }
 
+
+ul.feature-tools-select li {
+    width: 50px;
+    display: inline-block;
+    margin: 5px;
+}
+
+
+ul.feature-tools-select {
+    width: 100%;
+    display: inline-block;
+    list-style-type: none;
+    padding: 0;
+}
+
 /*Sider popup end*/
 
 /*sidebar inner Popup tool css start*/

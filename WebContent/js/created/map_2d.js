@@ -1,6 +1,6 @@
 var mapClickEvtHandler;
 var nearmeEvtHandler;
-var map,initialExtent;
+var initialExtent;
 var _status_name = "Approved";
 var _current_lat = "";
 var _current_long = "";
@@ -194,20 +194,24 @@ require(
 		var vector_arr = [];
 		var draw;
 		var draw_rectangle_layer;
+		let geojson_of_feature;
 		$('.draw-tools-select li a').on('click',function() {
 			var tool = this.title;
 			
 			if(tool == "Rectangle"){
 				draw_rectangle();
 			}else{
-				draw_ploygons(tool);
+				draw_ploygons(tool , "draw");
 			}
-											
-
-			 
+		});
+		
+		
+		$('.feature-tools-select li a').on('click',function() {
+			var tool = this.title;
+			draw_ploygons(tool , "feature");
 			
 		});
-				
+		
 	    function draw_rectangle() {
 
 
@@ -238,7 +242,9 @@ require(
 	        map.addLayer(rectangle_vector);			        
 	    }
 		
-	    function draw_ploygons(selecte_type) {
+	    let vectorFeature_arr = [];
+	    
+	    function draw_ploygons(selecte_type , type_) {
 	        var value = selecte_type;
 	        var source = new ol.source.Vector({ wrapX: false });
 
@@ -256,14 +262,69 @@ require(
 	            });
 	            map.addInteraction(draw);
 	            // var feature;
+	            
+	            if(type_ == "feature"){
+	            	
+	            
 	            draw.on("drawend", function (e) {
 	                var writer = new ol.format.GeoJSON();
+	                
+	                if(type_ == "feature"){
+	                	var writer = new ol.format.GeoJSON();
+
+	                    geojson_of_feature = writer.writeFeatures([e.feature]);
+	                    geojson_of_feature = JSON.parse(geojson_of_feature);
+	                    geojson_of_feature = geojson_of_feature.features[0].geometry
+	                    console.log(geojson_of_feature);
+
+	                    $('#myModal').modal('toggle');
+	                }
+	                
+	                vectorFeature_arr.push(vector);
 	               
 	            });
+	            }
 	            map.addLayer(vector);
 	           
 	        }
 	    }
+	    
+	    
+//	    $("#btn_submit").click(function(){
+//
+//	        var form_data ={
+//	            geom: geojson_of_feature,
+//	            properties: {
+//	                name: $("#name").val(),
+//	                ward_no: $("#ward_no").val(),
+//	                ward_name: $("#ward_name").val(),
+//	                address: $("#address").val(),
+//	                layer: $("#layer").val()
+//
+//	            }
+//	            
+//	        }
+//
+//
+//	        $.ajax({
+//	            method: 'POST',
+//	            url: window.iscdl.appData.baseURL + "citizen/addDrawnFeature",
+//	            data: JSON.stringify(form_data),
+//	            async: false,
+//	            contentType: 'application/json',
+//	            success: function (result) {
+//
+//	                console.log(result);
+//
+//	            },
+//	            error: function (e) {
+//	                console.log(e);
+//	            }
+//	        });
+//
+//	    });
+	    
+	    
 			function mouseHoverFeatureSymbology(mapPoint){
 			
 					if(map_info_tool == true){
@@ -452,6 +513,7 @@ require(
 			    view: view
 			});
 			
+			
 	        var worldImagery = new ol.layer.Tile({
 	            source: new ol.source.XYZ({
 	            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -472,6 +534,52 @@ require(
 			            }),
 			        }),
 			    }
+			
+//			$.ajax({
+//			    method: 'GET',
+//			    url: window.iscdl.appData.baseURL + "citizen/getDrawnFeature",
+//			    contentType: 'application/json',
+//			    async: false,
+//			    success: function (response) {
+//
+//			        var result = JSON.parse(response);
+//			        
+//			        if(result.features.length > 0 ){
+//			 
+//			        
+//			        const geoJSONFormat = new ol.format.GeoJSON();
+//			        var vectorSource = new ol.source.Vector({
+//			            features: geoJSONFormat.readFeatures(result, {
+//			                featureProjection: 'EPSG:4326',
+//			            }),
+//			            format: geoJSONFormat,
+//			        });
+//
+//
+//			        vectorLayer = new ol.layer.Vector({
+//			            source: vectorSource
+//			           
+//			        });
+//
+//			        vectorLayer.getSource().on('addfeature', function () {
+//			            map.setExtent(vectorLayer.getSource().getExtent());
+//			        });
+//
+//
+//			        const extent = vectorSource.getExtent();
+//
+//			        
+//
+//			        map.addLayer(vectorLayer);
+//			        console.log(result);
+//			        }        
+//			            
+//
+//			    },
+//			    error: function (e) {
+//			        console.log(e);
+//			    }
+//			});
 			
 			/*var ward_boundary = new ol.layer.Tile({					 
 			      source: new ol.source.TileWMS({
@@ -8773,6 +8881,7 @@ require(
 		})
 		
 		let infoClick = false;
+		let deleteFeatureClick = false;
 						
 						$("#info_layer").click(function(){
 							if(infoClick == true){
@@ -8784,7 +8893,15 @@ require(
 							
 						});
 		
-		
+						$("#delete_feature").click(function(){
+							if(deleteFeatureClick == true){
+								deleteFeatureClick = false;
+							}else{
+								deleteFeatureClick = true;
+							}
+							
+							
+						});
 		
 						map.on('singleclick', (event) => {					
 							   
@@ -8823,7 +8940,7 @@ require(
 				                if (url) {
 				                	$.ajax({
 				                		method: "GET",
-				                		url: url,
+				                		url: url,				                		
 				                		async: false,
 				                		content: "application/json",
 				                		 success: function (response) {
@@ -8857,6 +8974,48 @@ require(
 				                }
 								}
 				            }
+							
+							if(deleteFeatureClick){
+								
+								var clickedFeatures = [];
+						        map.forEachFeatureAtPixel(event.pixel, function(feature) {
+						            clickedFeatures.push(feature);
+						        });
+
+						        if (clickedFeatures.length > 0) {
+						           
+						            var selectedFeature = clickedFeatures[0];
+						            var properties = selectedFeature.getProperties();
+						            var removed_layer =    vectorLayer.getSource().removeFeature(clickedFeatures[0]);
+						              
+
+						            
+						            var form_data = {
+						                id : properties.id
+						            }
+
+						            $.ajax({
+						                method: 'POST',
+						                url: window.iscdl.appData.baseURL + "citizen/deleteDrawnFeature",
+						                data: JSON.stringify(form_data),
+						                async: false,
+						                contentType: 'application/json',
+						                success: function (result) {
+						        
+						                    console.log(result);
+						                    map.removeLayer(selectedFeature);
+						        
+						                },
+						                error: function (e) {
+						                    console.log(e);
+						                }
+						            });
+
+						            return;
+						        }
+								
+							}
+							
 						});
 		
 		$("#btn_info_popup").click(function(){
@@ -8875,4 +9034,735 @@ require(
 			window.base.clearCursor();
 			dynamicLayerList();
 		});
+		
+		
+		// Open Layer Feature functionality STARTS
+		
+
+
+		const select = new ol.interaction.Select();
+		const translate = new ol.interaction.Translate({
+		  features: select.getFeatures(),
+		});
+
+		const modify = new ol.interaction.Modify({
+		    features: select.getFeatures(),
+		});
+		
+		map.addInteraction(modify);  
+
+		var vector;
+		let geojson_of_feature_management;
+		let id;
+		let flag;
+		let drawn_polygon_arr = [];
+		let clickedMergerFeatures = [];
+		let merge_click = false;
+		let id_feature_1;
+		let id_feature_2;
+		let cut_polygon_click = false;
+		let vector_cut_layer;
+		// const vector_ = new ol.layer.Vector({
+//		     background: 'white',
+//		     source: new ol.source.Vector({
+//		       url: 'https://openlayers.org/data/vector/us-states.json',
+//		       format: new ol.format.GeoJSON(),
+//		     }),
+		//   });
+		  
+		//   const select = new ol.interaction.Select();
+		  
+		//   const translate = new ol.interaction.Translate({
+//		     features: select.getFeatures(),
+		//   });
+		  
+		//   const map = new ol.Map({
+//		     interactions: ol.interaction.defaults ().extend([select, translate]),
+//		     layers: [vector_],
+//		     target: 'map',
+//		     view: new ol.View({
+//		     //  projection: 'EPSG: 4326',
+//		       center: [0,0],
+//		       zoom: 4,
+//		     }),
+		//   });
+
+		// select.on('select', (e) => {
+//		     modify.setActive(e.selected.length > 0);
+		//   });
+
+		let polygon;
+		select.on('select', (e) => {
+		    e.selected.forEach((feature) => {
+		      
+		        var geoJSONFormat = new ol.format.GeoJSON();
+		        geojson_of_feature_management = geoJSONFormat.writeFeature(feature);
+		        geojson_of_feature_management = JSON.parse(geojson_of_feature_management);
+		        geojson_of_feature_management = geojson_of_feature_management.geometry;
+		        console.log(geojson_of_feature_management);
+
+		        polygon = feature;
+
+		    })
+
+		    if(cut_polygon_click == true){
+		        
+		        draw_cut_lineString("LineString");        
+		    }else{
+		        modify.setActive(e.selected.length > 0);
+		    }
+		    
+		  });
+		  
+		  modify.on('modifyend', (e) => {
+		        var movedFeatures = e.features.getArray();
+		      
+		        
+		        movedFeatures.forEach(function (feature) {
+		          // Get the updated geometry
+		          var movedGeometry = feature.getGeometry();
+		      
+		          // Convert the geometry to GeoJSON
+		          var geoJSONFormat = new ol.format.GeoJSON();
+		          geojson_of_feature_management = geoJSONFormat.writeFeature(feature);
+		        geojson_of_feature_management = JSON.parse(geojson_of_feature_management);
+		        geojson_of_feature_management = geojson_of_feature_management.geometry;
+
+		       
+
+		       $("#name").val("");
+		       $("#layer").val("");
+		       $("#ward").val("");
+		       $("#tehsil").val("");
+		       $("#city").val("");
+			   $("#pin_code").val("");
+			   
+			   id = feature.values_.id;  
+
+		       $("#name").val(clickedFeatures[0].values_.name);
+		       $("#ward_no").val(clickedFeatures[0].values_.ward_no);
+			   $("#tehsil").val(clickedFeatures[0].values_.tehsil);
+		       $("#city").val(clickedFeatures[0].values_.city);
+			   $("#pin_code").val(clickedFeatures[0].values_.pin_code);
+
+		            flag = 'update';
+		            $("#myModal").modal('show');
+		            
+		        });
+		  });
+
+
+		var  clickedFeatures = [];
+		var cut_feature_clicked = [];
+		map.on('singleclick', (event) => {					
+		    
+
+		    map.forEachFeatureAtPixel(event.pixel, function(feature) {
+
+		                    if(clickedFeatures.length > 0){
+		                        clickedFeatures = [];
+		                    }
+		                    cut_feature_clicked.push(feature);
+		                    clickedFeatures.push(feature);
+		    });
+
+		    translate.on('translateend', function (event) {
+
+		        if(merge_click == true){
+
+		            $("#merge_selected_feature").attr('style' , 'display: block;');
+
+		            id = clickedMergerFeatures[0].values_.id;
+		            console.log(id);
+
+		        }
+		        else{
+
+		        
+		       id = clickedFeatures[0].values_.id;  
+
+		       $("#name").val("");
+		       $("#layer").val("");
+		       $("#ward").val("");
+		       $("#tehsil").val("");
+		       $("#city").val("");
+			   $("#pin_code").val("");
+
+		       $("#name").val(clickedFeatures[0].values_.name);
+		       $("#ward_no").val(clickedFeatures[0].values_.ward_no);
+			   $("#tehsil").val(clickedFeatures[0].values_.tehsil);
+		       $("#city").val(clickedFeatures[0].values_.city);
+			   $("#pin_code").val(clickedFeatures[0].values_.pin_code);
+		       console.log('moved id ----> ' + id);
+		    
+		        var movedFeatures = event.features.getArray();
+		      
+		        
+		        movedFeatures.forEach(function (feature) {
+
+		          var movedGeometry = feature.getGeometry();
+		      
+
+		        var geoJSONFormat = new ol.format.GeoJSON();
+		        geojson_of_feature_management = geoJSONFormat.writeFeature(feature);
+		        geojson_of_feature_management = JSON.parse(geojson_of_feature_management);
+		        geojson_of_feature_management = geojson_of_feature_management.geometry;
+		        console.log(geojson_of_feature_management);
+		      
+		          
+		          flag = 'update';
+
+		          $("#myModal").modal('show');
+
+		        });
+		    }
+		    });
+
+		    // modify.on('modifyend', function (event) {
+		    
+
+		    //     id = clickedFeatures[0].values_.id;  
+		        
+		    //     console.log('modified id ---> '+ id);
+		    
+		    //     var movedFeatures = event.features.getArray();
+		      
+		        
+		    //     movedFeatures.forEach(function (feature) {
+		    //       // Get the updated geometry
+		    //       var movedGeometry = feature.getGeometry();
+		      
+		    //       // Convert the geometry to GeoJSON
+		    //       var geoJSONFormat = new ol.format.GeoJSON();
+		    //       geojson_of_feature_management = geoJSONFormat.writeFeature(feature);
+		    //     geojson_of_feature_management = JSON.parse(geojson_of_feature_management);
+		    //     geojson_of_feature_management = geojson_of_feature_management.geometry;
+		    //     console.log("modified_feature ------ >" + geojson_of_feature_management);
+		      
+		          
+		    //       flag = 'update';
+
+		    //     });
+
+
+		    //   });
+
+		});
+
+
+		//   translate.on('translateend', function (event) {
+		    
+//		     var  clickedFeatures = [];
+//		     map.forEachFeatureAtPixel(event.pixel, function(feature) {
+//		                     clickedFeatures.push(feature);
+//		     });
+
+//		     console.log(clickedFeatures[0]);
+
+//		     var movedFeatures = event.features.getArray();
+		  
+		    
+//		     movedFeatures.forEach(function (feature) {
+//		       // Get the updated geometry
+//		       var movedGeometry = feature.getGeometry();
+		  
+//		       // Convert the geometry to GeoJSON
+//		       var geoJSONFormat = new ol.format.GeoJSON();
+//		       var movedFeatureGeoJSON = geoJSONFormat.writeFeature(feature);
+		  
+		      
+//		       console.log(movedFeatureGeoJSON);
+//		     });
+		//   });
+
+		$("#type").change(function() {
+
+		    map.removeLayer(vector);
+		    var type = $("#type").val();
+		    map.removeInteraction(draw);
+		    draw_ploygons(type);
+		});
+
+
+//		function draw_ploygons(selecte_type) {
+//		    var value = selecte_type;
+//		    var source = new ol.source.Vector({ wrapX: false });
+//
+//		    vector = new ol.layer.Vector({
+//		        source: source,
+//		        // style: styles,
+//		    });
+//
+//		    if (value !== 'None') {
+//		        draw = new ol.interaction.Draw({
+//		            source: source,
+//		            type: /** @type {ol.geom.GeometryType} */ (selecte_type)
+//		        });
+//		        map.addInteraction(draw);
+//		        // var feature;
+//		        draw.on("drawend", function (e) {
+//		            var writer = new ol.format.GeoJSON();
+//
+//		            //console.log(e.feature);
+//		            drawn_polygon_arr.push(e.feature);
+//		            geojson_of_feature_management = writer.writeFeatures([e.feature]);
+//		            geojson_of_feature_management = JSON.parse(geojson_of_feature_management);
+//		            geojson_of_feature_management = geojson_of_feature_management.features[0].geometry
+//		            console.log(geojson_of_feature_management);
+//
+//		            flag = 'create';
+//		            $("#myModal").modal('show');
+//		            
+//		        });
+//		        map.addLayer(vector);
+//
+//		        // if(selecte_type == "Polygon"){
+//		        //     var source = vector.getSource();
+//		        //     console.log(source.getFeatures());
+//		        // }
+//		       
+//		    }
+//
+//		}
+
+
+
+		function draw_cut_lineString(selecte_type) {
+		    polygon = cut_feature_clicked[0];
+		    var value = selecte_type;
+		    var source = new ol.source.Vector({ wrapX: false });
+
+		    vector = new ol.layer.Vector({
+		        source: source,
+		        // style: styles,
+		    });
+
+		    if (value !== 'None') {
+		        draw = new ol.interaction.Draw({
+		            source: source,
+		            stopClick: true,
+		            type: /** @type {ol.geom.GeometryType} */ (selecte_type)
+		        });
+		        map.addInteraction(draw);
+		        // var feature;
+		        
+		        draw.on("drawend", function (e) {
+
+		                let parser = new jsts.io.OL3Parser();
+		            
+		            //Creating line geometry from draw intraction
+		            let linestring = new ol.Feature({    
+		                geometry: new ol.geom.LineString(e.feature.getGeometry().getCoordinates())
+		            });        
+		            
+		            //Parse Polygon and Line geomtry to jsts type
+		            let a = parser.read(polygon.getGeometry())
+		            let b = parser.read(linestring.getGeometry())               
+		            
+		            //Perform union of Polygon and Line and use Polygonizer to split the polygon by line
+		            let union = a.getExteriorRing().union(b);
+		            let polygonizer = new jsts.operation.polygonize.Polygonizer();
+		            
+		            //Splitting polygon in two part
+		            polygonizer.add(union);
+		            
+		            //Get splitted polygons
+		            let polygons = polygonizer.getPolygons();
+		            
+		            //This will execute only if polygon is successfully splitted into two parts
+		            if(polygons.array_.length == 2) {       
+
+		                map.getLayers().forEach(function(layer) {
+		                    if (layer instanceof ol.layer.Vector) {
+		                    var source = layer.getSource();
+		                    source.forEachFeature(function(feature) {
+		                        // Do something with each feature
+		                        // For example, logging feature properties
+		                        if(polygon == feature){
+		                            vector_cut_layer = vectorLayer;
+		                        }
+		                    });
+		                    //vector_cut_layer.getFeatures().clear();
+
+		                    removeFeaturesFromMap(cut_feature_clicked);
+
+		                    // cut_feature_clicked[0].clear();
+		                    // cut_feature_clicked[1].clear();
+		                    }
+		                });
+
+		                polygons.array_.forEach((geom) => {                                                
+		                    let splitted_polygon = new ol.Feature({    
+		                        geometry: new ol.geom.Polygon(parser.write(geom).getCoordinates())
+		                    });                
+		                    
+		                    //Add splitted polygon to vector layer    
+		                    vector_cut_layer.getSource().addFeature(splitted_polygon);
+
+		                });
+		            
+		            
+		            source.clear();
+		            
+		            // Remove the draw interaction
+
+		            
+
+		            
+		            }
+		            else {
+		                //Change style to normal if polgon is not splitted            
+		                
+		                //Add original polygon to vector layer if no intersection is there between line and polygon
+		                //this.vector_layer.getSource().addFeature(polygon)
+		            }
+
+		            map.getOverlays().clear();
+		            map.removeInteraction(draw);
+		            cut_polygon_click = false;
+		            draw_ploygons("None");
+		            //map.removeLayer(vector_cut_layer);
+
+		        });
+		        
+		        
+
+		        // if(selecte_type == "Polygon"){
+		        //     var source = vector.getSource();
+		        //     console.log(source.getFeatures());
+		        // }
+		       
+		    }
+
+		}
+
+
+		function removeFeaturesFromMap(features) {
+		    map.getLayers().forEach((layer) => {
+		        if (layer instanceof ol.layer.Vector) {
+		            var source = layer.getSource();
+		            features.forEach((feature) => {
+		                source.removeFeature(feature);
+		            });
+		        }
+		    });
+		}
+
+		// Call the function to remove features from map
+
+
+
+		let highlightStyle = new ol.style.Style({
+		    stroke: new ol.style.Stroke({
+		        color: [255,0,0,0.6],
+		        width: 3
+		    }),
+		    fill: new ol.style.Fill({
+		        color: [255,0,0,0.2]
+		    }),
+		    zIndex: 1
+		});
+
+
+
+		$("#btn_submit").click(function(){
+
+		    if(flag == 'create'){
+		        var form_data ={
+		            geom: geojson_of_feature_management,
+		            properties: {
+		                name: $("#name").val(),
+		                ward_no: $("#ward_no").val(),
+		                tehsil: $("#tehsil").val(),
+		                city: $("#city").val(),
+		                pin_code: $("#pin_code").val()
+		                
+
+		            },
+		            flag: flag
+		            
+		        }
+		    }
+
+		    if(flag == 'update'){
+		        var form_data ={
+		            geom: geojson_of_feature_management,
+		            properties: {
+		                name: $("#name").val(),
+		                ward_no: $("#ward_no").val(),
+		                tehsil: $("#tehsil").val(),
+		                city: $("#city").val(),
+		                pin_code: $("#pin_code").val()
+		                
+
+		            },
+		            flag: flag,
+		            id: id
+		            
+		        }
+		    }
+
+		    if(flag == 'merge'){
+		        var form_data ={
+		            geom: geojson_of_feature_management,
+		            properties: {
+		                name: $("#name").val(),
+		                ward_no: $("#ward_no").val(),
+		                tehsil: $("#tehsil").val(),
+		                city: $("#city").val(),
+		                pin_code: $("#pin_code").val()
+		                
+
+		            },
+		            flag: flag,
+		            id1: id_feature_1,
+		            id2: id_feature_2
+		            
+		        }
+
+		        clickedMergerFeatures = [];
+
+		    }
+
+
+		    $.ajax({
+		        method: 'POST',
+		        url: window.iscdl.appData.baseURL + "citizen/external/crud_feature",
+		        data: JSON.stringify(form_data),
+		        async: false,
+		        contentType: 'application/json',
+		        success: function (result) {
+		            
+		        	$("#myModal").modal('hide');
+		        	var response = JSON.parse(result);
+		        	
+		        	if(response.responseCode == "200"){
+		        		map.removeInteraction(draw);
+		        		$u.notify("success", "Success","Feature Added Successfully");
+		        	}else{
+		        		map.removeInteraction(draw);
+		        		$u.notify("error", "","Something Went Wrong");
+		        	}
+		            console.log(result);
+
+		        },
+		        error: function (e) {
+		        	map.removeInteraction(draw);
+		        	$("#myModal").modal('hide');
+		        	$u.notify("error", "","Something Went Wrong");
+		            console.log(e);
+		        }
+		    });
+
+		});
+
+		
+		
+		var vectorSource;
+		var vectorLayer;
+	
+		$.ajax({
+		    method: 'GET',
+		    url: window.iscdl.appData.baseURL + "citizen/external/get_feature_data",
+		    contentType: 'application/json',
+		    async: false,
+		    success: function (response) {
+
+		        var result = JSON.parse(response);
+		        
+		        if(result.features.length > 0 ){
+		 
+		        
+		        const geoJSONFormat = new ol.format.GeoJSON();
+		        vectorSource = new ol.source.Vector({
+		            features: geoJSONFormat.readFeatures(result, {
+		                featureProjection: 'EPSG:4326',
+		            }),
+		            format: geoJSONFormat,
+		        });
+
+
+		        vectorLayer = new ol.layer.Vector({
+		            source: vectorSource
+		           
+		        });
+
+		        // vectorLayer.getSource().on('addfeature', function () {
+		        //     map.setExtent(vectorLayer.getSource().getExtent());
+		        // });
+
+
+		        const extent = vectorSource.getExtent();
+
+		        //map.getView().fit(extent, {"maxZoom":20} );
+		        
+		        //map.addLayer(vectorLayer);
+		        console.log(result);
+		        }        
+		            
+
+		    },
+		    error: function (e) {
+		        console.log(e);
+		    }
+		});
+
+
+
+$("#show_all_feature").click(function(){
+
+        if ($('#show_all_feature').is(':checked')) {
+        	map.addLayer(vectorLayer);
+        }else{
+        	map.removeLayer(vectorLayer);
+        }
+    
+});
+
+
+
+		// WITH DESIGN START    
+
+
+		$("#move_polygon").click(function(){
+
+		    map.addInteraction(select);
+		    map.addInteraction(translate);
+		    map.removeInteraction(modify);
+		    $u.notify("info", "Info","Please select Feature to Move");
+
+		});
+		    
+		$("#modify_polygon").click(function(){
+
+		    map.addInteraction(select);
+		    map.removeInteraction(translate);
+		    map.addInteraction(modify);
+		    $u.notify("info", "Info","Please select Feature to Modify");
+
+		});
+
+		$("#cut_polygon").click(function(){
+
+		    map.addInteraction(select);
+		    cut_polygon_click = true;
+
+		});
+
+		$("#merge_polygon").click(function(){
+
+		    map.addInteraction(select);
+		    map.addInteraction(translate);
+		    map.removeInteraction(modify);
+		    merge_click = true;
+
+		    $u.notify("info", "Info","Please select any two feature to merge");
+		    
+
+		    map.on('singleclick', (event) => {					
+		        map.forEachFeatureAtPixel(event.pixel, function(feature) {
+		            clickedMergerFeatures.push(feature);
+		        });
+
+		        if(clickedMergerFeatures.length == 2){
+		            $u.notify("info", "Info","Now Drag last feature to previous feature to merge");
+		        }
+
+		    });
+
+		    
+
+		});
+
+		$("#merge_selected_feature").click(function(){
+
+
+			   $("#name").val("");
+		       $("#layer").val("");
+		       $("#ward").val("");
+		       $("#tehsil").val("");
+		       $("#city").val("");
+			   $("#pin_code").val("");
+
+		       $("#name").val(clickedFeatures[0].values_.name);
+		       $("#ward_no").val(clickedFeatures[0].values_.ward_no);
+			   $("#tehsil").val(clickedFeatures[0].values_.tehsil);
+		       $("#city").val(clickedFeatures[0].values_.city);
+			   $("#pin_code").val(clickedFeatures[0].values_.pin_code);
+
+		       id_feature_1 = clickedMergerFeatures[0].values_.id;
+		       id_feature_2 = clickedMergerFeatures[1].values_.id;
+
+
+		    let parser = new jsts.io.OL3Parser();       
+		    
+		    //Parse Polygons geometry to jsts type
+		    let a = parser.read(clickedMergerFeatures[0].getGeometry());
+		    let b = parser.read(clickedMergerFeatures[1].getGeometry());
+
+		    map.removeLayer(clickedMergerFeatures[0]);
+		    map.removeLayer(clickedMergerFeatures[1]);
+
+		    //Perform union of Polygons. The union function below will merge two polygon together
+		    let union = a.union(b);    
+		    let merged_polygon = new ol.Feature({    
+		        geometry: new ol.geom.Polygon(parser.write(union).getCoordinates())
+		    });     
+		    //vector_layer.getSource().clear();
+		    // vector_layer.getSource().addFeature(merged_polygon);
+		    // vector_layer.setStyle(highlightStyle);
+		    //map.addLayer(vector_layer);
+
+
+		    vectorLayer.getSource().removeFeature(clickedMergerFeatures[0]);
+		    vectorLayer.getSource().removeFeature(clickedMergerFeatures[1]);
+
+		      const vectorSource = new ol.source.Vector({
+		        features: [merged_polygon],
+		      });
+
+		      var MergeVectorLayer = new ol.layer.Vector({
+		        source: vectorSource,
+		        //style: highlightStyle,
+		      });
+
+		      const features = vectorSource.getFeatures();
+		      const geometry = features[0].getGeometry();
+		      const geoJSONFeature = new ol.format.GeoJSON().writeFeatureObject(new ol.Feature(geometry));
+		      geojson_of_feature_management = geoJSONFeature.geometry;
+		      console.log(geoJSONFeature);
+
+		      map.addLayer(MergeVectorLayer);
+
+		      flag = "merge";
+
+
+		      $("#myModal").modal('show');
+
+		      map.getLayers().forEach(function(layer) {
+		        if (layer instanceof ol.layer.Vector) {
+		          var source = layer.getSource();
+		          source.forEachFeature(function(feature) {
+		            // Do something with each feature
+		            console.log(feature.getProperties()); // For example, logging feature properties
+		          });
+		        }
+		      });
+
+		});
+
+		// WITH DESIGN END
+
+		$("#clear_draw_feature").click(function(){
+			map.removeInteraction(draw);
+			for(var i=0; i<vectorFeature_arr.length; i++){
+				map.removeLayer(vectorFeature_arr[i]);
+			}
+		});
+		
+		
+		// Open Layer Feature functionality ENDS
+		
+		
+		
 });
