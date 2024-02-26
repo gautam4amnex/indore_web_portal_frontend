@@ -9146,7 +9146,12 @@ require(
 		       $("#city").val(clickedFeatures[0].values_.city);
 			   $("#pin_code").val(clickedFeatures[0].values_.pin_code);
 
-		            flag = 'update';
+		       if(selected_cut_feature_id != undefined){
+		           flag = "cut";
+		          }
+		          else{     
+		          flag = 'update';
+		          }
 		            $("#myModal").modal('show');
 		            
 		        });
@@ -9211,7 +9216,12 @@ require(
 		        console.log(geojson_of_feature_management);
 		      
 		          
-		          flag = 'update';
+		        if(selected_cut_feature_id != undefined){
+		            flag = "cut" ;
+		           }
+		           else{     
+		           flag = 'update';
+		           }
 
 		          $("#myModal").modal('show');
 
@@ -9288,7 +9298,6 @@ require(
 //		function draw_ploygons(selecte_type) {
 //		    var value = selecte_type;
 //		    var source = new ol.source.Vector({ wrapX: false });
-//
 //		    vector = new ol.layer.Vector({
 //		        source: source,
 //		        // style: styles,
@@ -9596,7 +9605,7 @@ require(
 	
 		$.ajax({
 		    method: 'GET',
-		    url: window.iscdl.appData.baseURL + "citizen/external/getDrawnFeature",
+		    url: window.iscdl.appData.baseURL + "citizen/external/get_feature_data",
 		    contentType: 'application/json',
 		    async: false,
 		    success: function (response) {
