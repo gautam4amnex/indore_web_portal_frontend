@@ -1257,29 +1257,35 @@ Advance Tools
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Modal Header</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          
         </div>
         <div class="modal-body">
+          <div class="d-flex align-items-center gap-2 mb-2">
           <label for="name">Name</label>
-        <input type="text" id="name" name="name"><br><br>
+        <input type="text" id="name" name="name" class="form-control" /></div>
 
-        <label for="ward">Ward No.</label>
-        <input type="text" id="ward_no" name="ward"><br><br>
-        
+		<div class="d-flex align-items-center gap-2 mb-2">
+        <label for="ward">Ward No.</label> <input type="text" id="ward_no" name="ward"
+								class="form-control" />
+		</div>        
+        <div class="d-flex align-items-center gap-2 mb-2">
         <label for="ward">Tehsil</label>
-        <input type="text" id="tehsil" name="tehsil"><br><br>
+        <input type="text" id="tehsil" name="tehsil" class="form-control"/></div>
         
+        <div class="d-flex align-items-center gap-2 mb-2">
         <label for="ward">City</label>
-        <input type="text" id="city" name="city"><br><br>
+        <input type="text" id="city" name="city" class="form-control" /></div>
         
-        <label for="ward">Pin Code</label>
-        <input type="text" id="pin_code" name="pin_code"><br><br>
-
-        <button type="button" id="btn_submit">Submit</button>
+        <div class="d-flex align-items-center gap-2 mb-2">
+	        <label for="ward">Pin Code</label>
+	        <input type="text" id="pin_code" name="pin_code" class="form-control" />
+        </div>        
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" id="btn_submit" class="btn btn-primary">Submit</button>
         </div>
       </div>
       
@@ -1298,9 +1304,13 @@ Advance Tools
 			</div>	
 			
 			<div class="layer-content scrollar">
-				<label data-translate="_select_draw_mode">Select Draw Mode</label>
+				<div class="d-flex align-items-center w-100">
 				<input type="checkbox" value="show_all_feature" id="show_all_feature">
-                        <label class="ms-2" for="chk_retms_cc" style= "padding-left: 54px;">Show All Feature</label>
+				<label class="ms-2" for="chk_retms_cc">Show All Feature</label>				
+				</div>
+				<label data-translate="_select_draw_mode">Select Draw Mode</label>
+				
+                        
 				<ul class="feature-tools-select">
 					<li id="drawLineFeature">
 						<a href="javascript:void(0);" data-attr="#line" title="LineString">

@@ -1736,6 +1736,35 @@ legend heading bold end
     height: 22px;
 }	
 
+
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.25rem 0.5rem;
+    color: #fff;
+    background-color: var(--main-theme-color);    
+}
+.modal-header .close {
+    padding: 0 6px;
+    margin: 0;
+    opacity: 1;
+    text-shadow: unset;
+    font-weight: 500;
+    color: white;
+}
+.modal-body label{margin-bottom: 0;min-width: 120px;}
+.modal-footer .btn-primary {
+    color: #fff;
+    background-color: var(--main-theme-color);
+    border-color: #ffffff;
+}
+
+.modal-header .modal-title{
+	font-size: 1rem;
+}
+
 .dep-modal .modal-body {
     max-height: 65vh;
     overflow: auto;

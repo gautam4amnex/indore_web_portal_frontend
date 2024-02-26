@@ -9563,7 +9563,7 @@ require(
 	
 		$.ajax({
 		    method: 'GET',
-		    url: window.iscdl.appData.baseURL + "citizen/external/get_feature_data",
+		    url: window.iscdl.appData.baseURL + "citizen/getDrawnFeature",
 		    contentType: 'application/json',
 		    async: false,
 		    success: function (response) {
