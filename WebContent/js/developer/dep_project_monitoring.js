@@ -62,10 +62,12 @@
 //									result = JSON.parse(result);
 									let str = "";
 									if (result.responseCode == 200) {
-										$u.notify('success', 'Success',
-												result.responseMessage, '');
-										//location.reload(true);
-										resetForm('form_addProject');
+										$u.notify('success', 'Success',result.responseMessage, '');
+										setTimeout(function(){
+											location.reload(true);
+										}, 2000);
+//										resetForm('form_addProject');
+//										location.reload(true);
 									}else if(result.responseCode == 204){
 										$u.notify('info', 'Notification',
 												result.responseMessage, '');
