@@ -3,8 +3,8 @@
 	global.iscdl = {};
 
 	let obj = {
-//		baseURL : "http://localhost:1002/IndoreAPI/", // local URL
-		baseURL : "https://apagri.infinium.management/IndoreAPI/", // local URL
+		baseURL : "http://localhost:1002/IndoreAPI/", // local URL
+//		baseURL : "https://apagri.infinium.management/IndoreAPI/", // local URL
 //		baseURL : "https://citymapindore.amnex.com/IndoreWebAPI/", // live URL AMNEX Server
 //		baseURL : "https://citymap.smartcityindore.org:8443/ISCDLWebAPI/", // live URL Indore Server
 //		baseURL : "https://indoresmartmap.org/ISCDLWebAPI/", // live URL Indore Server New

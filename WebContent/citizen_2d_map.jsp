@@ -1305,7 +1305,13 @@ Advance Tools
         <div class="d-flex align-items-center gap-2 mb-2">
 	        <label for="ward">Pin Code</label>
 	        <input type="text" id="pin_code" name="pin_code" class="form-control" />
-        </div>        
+        </div>   
+        
+        <div class="d-flex align-items-center gap-2 mb-2" id="image_div" style="display: none !important;">
+	        <label for="ward">Image</label>
+	        <input type="file" id="file_name" name="file_name" class="form-control" accept="image/*">
+        </div> 
+             
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
