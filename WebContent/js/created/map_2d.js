@@ -9096,6 +9096,14 @@ require(
 //		     modify.setActive(e.selected.length > 0);
 		//   });
 
+		
+		$("#delete_button").click(function(){
+
+			$u.notify("info", "Info","Please Select Feature to delete");
+		    delete_feature_click = true;
+		    map.addInteraction(select);
+		});
+		
 		let polygon;
 		select.on('select', (e) => {
 		    e.selected.forEach((feature) => {
@@ -9308,13 +9316,16 @@ require(
 		    
 		    $.ajax({
 		        method: 'POST',
-		        url: 'http://localhost:8085/deleteDrawnFeature',
+		        url: window.iscdl.appData.baseURL + "citizen/external/crud_feature",
 		        data: JSON.stringify(form_data),
 		        async: false,
 		        contentType: 'application/json',
 		        success: function (result) {      
 		            console.log(result);
-		            location.reload();
+		            $u.notify("success", "Success","Feature Delete Successfully");
+		            setTimeout(function () {
+	                    location.reload();
+	                }, 1500);
 		            $("#myModal2").modal('hide');
 		            removeFeaturesFromMap(polygon);
 		        },
@@ -9481,6 +9492,10 @@ require(
 		    zIndex: 1
 		});
 
+		
+		var vectorSource;
+		var vectorLayer;
+		getFeatureData();
 
 
 		$("#btn_submit").click(function(){
@@ -9571,13 +9586,17 @@ require(
 		        async: false,
 		        contentType: 'application/json',
 		        success: function (result) {
-		            
 		        	var response = JSON.parse(result);
 		        	
 		        	if(response.responseCode == "200"){
+//		        		map.removeLayer(vectorLayer);
+//		        		getFeatureData();
 		        		$("#myModal").modal('hide');
 		        		map.removeInteraction(draw);
 		        		$u.notify("success", "Success","Feature Added Successfully");
+		                setTimeout(function () {
+		                    location.reload();
+		                }, 1500);
 		        	}else{
 		        		map.removeInteraction(draw);
 		        		$("#myModal").modal('hide');
@@ -9597,10 +9616,9 @@ require(
 		});
 
 		
+	function getFeatureData(){
 		
-		var vectorSource;
-		var vectorLayer;
-	
+
 		$.ajax({
 		    method: 'GET',
 		    url: window.iscdl.appData.baseURL + "citizen/external/get_feature_data",
@@ -9647,6 +9665,7 @@ require(
 		    }
 		});
 
+	}
 
 
 $("#show_all_feature").click(function(){
