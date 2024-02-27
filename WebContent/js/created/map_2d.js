@@ -9063,7 +9063,10 @@ require(
 		let id_feature_1;
 		let id_feature_2;
 		let cut_polygon_click = false;
+		let delete_feature_click = false;
 		let vector_cut_layer;
+		let selected_cut_feature_id;
+		let selected_feature_delete;
 		// const vector_ = new ol.layer.Vector({
 //		     background: 'white',
 //		     source: new ol.source.Vector({
@@ -9104,11 +9107,24 @@ require(
 		        console.log(geojson_of_feature_management);
 
 		        polygon = feature;
+		        
+		        if(cut_polygon_click == true){
+		            
+		            selected_cut_feature_id = feature.values_.id;
+		            merge_click = false;
+		        }
 
-		    })
+		        if(delete_feature_click == true){
+
+		            $("#myModal2").modal('show');
+
+		        }
+		        
+
+		    });
 
 		    if(cut_polygon_click == true){
-		        
+		        merge_click = false;
 		        draw_cut_lineString("LineString");        
 		    }else{
 		        modify.setActive(e.selected.length > 0);
@@ -9147,7 +9163,12 @@ require(
 		       $("#city").val(clickedFeatures[0].values_.city);
 			   $("#pin_code").val(clickedFeatures[0].values_.pin_code);
  
-		          flag = 'update';
+			   if(selected_cut_feature_id != undefined){
+			        flag = "cut";
+			       }
+			       else{     
+			       flag = 'update';
+			       }
 
 		            $("#myModal").modal('show');
 		            
@@ -9213,7 +9234,12 @@ require(
 		        console.log(geojson_of_feature_management);
 		      
 		        
+		        if(selected_cut_feature_id != undefined){
+		            flag = "cut" ;
+		           }
+		           else{     
 		           flag = 'update';
+		           }
 
 
 		          $("#myModal").modal('show');
@@ -9222,62 +9248,7 @@ require(
 		    }
 		    });
 
-		    // modify.on('modifyend', function (event) {
-		    
-
-		    //     id = clickedFeatures[0].values_.id;  
-		        
-		    //     console.log('modified id ---> '+ id);
-		    
-		    //     var movedFeatures = event.features.getArray();
-		      
-		        
-		    //     movedFeatures.forEach(function (feature) {
-		    //       // Get the updated geometry
-		    //       var movedGeometry = feature.getGeometry();
-		      
-		    //       // Convert the geometry to GeoJSON
-		    //       var geoJSONFormat = new ol.format.GeoJSON();
-		    //       geojson_of_feature_management = geoJSONFormat.writeFeature(feature);
-		    //     geojson_of_feature_management = JSON.parse(geojson_of_feature_management);
-		    //     geojson_of_feature_management = geojson_of_feature_management.geometry;
-		    //     console.log("modified_feature ------ >" + geojson_of_feature_management);
-		      
-		          
-		    //       flag = 'update';
-
-		    //     });
-
-
-		    //   });
-
 		});
-
-
-		//   translate.on('translateend', function (event) {
-		    
-//		     var  clickedFeatures = [];
-//		     map.forEachFeatureAtPixel(event.pixel, function(feature) {
-//		                     clickedFeatures.push(feature);
-//		     });
-
-//		     console.log(clickedFeatures[0]);
-
-//		     var movedFeatures = event.features.getArray();
-		  
-		    
-//		     movedFeatures.forEach(function (feature) {
-//		       // Get the updated geometry
-//		       var movedGeometry = feature.getGeometry();
-		  
-//		       // Convert the geometry to GeoJSON
-//		       var geoJSONFormat = new ol.format.GeoJSON();
-//		       var movedFeatureGeoJSON = geoJSONFormat.writeFeature(feature);
-		  
-		      
-//		       console.log(movedFeatureGeoJSON);
-//		     });
-		//   });
 
 		$("#type").change(function() {
 
@@ -9328,7 +9299,31 @@ require(
 //
 //		}
 
+		$("#btn_delete_yes").click(function(){
 
+		    var form_data = {
+		        flag: "delete",
+		        id: polygon.values_.id
+		    }
+		    
+		    $.ajax({
+		        method: 'POST',
+		        url: 'http://localhost:8085/deleteDrawnFeature',
+		        data: JSON.stringify(form_data),
+		        async: false,
+		        contentType: 'application/json',
+		        success: function (result) {      
+		            console.log(result);
+		            location.reload();
+		            $("#myModal2").modal('hide');
+		            removeFeaturesFromMap(polygon);
+		        },
+		        error: function (e) {
+		            console.log(e);
+		        }
+		    });
+
+		});
 
 		function draw_cut_lineString(selecte_type) {
 		    polygon = cut_feature_clicked[0];
@@ -9457,9 +9452,16 @@ require(
 		    map.getLayers().forEach((layer) => {
 		        if (layer instanceof ol.layer.Vector) {
 		            var source = layer.getSource();
-		            features.forEach((feature) => {
-		                source.removeFeature(feature);
-		            });
+
+		            if(delete_feature_click == true){
+		                source.removeFeature(features);
+		                delete_feature_click = false;
+		            }else{
+		                features.forEach((feature) => {
+		                    source.removeFeature(feature);
+		                });
+		            }
+		            
 		        }
 		    });
 		}
@@ -9544,11 +9546,13 @@ require(
 
 		        var form_data ={
 		            geom_update: geojson_of_cut_feature_arr[0],
-		            geom: geojson_of_feature,
+		            geom: geojson_of_feature_management,
 		            properties: {
-		                name: $("#name").val(),
-		                ward_no: $("#ward").val(),
-		                layer: $("#layer").val()
+		            	name: $("#name").val(),
+		                ward_no: $("#ward_no").val(),
+		                tehsil: $("#tehsil").val(),
+		                city: $("#city").val(),
+		                pin_code: $("#pin_code").val()
 		    
 		            },
 		            flag: flag,
@@ -9568,14 +9572,15 @@ require(
 		        contentType: 'application/json',
 		        success: function (result) {
 		            
-		        	$("#myModal").modal('hide');
 		        	var response = JSON.parse(result);
 		        	
 		        	if(response.responseCode == "200"){
+		        		$("#myModal").modal('hide');
 		        		map.removeInteraction(draw);
 		        		$u.notify("success", "Success","Feature Added Successfully");
 		        	}else{
 		        		map.removeInteraction(draw);
+		        		$("#myModal").modal('hide');
 		        		$u.notify("error", "","Something Went Wrong");
 		        	}
 		            console.log(result);
@@ -9678,7 +9683,8 @@ $("#show_all_feature").click(function(){
 		});
 
 		$("#cut_polygon").click(function(){
-
+			
+			$u.notify("info", "Info","Please select Feature to Cut");
 		    map.addInteraction(select);
 		    cut_polygon_click = true;
 

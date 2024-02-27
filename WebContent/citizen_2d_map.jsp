@@ -1387,6 +1387,9 @@ Advance Tools
 								<a class="nav-link active" id="merge_polygon" title="Merge Feature">Merge Feature</a>
 							  </li>
 							  <li class="nav-item">
+								<a class="nav-link active" id="cut_polygon" title="Cut Feature">Cut Feature</a>
+							  </li>
+							  <li class="nav-item">
 								<a class="nav-link active" id="merge_selected_feature" style="display: none;" title="Merge Feature">Merge Selected Feature</a>
 							  </li>
 						</ul>
