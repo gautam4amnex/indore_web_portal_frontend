@@ -1250,6 +1250,30 @@ Advance Tools
 	
 	<!-- FEATRUE MAGAMENET POP UP STARTS -->
 	
+	  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Delete Attribute</h4>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete feature?
+        </div>
+        <div>
+          <button type="button" id="btn_delete_yes" class="btn btn-default">Yes</button>
+          <button type="button" id="btn_delete_no" class="btn btn-default" data-dismiss="modal">No</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+	
 	
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -1257,7 +1281,7 @@ Advance Tools
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">Feature Attribute</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           
         </div>
@@ -1385,6 +1409,12 @@ Advance Tools
 							  </li>
 							  <li class="nav-item">
 								<a class="nav-link active" id="merge_polygon" title="Merge Feature">Merge Feature</a>
+							  </li>
+							  <li class="nav-item">
+								<a class="nav-link active" id="cut_polygon" title="Cut Feature">Cut Feature</a>
+							  </li>
+							  <li class="nav-item">
+								<a class="nav-link active" id="delete_button" title="Delete Feature">Delete Feature</a>
 							  </li>
 							  <li class="nav-item">
 								<a class="nav-link active" id="merge_selected_feature" style="display: none;" title="Merge Feature">Merge Selected Feature</a>
