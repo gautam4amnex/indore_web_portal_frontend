@@ -3,11 +3,12 @@
 	global.iscdl = {};
 
 	let obj = {
-//		baseURL : "http://localhost:1002/IndoreAPI/", // local URL
-		baseURL : "https://apagri.infinium.management/IndoreAPI/", // local URL
+		baseURL : "http://localhost:1002/IndoreAPI/", // local URL
+//		baseURL : "https://apagri.infinium.management/IndoreAPI/", // local URL
 //		baseURL : "https://citymapindore.amnex.com/IndoreWebAPI/", // live URL AMNEX Server
 //		baseURL : "https://citymap.smartcityindore.org:8443/ISCDLWebAPI/", // live URL Indore Server
 //		baseURL : "https://indoresmartmap.org/ISCDLWebAPI/", // live URL Indore Server New
+		defaultAccessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlYTc2ZGI3Yi1iYTNiLTQwZjItODg3ZS1mZmQ1YTIwODQzYTYiLCJpZCI6MTMxMzYwLCJpYXQiOjE2ODAxNzQ2OTV9.TAVy4C72oGR1AWt5OAqK9PlNy1Rlau45Kv67vtfEqDs", 
 		
 		webURLPrefix : "/indoregis/", //local and live latest as discussed with M. Taha on 28th Dec 2020
 

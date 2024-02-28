@@ -279,6 +279,9 @@ require(
 	                    console.log(geojson_of_feature_management);
 
 	                	flag = "create";
+	                	 $("#image_div").attr('style' , 'display: block;');
+	                	 $("#get_image_url").attr('style' , 'display: none !important;');
+	                	 
 	                    $('#myModal').modal('toggle');
 	                }
 	                
@@ -9171,6 +9174,8 @@ require(
 		       $("#city").val(clickedFeatures[0].values_.city);
 			   $("#pin_code").val(clickedFeatures[0].values_.pin_code);
  
+			   $("#preview_image").attr('href' , window.iscdl.appData.baseURL + "api-docs/getImage/" + "feedbacks/" + clickedFeatures[0].values_.img_name);
+			   
 			   if(selected_cut_feature_id != undefined){
 			        flag = "cut";
 			       }
@@ -9225,6 +9230,8 @@ require(
 			   $("#tehsil").val(clickedFeatures[0].values_.tehsil);
 		       $("#city").val(clickedFeatures[0].values_.city);
 			   $("#pin_code").val(clickedFeatures[0].values_.pin_code);
+			   
+			   $("#preview_image").attr('href' , window.iscdl.appData.baseURL + "api-docs/getImage/" + "feedbacks/" + clickedFeatures[0].values_.img_name);
 		       console.log('moved id ----> ' + id);
 		    
 		        var movedFeatures = event.features.getArray();
@@ -9306,20 +9313,50 @@ require(
 //		    }
 //
 //		}
+		
+//		$("#get_image_").click(function(){
+//			
+//		    $.ajax({
+//		        method: 'GET',
+//		        url: window.iscdl.appData.baseURL + "api-docs/getImage/" + "feedbacks/" + "1709102290711-storm_manhole.png",
+//	            enctype: 'multipart/form-data',
+//	            processData: false,
+//	            contentType: false,
+//	            async: false,
+//		        success: function (result) {      
+//		            console.log(result);
+//		            $u.notify("success", "Success","Feature Delete Successfully");
+//		            setTimeout(function () {
+//	                    location.reload();
+//	                }, 1500);
+//		        },
+//		        error: function (e) {
+//		            console.log(e);
+//		        }
+//		    });
+//			
+//		});
+		
 
 		$("#btn_delete_yes").click(function(){
 
-		    var form_data = {
+		    var delete_data = {
 		        flag: "delete",
 		        id: polygon.values_.id
 		    }
 		    
+		    var form_data = new FormData();
+		    
+		    form_data.append("jsonData" , JSON.stringify(delete_data));
+		    
 		    $.ajax({
 		        method: 'POST',
 		        url: window.iscdl.appData.baseURL + "citizen/external/crud_feature",
-		        data: JSON.stringify(form_data),
-		        async: false,
-		        contentType: 'application/json',
+		        data: form_data,
+	            enctype: 'multipart/form-data',
+	            processData: false,
+	            contentType: false,
+	            async: false,
 		        success: function (result) {      
 		            console.log(result);
 		            $u.notify("success", "Success","Feature Delete Successfully");
@@ -9496,12 +9533,15 @@ require(
 		var vectorSource;
 		var vectorLayer;
 		getFeatureData();
-
+		
+		
 
 		$("#btn_submit").click(function(){
 
 		    if(flag == 'create'){
-		        var form_data ={
+		    	
+		    	var form_data = new FormData();
+		        var create_data ={
 		            geom: geojson_of_feature_management,
 		            properties: {
 		                name: $("#name").val(),
@@ -9515,10 +9555,16 @@ require(
 		            flag: flag
 		            
 		        }
+
+	            form_data.append("images", $('#file_name')[0].files[0]);
+
+	            form_data.append("jsonData", JSON.stringify(create_data));
+		        
 		    }
 
 		    if(flag == 'update'){
-		        var form_data ={
+		    	var form_data = new FormData();
+		        var update_data ={
 		            geom: geojson_of_feature_management,
 		            properties: {
 		                name: $("#name").val(),
@@ -9533,10 +9579,14 @@ require(
 		            id: id
 		            
 		        }
+		        
+		        form_data.append("jsonData", JSON.stringify(update_data));
+		        
 		    }
 
 		    if(flag == 'merge'){
-		        var form_data ={
+		    	var form_data = new FormData();
+		        var merge_data ={
 		            geom: geojson_of_feature_management,
 		            properties: {
 		                name: $("#name").val(),
@@ -9553,13 +9603,15 @@ require(
 		            
 		        }
 
+		        form_data.append("jsonData", JSON.stringify(merge_data));
+		        
 		        clickedMergerFeatures = [];
 
 		    }
 		    
 		    if(flag == "cut"){
-
-		        var form_data ={
+		    	var form_data = new FormData();
+		        var cut_data ={
 		            geom_update: geojson_of_cut_feature_arr[0],
 		            geom: geojson_of_feature_management,
 		            properties: {
@@ -9574,46 +9626,48 @@ require(
 		            id_geom_update: selected_cut_feature_id
 		            
 		        }
+		        
+		        form_data.append("jsonData", JSON.stringify(cut_data));
 
 		    }
+		    	
+			    $.ajax({
+			        method: 'POST',
+			        url: window.iscdl.appData.baseURL + "citizen/external/crud_feature",
+			        data: form_data,
+		            enctype: 'multipart/form-data',
+		            processData: false,
+		            contentType: false,
+		            async: false,
+			        success: function (result) {
+			        	var response = JSON.parse(result);
+			        	
+			        	if(response.responseCode == "200"){
+			        		$("#myModal").modal('hide');
+			        		map.removeInteraction(draw);
+			        		$u.notify("success", "Success","Feature Added Successfully");
+			                setTimeout(function () {
+			                    location.reload();
+			                }, 1500);
+			        	}else{
+			        		map.removeInteraction(draw);
+			        		$("#myModal").modal('hide');
+			        		$u.notify("error", "","Something Went Wrong");
+			        	}
+			            console.log(result);
+
+			        },
+			        error: function (e) {
+			        	map.removeInteraction(draw);
+			        	$("#myModal").modal('hide');
+			        	$u.notify("error", "","Something Went Wrong");
+			            console.log(e);
+			        }
+			    });
+		    	
 		    
 
-
-		    $.ajax({
-		        method: 'POST',
-		        url: window.iscdl.appData.baseURL + "citizen/external/crud_feature",
-		        data: JSON.stringify(form_data),
-		        async: false,
-		        contentType: 'application/json',
-		        success: function (result) {
-		        	var response = JSON.parse(result);
-		        	
-		        	if(response.responseCode == "200"){
-//		        		map.removeLayer(vectorLayer);
-//		        		getFeatureData();
-		        		$("#myModal").modal('hide');
-		        		map.removeInteraction(draw);
-		        		$u.notify("success", "Success","Feature Added Successfully");
-		                setTimeout(function () {
-		                    location.reload();
-		                }, 1500);
-		        	}else{
-		        		map.removeInteraction(draw);
-		        		$("#myModal").modal('hide');
-		        		$u.notify("error", "","Something Went Wrong");
-		        	}
-		            console.log(result);
-
-		        },
-		        error: function (e) {
-		        	map.removeInteraction(draw);
-		        	$("#myModal").modal('hide');
-		        	$u.notify("error", "","Something Went Wrong");
-		            console.log(e);
-		        }
-		    });
-
-		});
+		});;
 
 		
 	function getFeatureData(){
@@ -9684,7 +9738,10 @@ $("#show_all_feature").click(function(){
 
 
 		$("#move_polygon").click(function(){
-
+			
+			$("#image_div").attr('style' , 'display: none !important;');
+			$("#get_image_url").attr('style' , 'display: block !important;');
+			
 		    map.addInteraction(select);
 		    map.addInteraction(translate);
 		    map.removeInteraction(modify);
@@ -9694,6 +9751,8 @@ $("#show_all_feature").click(function(){
 		    
 		$("#modify_polygon").click(function(){
 
+			$("#image_div").attr('style' , 'display: none !important;');
+			$("#get_image_url").attr('style' , 'display: block !important;');
 		    map.addInteraction(select);
 		    map.removeInteraction(translate);
 		    map.addInteraction(modify);
@@ -9703,6 +9762,9 @@ $("#show_all_feature").click(function(){
 
 		$("#cut_polygon").click(function(){
 			
+			 $("#image_div").attr('style' , 'display: none !important;');
+			 $("#get_image_url").attr('style' , 'display: block !important;');
+			
 			$u.notify("info", "Info","Please select Feature to Cut");
 		    map.addInteraction(select);
 		    cut_polygon_click = true;
@@ -9711,6 +9773,8 @@ $("#show_all_feature").click(function(){
 
 		$("#merge_polygon").click(function(){
 
+			$("#image_div").attr('style' , 'display: none !important;');
+			$("#get_image_url").attr('style' , 'display: block !important;');
 		    map.addInteraction(select);
 		    map.addInteraction(translate);
 		    map.removeInteraction(modify);
@@ -9736,7 +9800,8 @@ $("#show_all_feature").click(function(){
 
 		$("#merge_selected_feature").click(function(){
 
-
+			$("#image_div").attr('style' , 'display: none !important;');
+			$("#get_image_url").attr('style' , 'display: block !important;');
 			   $("#name").val("");
 		       $("#layer").val("");
 		       $("#ward").val("");
@@ -9795,10 +9860,10 @@ $("#show_all_feature").click(function(){
 		      map.addLayer(MergeVectorLayer);
 
 		      flag = "merge";
-
-
+		      
 		      $("#myModal").modal('show');
-
+		      
+		      
 		      map.getLayers().forEach(function(layer) {
 		        if (layer instanceof ol.layer.Vector) {
 		          var source = layer.getSource();

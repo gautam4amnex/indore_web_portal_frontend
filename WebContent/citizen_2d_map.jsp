@@ -1247,7 +1247,6 @@ Advance Tools
 	<!--Query popup start-->
 	
 	
-	
 	<!-- FEATRUE MAGAMENET POP UP STARTS -->
 	
 	  <div class="modal fade" id="myModal2" role="dialog">
@@ -1256,18 +1255,15 @@ Advance Tools
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
+        <h4 class="modal-title">Delete Attribute</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Delete Attribute</h4>
         </div>
         <div class="modal-body">
           Are you sure you want to delete feature?
         </div>
-        <div>
-          <button type="button" id="btn_delete_yes" class="btn btn-default">Yes</button>
-          <button type="button" id="btn_delete_no" class="btn btn-default" data-dismiss="modal">No</button>
-        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" id="btn_delete_yes"  class="btn btn-primary">Yes</button>
+          <button type="button" id="btn_delete_no"  class="btn btn-primary" data-dismiss="modal">No</button>
         </div>
       </div>
       
@@ -1305,7 +1301,18 @@ Advance Tools
         <div class="d-flex align-items-center gap-2 mb-2">
 	        <label for="ward">Pin Code</label>
 	        <input type="text" id="pin_code" name="pin_code" class="form-control" />
-        </div>        
+        </div>   
+        
+        <div class="d-flex align-items-center gap-2 mb-2" id="image_div" style="display: none !important;">
+	        <label for="ward">Image</label>
+	        <input type="file" id="file_name" name="file_name" class="form-control" accept="image/*">
+        </div> 
+        
+        <div class="d-flex align-items-center gap-2 mb-2" id="get_image_url" style="display: none !important;">
+	        <label for="ward">Preview</label>
+	        <a href="" data-attr="#line" id="preview_image" title="Image">Click to preview image</a>
+        </div> 
+        
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -2992,7 +2999,6 @@ Advance Tools
 					
 					<li title="Home"><a id="myHomeDiv" href="javascript:void(0);"><img src="${context}/images/icons/Home.svg"></a></li>
 					<li title="Find My Location"><a id="locateDiv" href="javascript:void(0);"><img  src="${context}/images/icons/Location.svg"></a></li>
-					<li title="Map Info" id ="toggle_map_info"><a id="mapInfoTool" title="Enable Map Info" href="javascript:void(0);"><img src="${context}/images/Info_tool_26.svg"></a></li>
 					<li title="Clear Map"><a id="clearMap" href="javascript:void(0);"><img src="${context}/images/Clear-Map-68.svg"></a></li>
 					<li title="Map Tools">
 						<a id="" data-attr="#map_tools" href="javascript:void(0);"><img  src="${context}/images/icons/Map-Tool-19.svg">

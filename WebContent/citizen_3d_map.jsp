@@ -30,6 +30,17 @@
 	<link rel="stylesheet" href="${context}/css/style.css">
 	<link rel="stylesheet" href="${context}/css/citizenmap.css">
 	
+	<style>
+        .cesium-viewer-toolbar {
+            display: none !important;
+        }
+        .cesium-viewer-bottom{
+            display: none !important;
+        }
+    </style>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+	
 </head>
 
 <body>
@@ -721,7 +732,8 @@
 				        
 			    </div>
 			    <div id="search"></div>
-				<div id="map" class="map h-100">
+				<!--  <div id="map" class="map h-100">-->
+				<div id="cesiumContainer" class="h-100 w-100"></div>
 				<span id="coordinateDiv"></span>
 				<!-- <div id="HomeButton"></div>
 				<div id="LocateButton"></div> -->
@@ -944,9 +956,10 @@
 	
 </div>
 <!-- /#wrapper -->
-	
-	
-	<script src="${context}/js/jquery.min.js"></script>
+
+
+	<!-- <script src="${context}/js/jquery.min.js"></script>  -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src = "${context}/js/jquery-ui.min.js"></script>
 	<script src="${context}/js/popper.min.js"></script>
 	<script src="${context}/js/bootstrap.min.js"></script>
