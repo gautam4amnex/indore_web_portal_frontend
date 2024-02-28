@@ -32,7 +32,16 @@
 	<link rel="stylesheet" href="${context}/css/esri/api-4-14.css">
 	<link rel="stylesheet" href="${context}/css/style.css">
 	<link rel="stylesheet" href="${context}/css/citizen-map-dept.css">
-
+<style>
+        .cesium-viewer-toolbar {
+            display: none !important;
+        }
+        .cesium-viewer-bottom{
+            display: none !important;
+        }
+    </style>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
 </head>
 <body>	
 
@@ -1408,7 +1417,8 @@
 				</ul>
 			</div>	
 			<div id="searchDiv"></div>
-				<div id="map" class="map h-100">
+			 <div id="map" class="map h-100">
+				<!--  <div id="cesiumContainer" class="h-100 w-100"></div>-->
 				<span id="coordinateDiv"></span>
 				</div>
 			</div>

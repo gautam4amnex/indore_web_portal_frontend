@@ -1247,7 +1247,6 @@ Advance Tools
 	<!--Query popup start-->
 	
 	
-	
 	<!-- FEATRUE MAGAMENET POP UP STARTS -->
 	
 	  <div class="modal fade" id="myModal2" role="dialog">
@@ -1308,7 +1307,12 @@ Advance Tools
 	        <label for="ward">Image</label>
 	        <input type="file" id="file_name" name="file_name" class="form-control" accept="image/*">
         </div> 
-             
+        
+        <div class="d-flex align-items-center gap-2 mb-2" id="get_image_url" style="display: none !important;">
+	        <label for="ward">Preview</label>
+	        <a href="" data-attr="#line" id="preview_image" title="Image">Click to preview image</a>
+        </div> 
+        
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -2995,7 +2999,6 @@ Advance Tools
 					
 					<li title="Home"><a id="myHomeDiv" href="javascript:void(0);"><img src="${context}/images/icons/Home.svg"></a></li>
 					<li title="Find My Location"><a id="locateDiv" href="javascript:void(0);"><img  src="${context}/images/icons/Location.svg"></a></li>
-					<li title="Map Info" id ="toggle_map_info"><a id="mapInfoTool" title="Enable Map Info" href="javascript:void(0);"><img src="${context}/images/Info_tool_26.svg"></a></li>
 					<li title="Clear Map"><a id="clearMap" href="javascript:void(0);"><img src="${context}/images/Clear-Map-68.svg"></a></li>
 					<li title="Map Tools">
 						<a id="" data-attr="#map_tools" href="javascript:void(0);"><img  src="${context}/images/icons/Map-Tool-19.svg">

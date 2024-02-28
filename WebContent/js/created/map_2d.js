@@ -280,6 +280,8 @@ require(
 
 	                	flag = "create";
 	                	 $("#image_div").attr('style' , 'display: block;');
+	                	 $("#get_image_url").attr('style' , 'display: none !important;');
+	                	 
 	                    $('#myModal').modal('toggle');
 	                }
 	                
@@ -9172,6 +9174,8 @@ require(
 		       $("#city").val(clickedFeatures[0].values_.city);
 			   $("#pin_code").val(clickedFeatures[0].values_.pin_code);
  
+			   $("#preview_image").attr('href' , window.iscdl.appData.baseURL + "api-docs/getImage/" + "feedbacks/" + clickedFeatures[0].values_.img_name);
+			   
 			   if(selected_cut_feature_id != undefined){
 			        flag = "cut";
 			       }
@@ -9226,6 +9230,8 @@ require(
 			   $("#tehsil").val(clickedFeatures[0].values_.tehsil);
 		       $("#city").val(clickedFeatures[0].values_.city);
 			   $("#pin_code").val(clickedFeatures[0].values_.pin_code);
+			   
+			   $("#preview_image").attr('href' , window.iscdl.appData.baseURL + "api-docs/getImage/" + "feedbacks/" + clickedFeatures[0].values_.img_name);
 		       console.log('moved id ----> ' + id);
 		    
 		        var movedFeatures = event.features.getArray();
@@ -9307,6 +9313,30 @@ require(
 //		    }
 //
 //		}
+		
+//		$("#get_image_").click(function(){
+//			
+//		    $.ajax({
+//		        method: 'GET',
+//		        url: window.iscdl.appData.baseURL + "api-docs/getImage/" + "feedbacks/" + "1709102290711-storm_manhole.png",
+//	            enctype: 'multipart/form-data',
+//	            processData: false,
+//	            contentType: false,
+//	            async: false,
+//		        success: function (result) {      
+//		            console.log(result);
+//		            $u.notify("success", "Success","Feature Delete Successfully");
+//		            setTimeout(function () {
+//	                    location.reload();
+//	                }, 1500);
+//		        },
+//		        error: function (e) {
+//		            console.log(e);
+//		        }
+//		    });
+//			
+//		});
+		
 
 		$("#btn_delete_yes").click(function(){
 
@@ -9710,6 +9740,8 @@ $("#show_all_feature").click(function(){
 		$("#move_polygon").click(function(){
 			
 			$("#image_div").attr('style' , 'display: none !important;');
+			$("#get_image_url").attr('style' , 'display: block !important;');
+			
 		    map.addInteraction(select);
 		    map.addInteraction(translate);
 		    map.removeInteraction(modify);
@@ -9720,6 +9752,7 @@ $("#show_all_feature").click(function(){
 		$("#modify_polygon").click(function(){
 
 			$("#image_div").attr('style' , 'display: none !important;');
+			$("#get_image_url").attr('style' , 'display: block !important;');
 		    map.addInteraction(select);
 		    map.removeInteraction(translate);
 		    map.addInteraction(modify);
@@ -9730,6 +9763,7 @@ $("#show_all_feature").click(function(){
 		$("#cut_polygon").click(function(){
 			
 			 $("#image_div").attr('style' , 'display: none !important;');
+			 $("#get_image_url").attr('style' , 'display: block !important;');
 			
 			$u.notify("info", "Info","Please select Feature to Cut");
 		    map.addInteraction(select);
@@ -9740,6 +9774,7 @@ $("#show_all_feature").click(function(){
 		$("#merge_polygon").click(function(){
 
 			$("#image_div").attr('style' , 'display: none !important;');
+			$("#get_image_url").attr('style' , 'display: block !important;');
 		    map.addInteraction(select);
 		    map.addInteraction(translate);
 		    map.removeInteraction(modify);
@@ -9766,6 +9801,7 @@ $("#show_all_feature").click(function(){
 		$("#merge_selected_feature").click(function(){
 
 			$("#image_div").attr('style' , 'display: none !important;');
+			$("#get_image_url").attr('style' , 'display: block !important;');
 			   $("#name").val("");
 		       $("#layer").val("");
 		       $("#ward").val("");
