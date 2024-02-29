@@ -1310,7 +1310,7 @@ Advance Tools
         
         <div class="d-flex align-items-center gap-2 mb-2" id="get_image_url" style="display: none !important;">
 	        <label for="ward">Preview</label>
-	        <a href="" data-attr="#line" id="preview_image" title="Image">Click to preview image</a>
+	        <a href="" data-attr="#line" id="preview_image" title="Image" target="_blank" >Click to preview image</a>
         </div> 
         
         </div>

@@ -825,6 +825,38 @@
 		});
 				
 				
+				$('#emailLink').click(function(event){
+					event.preventDefault();
+				    let email = '';
+				    let subject = 'Link Of Indore Portal ';
+				    let link_url = $('#sharelinktxt').val();
+				    var extent = map.getView().calculateExtent(map.getSize());
+				    
+				    let xmin = extent[0];
+					let ymin = extent[1];
+					let xmax = extent[2];
+					let ymax = extent[3];
+					let srs = 4326;
+					
+					
+					
+					
+					link_url += '?xmin=' + xmin + '&ymin=' + ymin + '&xmax=' + xmax + '&ymax=' + ymax + '&wkid=' + srs;
+				    
+				    let emailBody = 'Hello, \n You can visit the shared link of Indore City GiS portal. \n URL - ' + encodeURIComponent(link_url);
+				    
+				    let url = 'https://mail.google.com/mail/u/0/?view=cm&fs=1&to='+ email +'&su=' + subject
+				   		+ '&body=' + emailBody + '&tf=1';
+				    
+				    //http://localhost:8081/indoregis/city_department.jsp?xmin=null&ymin=null&xmax=null&ymax=null&wkid=null
+				   
+					window.open(url,"NewWindow");
+
+				    
+//				    window.location = 'mailto:' + email + '?subject=' + subject + '&body=' +   emailBody;
+				});
+				
+				
 				/*
 				OPEN LAYER MAP END
 				*/
@@ -3178,12 +3210,12 @@
 							let mpmin = webMercatorUtils.webMercatorToGeographic(pmin);
 							let mpmax = webMercatorUtils.webMercatorToGeographic(pmax);
 
-							localStorage.setItem("xmin", mpmin.x);
-							localStorage.setItem("ymin", mpmin.y);
-							localStorage.setItem("xmax", mpmax.x);
-							localStorage.setItem("ymax", mpmax.y);
-							localStorage.setItem("spatialReference",mpmin.spatialReference.wkid);
 							*/
+//							localStorage.setItem("xmin", mpmin.x);
+//							localStorage.setItem("ymin", mpmin.y);
+//							localStorage.setItem("xmax", mpmax.x);
+//							localStorage.setItem("ymax", mpmax.y);
+//							
 							
 							let browserUrl = document.location.href;
 							/*
@@ -10532,11 +10564,11 @@
 									&& (xmax != null && xmax != undefined)
 									&& (ymax != null && ymax != undefined)
 									&& (srs != null && srs != undefined)) {
-								var startExtent = new Extent(xmin, ymin, xmax, ymax,
-										new SpatialReference({
-											wkid : 4326
-								}));
-								map.setExtent(startExtent);
+//								var startExtent = new Extent(xmin, ymin, xmax, ymax,
+//										new SpatialReference({
+//											wkid : 4326
+//								}));
+								map.getView().fit([xmin, ymin, xmax, ymax]);
 							}
 							window.depUtlityController.getLayers('add_data_category');
 							window.depUtlityController.getVisitorCounter();
