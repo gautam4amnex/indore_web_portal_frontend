@@ -3029,8 +3029,7 @@ Advance Tools
 							<span></span>
 						</div>
 					</li>
-					<li title="Info"><a id="info_layer" href="javascript:void(0);"><img src="${context}/images/info_tool.svg"></a></li>
-					<li title="Delete"><a id="delete_feature" href="javascript:void(0);"><img src="${context}/images/delete_feature.svg"></a></li>
+					<li title="Info"><a id="info_layer" href="javascript:void(0);"><img src="${context}/images/info_tool.svg"></a></li>					
 				</ul>
 			</div>
 			<!--Tools action list -top-->
