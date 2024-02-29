@@ -1310,7 +1310,7 @@ Advance Tools
         
         <div class="d-flex align-items-center gap-2 mb-2" id="get_image_url" style="display: none !important;">
 	        <label for="ward">Preview</label>
-	        <a href="" data-attr="#line" id="preview_image" title="Image">Click to preview image</a>
+	        <a href="" data-attr="#line" id="preview_image" title="Image" target="_blank" >Click to preview image</a>
         </div> 
         
         </div>
@@ -3029,8 +3029,7 @@ Advance Tools
 							<span></span>
 						</div>
 					</li>
-					<li title="Info"><a id="info_layer" href="javascript:void(0);"><img src="${context}/images/info_tool.svg"></a></li>
-					<li title="Delete"><a id="delete_feature" href="javascript:void(0);"><img src="${context}/images/delete_feature.svg"></a></li>
+					<li title="Info"><a id="info_layer" href="javascript:void(0);"><img src="${context}/images/info_tool.svg"></a></li>					
 				</ul>
 			</div>
 			<!--Tools action list -top-->

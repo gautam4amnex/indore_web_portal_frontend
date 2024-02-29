@@ -8602,11 +8602,11 @@ require(
 							&& (xmax != null && xmax != undefined)
 							&& (ymax != null && ymax != undefined)
 							&& (srs != null && srs != undefined)) {
-						var startExtent = new Extent(xmin, ymin, xmax, ymax,
-								new SpatialReference({
-									wkid : 4326
-						}));
-						map.setExtent(startExtent);
+//						var startExtent = new Extent(xmin, ymin, xmax, ymax,
+//								new SpatialReference({
+//									wkid : 4326
+//						}));
+						map.getView().fit([xmin, ymin, xmax, ymax]);
 					}
 				});
 		
