@@ -2484,17 +2484,18 @@ var defaultBasemap = new Cesium.OpenStreetMapImageryProvider({
 });
 
 
+
 var viewer = new Cesium.Viewer('cesiumContainer', {
     fullscreenButton: false,
-    selectionIndicator: false,
-    infoBox: true,
-    animation: false,
-    timeline: false,
-    shadows: false,
-    skyAtmosphere: false,
-    baseLayerPicker: true,
-    geocoder: false,
-    imageryProvider: defaultBasemap,
+    selectionIndicator : false,
+    infoBox : true,
+    animation : false,
+    timeline : false,
+    shadows : false,
+    skyAtmosphere : false,
+    baseLayerPicker : true,
+    geocoder : false,
+    imageryProvider :defaultBasemap,
     // terrainProvider: ascdl_terrian,
     // terrainProvider : Cesium.createWorldTerrain(),
 });
@@ -2521,17 +2522,69 @@ var ward_boundary = new Cesium.WebMapServiceImageryProvider({
 });
 //viewer.
 viewer.imageryLayers.addImageryProvider(ward_boundary);
-
 //async function loadBuildings() {
+
+
+async function loadBuildings() {	
+	
+	const tileset = await Cesium.Cesium3DTileset.fromUrl(
+			  "https://apagri.infinium.management/data/Buildings_3D/tileset.json", {
+			     skipLevelOfDetail: true,
+			     baseScreenSpaceError: 1024,
+			     skipScreenSpaceErrorFactor: 16,
+			     skipLevels: 1,
+			     immediatelyLoadDesiredLevelOfDetail: false,
+			     loadSiblings: false,
+			     cullWithChildrenBounds: true,
+			     clampToGround: true
+			});
+	    
+	    
+//		const tileset = await Cesium.Cesium3DTileset.fromUrl(
+//		  "http://35.207.225.199:8080/data/Building_Footprint/tileset.json", {
+//		     skipLevelOfDetail: true,
+//		     baseScreenSpaceError: 1024,
+//		     skipScreenSpaceErrorFactor: 16,
+//		     skipLevels: 1,
+//		     immediatelyLoadDesiredLevelOfDetail: false,
+//		     loadSiblings: false,
+//		     cullWithChildrenBounds: true,
+//		     clampToGround: true
+//		});
+
+
+	viewer.scene.primitives.add(tileset);
+	
+	viewer.flyTo(tileset);
+	
+}
+
+
+loadBuildings();
 //async function loadBuildings() {
 //
-//	var newBuildingTileset =  await Cesium.Cesium3DTileset.fromIonAssetId(1626701);
+//	
+//	
+//	
+//	var newBuildingTileset = new Cesium.Cesium3DTileset({
+//		url : "",
+//		shadows : Cesium.ShadowMode.DISABLED,
+//		skipLevelOfDetail : true,
+//		baseScreenSpaceError : 1024,
+//		skipScreenSpaceErrorFactor : 16,
+//		skipLevels : 1,
+//		immediatelyLoadDesiredLevelOfDetail : false,
+//		loadSiblings : false,
+//		cullWithChildrenBounds : true,
+//		dynamicScreenSpaceError : true,
+//		dynamicScreenSpaceErrorDensity : 0.00278,
+//		dynamicScreenSpaceErrorFactor : 4.0,
+//		dynamicScreenSpaceErrorHeightFalloff : 0.25
+//	});
 //	viewer.scene.primitives.add(newBuildingTileset);
 //
 //	viewer.flyTo(newBuildingTileset);
 //	
 //}
-
-
 //loadBuildings();
 // CESIUM ENDS
