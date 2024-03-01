@@ -2528,7 +2528,7 @@ viewer.imageryLayers.addImageryProvider(ward_boundary);
 async function loadBuildings() {	
 	
 	const tileset = await Cesium.Cesium3DTileset.fromUrl(
-			  "https://apagri.infinium.management/data/Buildings_3D/tileset.json", {
+			  "https://apagri.infinium.management/data/Indore_Buildings_2020/tileset.json", {
 			     skipLevelOfDetail: true,
 			     baseScreenSpaceError: 1024,
 			     skipScreenSpaceErrorFactor: 16,

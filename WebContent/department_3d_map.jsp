@@ -32,6 +32,9 @@
 	<link rel="stylesheet" href="${context}/css/esri/api-4-14.css">
 	<link rel="stylesheet" href="${context}/css/style.css">
 	<link rel="stylesheet" href="${context}/css/citizen-map-dept.css">
+	
+	<script src="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
 <style>
         .cesium-viewer-toolbar {
             display: none !important;
@@ -287,7 +290,7 @@
 				</a>
 			</li>
 			
-			
+			<%--
 			<li data-toggle="tooltip" title="Heritage Building">
 				<a target = "_blank" href="${context}/heritage_buildings.jsp">
 					<svg style="padding: 5px;" class="small-icon" version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
@@ -589,6 +592,7 @@
 					</svg>Proximity Analysis
 				</a>
 			</li>
+			 --%>
 			
 		</ul>
 	</div>
@@ -606,7 +610,31 @@
 				<a class="layer-close side-layer-close" href="javascript:void(0);"><img class="map-side-icon-img" src="${context}/images/icons/Close-61.svg" alt=""></a> 	
 			</div>		
 			<div class="layer-content" >	
-				<div id="basemapGalleryDiv"></div>	
+				<div id="basemapGalleryDiv">
+					
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-12 ">
+								 <ul class="ol-gallery">
+								 	<li>
+								 	<a href="javascript:void(0);" id="SatelliteIMG"><img class="ol-gallery-thumbnail" src="${context}/images/Satellite_Image_2.png" alt="" data-value="satellite"></a>
+								 	<div class="ol-gallery-title">Satellite Image</div>
+								 	</li>
+								 	<li>
+			  						<a href="javascript:void(0);" id="droneIMG"><img class="ol-gallery-thumbnail" src="${context}/images/Satellite_Image_1.png" alt="" data-value="drone"></a>
+								 	<div class="ol-gallery-title">Drone</div>
+								 	</li>
+								 	<li>
+								 	<a href="javascript:void(0);" id="blankImage"><img class="ol-gallery-thumbnail" src="${context}/images/blank.jpg" alt="" data-value="blank"></a>	
+								 	<div class="ol-gallery-title">Blank</div>
+								 	</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					
+				</div>	
 			</div>	
 		</div>	
 	</div>	
@@ -1417,7 +1445,8 @@
 				</ul>
 			</div>	
 			<div id="searchDiv"></div>
-			 <div id="map" class="map h-100">
+			 <!-- <div id="map" class="map h-100">  -->
+			 <div id="cesiumContainer" class="h-100 w-100"></div>
 				<!--  <div id="cesiumContainer" class="h-100 w-100"></div>-->
 				<span id="coordinateDiv"></span>
 				</div>
@@ -1772,7 +1801,8 @@
 	<script type="text/javascript" src="${context}/js/designer/citizen-map-dept.js"></script>
 	
 	<script type="text/javascript" src="${context}/js/developer/dep_announcement_controller.js"></script>
-	<script type="text/javascript" src="${context}/js/dep_3d_map.js"></script>
+	<!--  <script type="text/javascript" src="${context}/js/dep_3d_map.js"></script> -->
+	<script src="${context}/js/3d_map.js"></script>
 
 </body>
 </html>

@@ -191,7 +191,7 @@
 				</a>
 			</li>
 			
-			
+			<!-- 
 			<li data-toggle="tooltip" title="Heritage Building">
 				<a target= "_blank" href="${context}/heritage_buildings.jsp">
 					<svg class="small-icon" version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
@@ -284,7 +284,8 @@
 				</svg>
 				Heritage Building					
 				</a>
-			</li>
+			</li>  --> 
+			
 		</ul>
 	</div>
 	<!-- /#sidebar-wrapper -->
@@ -301,7 +302,30 @@
 				<a class="layer-close side-layer-close" href="javascript:void(0);"><img class="map-side-icon-img" src="${context}/images/icons/Close-61.svg" alt=""></a> 
 			</div>	
 			<div class="layer-content" >
-				<div id="basemapGalleryDiv"></div>
+				<div id="basemapGalleryDiv">
+					
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-12 ">
+								 <ul class="ol-gallery">
+								 	<li>
+								 	<a href="javascript:void(0);" id="SatelliteIMG"><img class="ol-gallery-thumbnail" src="${context}/images/Satellite_Image_2.png" alt="" data-value="satellite"></a>
+								 	<div class="ol-gallery-title">Satellite Image</div>
+								 	</li>
+								 	<li>
+			  						<a href="javascript:void(0);" id="droneIMG"><img class="ol-gallery-thumbnail" src="${context}/images/Satellite_Image_1.png" alt="" data-value="drone"></a>
+								 	<div class="ol-gallery-title">Drone</div>
+								 	</li>
+								 	<li>
+								 	<a href="javascript:void(0);" id="blankImage"><img class="ol-gallery-thumbnail" src="${context}/images/blank.jpg" alt="" data-value="blank"></a>	
+								 	<div class="ol-gallery-title">Blank</div>
+								 	</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+				</div>
 			</div>
 		</div>
 	</div>
@@ -318,7 +342,9 @@
 				<a class="layer-close side-layer-close" href="javascript:void(0);"><img class="map-side-icon-img" src="${context}/images/icons/Close-61.svg" alt=""></a> 
 			</div>	
 			<div class="layer-content">
-				<div id="layersDiv"></div>
+				<div id="layersDiv">
+					
+				</div>
 			</div>
 		</div>
 	</div>
@@ -751,6 +777,8 @@
 					<li title="Box Zoom In" id="box_zoom_map"><a id="zoomBoxMap" href="javascript:void(0);"><img src="${context}/images/icons/Zoom_In.svg"></a></li>
 					<li title="Box Zoom Out" id="box_zoom_out_map"><a id="zoomOutBoxMap" href="javascript:void(0);"><img src="${context}/images/icons/Zoom_Out.svg"></a></li>
 					<li title="Map Info" id ="toggle_map_info"><a id="mapInfoTool" title="Disable Map Info" href="javascript:void(0);"><img src="${context}/images/Info_tool_26.svg"></a></li>
+					
+					<%-- 
 					<li title="Measurement">
 						<a href="javascript:void(0);" data-attr="#mesurment" id="map_measurement">
 							<img src="${context}/images/icons/Mesurement-28.svg">
@@ -801,10 +829,6 @@
 					                          <option value="A4 Landscape">A4 Landscape</option>
 					                          <option value="A4 Portrait">A4 Portrait</option>
 					                          <option value="MAP_ONLY">MAP ONLY</option>
-					                         <!--  <option value="Letter ANSI A Landscape" selected>Letter ANSI A Landscape</option>
-					                          <option value="Letter ANSI A Portrait">Letter ANSI A Portrait</option>
-					                          <option value="Tabloid ANSI B Landscape">Tabloid ANSI B Landscape</option>
-					                          <option value="Tabloid ANSI B Portrait">Tabloid ANSI B Portrait</option> -->
 					                        </select>
 										</div>
 										<div class="form-group">
@@ -814,9 +838,6 @@
 						                          <option value="png32">PNG32</option>
 						                          <option value="png8">PNG8</option>
 						                          <option value="jpg">JPG</option>
-						                         <!--  <option value="gif">GIF</option>
-						                          <option value="eps">EPS</option>
-						                          <option value="svg">SVG</option> -->
                                              </select>
 										</div>
 										<div class="text-center">
@@ -859,7 +880,7 @@
 							</div>
 							<span class="arrow-footer"></span>
 						</div>
-					</li>
+					</li>  --%>
 					<li title="Share">
 						<a href="javascript:void(0);" data-attr="#share"  id="map_share">
 							<img src="${context}/images/icons/Share.svg">
@@ -875,7 +896,7 @@
 									<form class="tool-tip-form">
 										<div class="form-group">
 											<label for="loc_name" data-translate = "_share_title">Share a link to this app</label>
-											<input type="text" name="mapt" id="sharelinktxt" placeholder="" value="https://indoresmartcity.com" class="form-control" readonly="" >
+											<input type="text" name="mapt" id="sharelinktxt" placeholder="" value="https://apagri.infinium.management/indoregis/citizen_3d_map.jsp" class="form-control" readonly="" >
 										</div>
 									</form>
 									<a class="tooltip-link" href="javascript:void(0);" data-translate = "_share_linkop">Link Option</a>
@@ -890,7 +911,9 @@
 							</div>
 						</div>
 					</li>
+					<%--
 					<li title="Clear Map"><a id="clearMap" href="javascript:void(0);"><img src="${context}/images/Clear-Map-68.svg"></a></li>
+					
 					<li title="Custom Scalebar">
 						<a href="javascript:void(0);" data-attr="#custom_scalebar"  id="customscalebar">
 							<img src="${context}/images/Custom_Scale_bar-17.svg">
@@ -917,7 +940,7 @@
 								<span class="arrow-footer"></span>
 							</div>
 						</div>
-					</li>
+					</li>  --%>
 				</ul>
 			</div>
 			<!--Tools action list-->
