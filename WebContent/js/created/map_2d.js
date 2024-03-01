@@ -1183,16 +1183,14 @@ require(
 				
 				geolocation.setTracking(true);
 		        
+				geolocation.on('change', function () {
+					
+					know_your_coordinate = geolocation.getPosition();
+			  });
 		        
 				geolocation.on('change:accuracyGeometry', function () {
 					  accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
 					});
-
-
-					geolocation.on('change:position', function () {
-					
-							know_your_coordinate = geolocation.getPosition();
-					  });
 				
 				const iconFeature = new ol.Feature({
 					  geometry: new ol.geom.Point(know_your_coordinate)								  
@@ -1209,13 +1207,14 @@ require(
 					});
 
 				map.addLayer(GoToVectorLayer);
-
-
-                
 				
-				const extent = vectorSource.getExtent();
-
-				map.getView().fit(extent, {"maxZoom":20} );
+				
+				map.setView(
+				        new ol.View({
+				        projection: 'EPSG:4326',									  
+				        center: know_your_coordinate,
+				        zoom: 18
+				    }));
 				
 			});
 			
@@ -4378,11 +4377,15 @@ require(
 					submitHandler : function(form, e) {
 						e.preventDefault();
 						try {
-							let scale_value = $("#scale_value").val();
-							if(scale_value){
-								map.setScale(scale_value);
-								window.depUtlityController.minimizePopup();
-							}
+							var scale_value = $("#scale_value").val();				
+							
+							let current_extent = map.getView().calculateExtent(map.getSize());
+							console.log()
+							map.getView().animate({
+								  zoom: map.getView().getZoom() + parseInt(scale_value)/1000,
+								  duration: 250
+							});
+							
 						} catch (e) {
 							 $u.notify("error", "Error","Something Happend Wrong");
 						}
@@ -4746,6 +4749,40 @@ require(
 // sourceGeocoder.on("select", geocoderFromLocation);
 // destGeocoder.on("select", geocoderToLocation);
 // localityThana.on("select", geocoderThanaLocation);
+		
+		
+//		$('form[id="tool-tip-form"]')
+//		.validate(
+//				{
+//					rules : {
+//						loc_name : {
+//							required : true,
+//						},	
+//					},
+//					messages : {
+//						loc_name : {
+//							required : "Please Type Scale Value",
+//						},
+//					},
+//					submitHandler : function(form, e) {
+//						e.preventDefault();
+//						try {
+//							
+//							var scale_value = $("#scale_value").val();				
+//							
+//							let current_extent = map.getView().calculateExtent(map.getSize());
+//							map.getView().fit(current_extent, {"maxZoom": typeof parseInt(scale_value)/10} );
+//							
+//							
+//						} catch (e) {
+//							 
+//							 
+//						}
+//					}
+//				});
+		
+		
+		
 		
 		function geocoderFromLocation(evt) {
 			source_latlong_by_name = "";
@@ -5249,6 +5286,7 @@ require(
 							/**
 							 * for showing result tab
 							 */
+							map.removeLayer(QueryVectorLayer);
 							$("#attribute_query_rslt").html("");
 							let ward_id = $("#location_select").val();
 							let l_id = $("#poi_layer_select").val();
@@ -5275,7 +5313,6 @@ require(
 			                        	
 			                        	if(result.features.length > 0 ){
 			                     
-			                        	
 			                            const geoJSONFormat = new ol.format.GeoJSON();
 			                            
 			                            var vectorSource = new ol.source.Vector({
@@ -5296,9 +5333,9 @@ require(
 			                                style: location_mark,
 			                            });
 
-			                            vectorLayer.getSource().on('addfeature', function () {
-			                                map.setExtent(vectorLayer.getSource().getExtent());
-			                            });
+//			                            vectorLayer.getSource().on('addfeature', function () {
+//			                                map.setExtent(vectorLayer.getSource().getExtent());
+//			                            });
 
 
 			                            const extent = vectorSource.getExtent();
@@ -5306,8 +5343,8 @@ require(
 			                            map.getView().fit(extent, {"maxZoom":20} );
 
 			                            //map1_layer.addLayer(layer_test1);
-			                            map.addLayer(vectorLayer);
-			                            basic_query_layer_arr.push(vectorLayer);
+			                            map.addLayer(QueryVectorLayer);
+			                            basic_query_layer_arr.push(QueryVectorLayer);
 			                            //window.depUtlityController.minimizePopup();
 
 			                            console.log(result);
