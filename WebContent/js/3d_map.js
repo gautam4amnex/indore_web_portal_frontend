@@ -2467,9 +2467,74 @@ $(window).on("load", function() {
 //	$("#coordinateDiv").hide();
 	$(".loader").fadeOut();
 });
-	
+
+let buildingData = null;
+
+function load_layer_panel() {
+    $.ajax({
+        method: 'GET',
+        url: 'http://localhost:8085/get_3d_layer_data',
+        async: false,
+        contentType: 'application/json',
+        success: function (result) {
+            let response = JSON.parse(result);
+            if (response.responseCode == 200) {
+                let html = "";
+
+                response.data.forEach(function(parentLayer) {
+                    let parentLayerName = parentLayer.parent_layer_name;
+                    let parentId = parentLayer.parent_layer_id;
+                    let collapseId = 'collapse_' + parentId;
+
+                    html += "<div class='card full-accordion layers-toggle'>" +
+                        "<div class='card-header' id='heading_" + parentId + "'>" +
+                        "<h5 class='mb-0'>" +
+                        "<button class='btn btn-link accordion-btn' data-toggle='collapse' data-target='#" + collapseId + "' " +
+                        "aria-expanded='true' aria-controls='" + collapseId + "'>" +
+                        "<span title='" + parentLayerName + "'>" + parentLayerName + "</span>" +
+                        "<i class='fa fa-angle-down float-right'></i>" +
+                        "</button>" +
+                        "</h5>" +
+                        "</div>" +
+                        "<div id='" + collapseId + "' class='collapse' aria-labelledby='heading_" + parentId + "' data-parent='#accordionExample'>" +
+                        "<div class='card-body layers-toggle-body'>";
+
+                    parentLayer.child_layer.forEach(function(childLayer) {
+                        let childLayerName = childLayer.layer_name;
+                        let childLayerId = childLayer.layer_id;
+                        let url = childLayer.url;
+                        
+                        html += "<label class='checkbox-inline' data-placement='right' title='" + childLayerName + "'>" +
+                            "<input url='" + url + "'  id='" + childLayerId + "' data-layerid='" + childLayerId + "' data-departmentid='" + parentId + "' type='checkbox' class='list-item' value='" + childLayerName + "'>" + childLayerName + " " +
+                            "</label>" +
+                            "<i class='fa fa-arrows-alt zoom-to-layer' aria-hidden='true' title='Zoom To Layer' depart-id='" + parentId + "' id='" + childLayerId + "'></i>";
+                    });
+
+                    html += "</div></div></div>";
+                });
+                
+                // Append the generated HTML to the accordion container
+                $("#accordionExample").html(html);
+                $("#3d_building").prop('checked', true);
+                // Ensure Bootstrap accordion behavior is activated
+                $('.accordion-btn').click(function () {
+                    $(this).find('.fa').toggleClass('fa-angle-down fa-angle-up');
+                });
+
+            } else {
+                // Handle error response
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}
 
 
+
+
+load_layer_panel();
 
 // CESIUM START
 
@@ -2510,8 +2575,6 @@ viewer.camera.flyTo({
     },
 });
 
-let newBuildingTileset;
-
 var ward_boundary = new Cesium.WebMapServiceImageryProvider({
 	  url: 'https://apagri.infinium.management/geoserver/iscdl/wms',
 	  layers: 'iscdl:shp_ward_boundary', 
@@ -2524,43 +2587,91 @@ var ward_boundary = new Cesium.WebMapServiceImageryProvider({
 viewer.imageryLayers.addImageryProvider(ward_boundary);
 //async function loadBuildings() {
 
+//
+//async function loadBuildings() {	
+//	
+//	const tileset = await Cesium.Cesium3DTileset.fromUrl(
+//			  "https://apagri.infinium.management/data/Indore_Buildings_2020/tileset.json", {
+//			     skipLevelOfDetail: true,
+//			     baseScreenSpaceError: 1024,
+//			     skipScreenSpaceErrorFactor: 16,
+//			     skipLevels: 1,
+//			     immediatelyLoadDesiredLevelOfDetail: false,
+//			     loadSiblings: false,
+//			     cullWithChildrenBounds: true,
+//			     clampToGround: true
+//			});
+//	    
+//	    
+////		const tileset = await Cesium.Cesium3DTileset.fromUrl(
+////		  "http://35.207.225.199:8080/data/Building_Footprint/tileset.json", {
+////		     skipLevelOfDetail: true,
+////		     baseScreenSpaceError: 1024,
+////		     skipScreenSpaceErrorFactor: 16,
+////		     skipLevels: 1,
+////		     immediatelyLoadDesiredLevelOfDetail: false,
+////		     loadSiblings: false,
+////		     cullWithChildrenBounds: true,
+////		     clampToGround: true
+////		});
+//
+//
+//	viewer.scene.primitives.add(tileset);
+//	
+//	viewer.flyTo(tileset);
+//	
+//}
 
-async function loadBuildings() {	
+
+
+
+async function loadBuilding(){
+		  try {
+			  if($('#3d_building').is(":checked")){
+				  buildingData = await Cesium.Cesium3DTileset.fromUrl(
+						  "https://apagri.infinium.management/data/Indore_Buildings_2020/tileset.json", {
+							     skipLevelOfDetail: true,
+							     baseScreenSpaceError: 1024,
+							     skipScreenSpaceErrorFactor: 16,
+							     skipLevels: 1,
+							     immediatelyLoadDesiredLevelOfDetail: false,
+							     loadSiblings: false,
+							     cullWithChildrenBounds: true,
+							     clampToGround: true
+							});
+				    viewer.scene.primitives.add(buildingData);
+				    buildingData.style = new Cesium.Cesium3DTileStyle();
+				    buildingData.show = true;
+			} 
+			  else{
+				  if(buildingData){
+					  buildingData.show = false;
+				  }	  	
+			  }
+		  }
+		  catch (error) {
+			  console.log(error);
+		  }
+	}
+
+$("#3d_building").click(function(){
+	loadBuilding();
+});
+
+
+$('#myHomeDiv').click(function() {
+
+	viewer.camera.flyTo({
+	    destination: Cesium.Cartesian3.fromDegrees(75.808571 , 22.577571, 10000),
+	    orientation: {
+	    	heading: Cesium.Math.toRadians(20.0),
+		    pitch: Cesium.Math.toRadians(-35.0),
+	        roll: 0.0,
+	    },
+	});
 	
-	const tileset = await Cesium.Cesium3DTileset.fromUrl(
-			  "https://apagri.infinium.management/data/Indore_Buildings_2020/tileset.json", {
-			     skipLevelOfDetail: true,
-			     baseScreenSpaceError: 1024,
-			     skipScreenSpaceErrorFactor: 16,
-			     skipLevels: 1,
-			     immediatelyLoadDesiredLevelOfDetail: false,
-			     loadSiblings: false,
-			     cullWithChildrenBounds: true,
-			     clampToGround: true
-			});
-	    
-	    
-//		const tileset = await Cesium.Cesium3DTileset.fromUrl(
-//		  "http://35.207.225.199:8080/data/Building_Footprint/tileset.json", {
-//		     skipLevelOfDetail: true,
-//		     baseScreenSpaceError: 1024,
-//		     skipScreenSpaceErrorFactor: 16,
-//		     skipLevels: 1,
-//		     immediatelyLoadDesiredLevelOfDetail: false,
-//		     loadSiblings: false,
-//		     cullWithChildrenBounds: true,
-//		     clampToGround: true
-//		});
-
-
-	viewer.scene.primitives.add(tileset);
-	
-	viewer.flyTo(tileset);
-	
-}
-
-
-loadBuildings();
+});
+loadBuilding();
 //async function loadBuildings() {
 //
 //	

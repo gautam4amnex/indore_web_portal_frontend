@@ -1516,11 +1516,11 @@ require(
 			});
 
 			// default extent
-			$('#myHomeDiv').click(function() {
-				if (map != null || map != undefined) {
-					view.goTo(initialExtent);
-				}
-			});
+//			$('#myHomeDiv').click(function() {
+//				if (map != null || map != undefined) {
+//					view.goTo(initialExtent);
+//				}
+//			});
 
 			$('#areaButton').click(function() {
 				setActiveWidget(null);

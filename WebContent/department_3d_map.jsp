@@ -651,9 +651,14 @@
 					<a class="layer-close side-layer-resize" href="javascript:void(0);"> <img class="map-side-icon-img" src="${context}/images/Minimize-23.svg" alt=""> </a>
 				<a class="layer-close side-layer-close" href="javascript:void(0);"><img class="map-side-icon-img" src="${context}/images/icons/Close-61.svg" alt=""></a> 	
 			</div>		
-			<div class="layer-content">	
-				<div id="layersDiv"></div>	
-			</div>	
+						<div class="layer-content">
+			<!--  <div id="layersDiv">
+					
+				</div>-->
+
+						<div class="accordion" id="accordionExample"></div>
+				
+			</div>
 		</div>	
 	</div>	
 	<!--Layer popup end-->
@@ -1454,14 +1459,14 @@
 			
 			<!--Tools action list-->
 			<div class="action-start">
-				<ul class="action-ul bottom-action threed" id="bottomPanel">
+				<ul class="action-ul bottom-action threed" id="bottomPanel" style="width: 215px">
 					<%-- <li><a href="javascript:void(0);"><img src="${context}/images/icons/Zoom_Out.svg"></a></li>
 					<li><a href="javascript:void(0);"><img src="${context}/images/icons/Zoom_In.svg"></a></li> --%>
 					<li title="Home"><a id="myHomeDiv" href="javascript:void(0);"><img src="${context}/images/icons/Home.svg"></a></li>
 					<li title="Box Zoom In" id="box_zoom_map"><a id="zoomBoxMap" href="javascript:void(0);"><img src="${context}/images/icons/Zoom_In.svg"></a></li>
 					<li title="Box Zoom Out" id="box_zoom_out_map"><a id="zoomOutBoxMap" href="javascript:void(0);"><img src="${context}/images/icons/Zoom_Out.svg"></a></li>
 					<li title="Map Info" id ="toggle_map_info"><a id="mapInfoTool" title="Enable Map Info Tool" href="javascript:void(0);"><img src="${context}/images/Info_tool_26.svg"></a></li>
-					<li title="Print" id="print_popup">
+				<%--  	<li title="Print" id="print_popup">
 						<a href="javascript:void(0);" data-attr="#print">
 							<img src="${context}/images/icons/Print.svg">
 						</a>
@@ -1569,7 +1574,7 @@
 							</div>
 							<span class="arrow-footer"></span>
 						</div>
-					</li>
+					</li>--%>
 					<li title="Share">
 						<a href="javascript:void(0);" data-attr="#share" id="map_share">
 							<img src="images/icons/Share.svg">
@@ -1599,7 +1604,7 @@
 							</div>
 						</div>
 					</li>
-					<li title="Custom Scalebar">
+					<%-- <li title="Custom Scalebar">
 						<a href="javascript:void(0);" data-attr="#custom_scalebar"  id="customscalebar">
 							<img src="${context}/images/Custom_Scale_bar-17.svg">
 						</a>
@@ -1635,6 +1640,7 @@
 					<!-- <li title="">
 						<a title="Buffer" id="buffer" data-attr="#Buffer" href="javascript:void(0);"><img src="${context}/images/icons/Buffer-38.svg"></a>
 					</li> -->
+					--%>
 				</ul>
 			</div>
 			<!--Tools action list-->

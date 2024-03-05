@@ -342,9 +342,12 @@
 				<a class="layer-close side-layer-close" href="javascript:void(0);"><img class="map-side-icon-img" src="${context}/images/icons/Close-61.svg" alt=""></a> 
 			</div>	
 			<div class="layer-content">
-				<div id="layersDiv">
+			<!--  <div id="layersDiv">
 					
-				</div>
+				</div>-->
+
+						<div class="accordion" id="accordionExample"></div>
+				
 			</div>
 		</div>
 	</div>
@@ -770,7 +773,7 @@
 			<!--Tools action list-->
 			<div class="action-start">
 			
-				<ul class="action-ul bottom-action threed" id="downPanel">
+				<ul class="action-ul bottom-action threed" id="downPanel" style="width: 215px">
 					<%-- <li><a id="zoomOutDiv" href="javascript:void(0);"><img src="${context}/images/icons/Zoom_Out.svg"></a></li>
 					<li><a id="zoomInDiv" href="javascript:void(0);"><img src="${context}/images/icons/Zoom_In.svg"></a></li> --%>
 					<li title="Home"><a id="myHomeDiv" href="javascript:void(0);"><img src="${context}/images/icons/Home.svg"></a></li>
